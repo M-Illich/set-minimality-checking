@@ -4,7 +4,7 @@ import java.util.Set;
 
 
 /**
- * Representation of a Set as array of long values based on the hash codes of the set's elements
+ * Representation of a {@code Set} as array of {@code long} values based on the hash codes of the set's elements
  *
  */
 public class BitVectorSet implements Comparable<BitVectorSet> {
@@ -15,8 +15,8 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	long[] bitVector;
 
 	/**
-	 * Create a BitVectorSet object based on a long array
-	 * @param bv A long[] used as bitVector
+	 * Create a {@code BitVectorSet} object based on a {@code long} array
+	 * @param bv A {@code long[]} used as {@code bitVector}
 	 */
 	public BitVectorSet(long[] bv) {
 		this.bitVector = bv;
@@ -24,8 +24,8 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a BitVectorSet object based on a Set
-	 * @param set A Set used to define a long[] based on its elements' hash codes 
+	 * Create a {@code BitVectorSet} object based on a {@code Set}
+	 * @param set A {@code Set} used to define a {@code long[]} based on its elements' hash codes 
 	 */
 	public BitVectorSet(Set<?> set) {
 		this.set = set;
@@ -43,9 +43,9 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a BitVectorSet object based on a Set and its long[] representation
-	 * @param set A Set
-	 * @param bv A long[] representing set
+	 * Create a {@code BitVectorSet} object based on a {@code Set} and its {@code long[]} representation
+	 * @param set A {@code Set}
+	 * @param bv A {@code long[]} representing the element {@code set}
 	 */
 	public BitVectorSet(Set<?> set, long[] bv) {
 		this.set = set;

@@ -27,9 +27,9 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	 * Get a long array which contains the lowest 1-bit of bitVector as rightmost
 	 * 1-bit entry
 	 * 
-	 * @param bitVector A long[]
-	 * @return A long[] which contains the lowest 1-bit of bitVector as rightmost
-	 *         1-bit entry, or long values with value zero if no bit could be found
+	 * @param bitVector A {@code long[]}
+	 * @return A {@code long[]} which contains the lowest 1-bit of bitVector as rightmost
+	 *         1-bit entry, or {@code long} values with value zero if no bit could be found
 	 */
 	long[] getLowestOneBit(long[] bitVector) {
 
@@ -50,12 +50,12 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 
 	/**
 	 * Perform bitwise XOR operation on the values of each position of the provided
-	 * long[] a and b where only the 1-bits of the larger array are kept
+	 * {@code long[]} a and b where only the 1-bits of the larger array are kept
 	 * 
-	 * @param a A long[]
-	 * @param b A long[]
-	 * @return A long[] of length = max(a.length,b.length) with long values computed
-	 *         by bitwise XOR operations of the arrays' long values where only the
+	 * @param a A {@code long[]}
+	 * @param b A {@code long[]}
+	 * @return A long[] of length = max(a.length,b.length) with {@code long} values computed
+	 *         by bitwise XOR operations of the arrays' {@code long} values where only the
 	 *         1-bits of the larger array are kept
 	 */
 	long[] xorKeep(long[] a, long[] b) {
@@ -85,12 +85,12 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	}
 	
 	/**
-	 * Compute the sum of the values of each position of the provided long[] a and
+	 * Compute the sum of the values of each position of the provided {@code long[]} a and
 	 * b.
 	 * 
-	 * @param a A long[]
-	 * @param b A long[]
-	 * @return A long[] of length = max(a.length,b.length) with long values as sum
+	 * @param a A {@code long[]}
+	 * @param b A {@code long[]}
+	 * @return A long[] of length = max(a.length,b.length) with {@code long} values as sum
 	 *         of the arrays a and b.
 	 */
 	long[] add(long[] a, long[] b) {
@@ -119,10 +119,10 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	}
 
 	/**
-	 * Compute complement of long values given in long array a
+	 * Compute complement of long values given in {@code long} array a
 	 * 
-	 * @param a A long[]
-	 * @return A long[] containing the complement values of the given array a
+	 * @param a A {@code long[]}
+	 * @return A {@code long[]} containing the complement values of the given array a
 	 */
 	long[] complement(long[] a) {
 		int len = a.length;
@@ -135,12 +135,12 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	}
 
 	/**
-	 * Subtract 1 from the value defined by the appending of the long values of
+	 * Subtract 1 from the value defined by the appending of the {@code long} values of
 	 * array
 	 * 
-	 * @param array A long[]
-	 * @return A long[] whose elements define a value being 1 smaller than the value
-	 *         given by the long values of array
+	 * @param array A {@code long[]}
+	 * @return A {@code long[]} whose elements define a value being 1 smaller than the value
+	 *         given by the {@code long} values of array
 	 */
 	long[] subtractOne(long[] array) {
 		// define new array
@@ -159,12 +159,12 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 
 	/**
 	 * Perform bitwise AND operation on the values of each position of the provided
-	 * long[] a and b. (Mainly used to remove bit entries)
+	 * {@code long[]} a and b. (Mainly used to remove bit entries)
 	 * 
-	 * @param a A long[]
-	 * @param b A long[]
-	 * @return A long[] of length = max(a.length,b.length) with long values computed
-	 *         by bitwise AND operations of the arrays' long values
+	 * @param a A {@code long[]} 
+	 * @param b A {@code long[]}
+	 * @return A {@code long[]} of length = max(a.length,b.length) with {@code long} values computed
+	 *         by bitwise AND operations of the arrays' {@code long} values
 	 */
 	long[] andRemove(long[] a, long[] b) {
 		int lenA = a.length;
@@ -193,7 +193,7 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 
 	/**
 	 * Here, the candidate relation is defined as first being a subset candidate of
-	 * second based on their bitVector long values
+	 * second based on their bitVector {@code long} values
 	 */
 	@Override
 	public boolean isCandidateOf(BitVectorSet first, BitVectorSet second) {
@@ -254,10 +254,11 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	public BitVectorSet getMaxValue(BitVectorSet o) {
 		// create bit vector of same length as the one of o
 		int len = o.bitVector.length;
-		long[] bv = new long[len];
+		long[] bv = new long[len];		
 		// set all long values to maximum
 		for (int i = 0; i < bv.length; i++) {
-			bv[i] = Long.MAX_VALUE;
+			// all bits are set to 1
+			bv[i] = -1;
 		}
 		return new BitVectorSet(bv);
 	}

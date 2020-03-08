@@ -9,10 +9,10 @@ public abstract class SetMinimalityChecker<C extends Comparable<C>> implements C
 	// TODO alternative: only consider one representation at a time
 		
 	/**
-	 * Check if the Set testSet is minimal wr.t. Set elements represented by collection
-	 * @param testSet A Set
-	 * @param collection A NavigableSet of elements that represent Set objects
-	 * @return TRUE if no subset of testSet appears in collection, otherwise FALSE
+	 * Check if the {@code Set} {@code testSet} is minimal wr.t. {@code Set} elements represented by {@code collection}
+	 * @param testSet A {@code Set}
+	 * @param collection A {@code NavigableSet} of elements that represent {@code Set} objects
+	 * @return TRUE if no subset of {@code testSet} appears in {@code collection}, otherwise FALSE
 	 */
 	boolean isMinimal(Set<?> testSet, NavigableSet<C> collection) {	
 		// start with first element 
@@ -45,18 +45,18 @@ public abstract class SetMinimalityChecker<C extends Comparable<C>> implements C
 	}
 	
 	/**
-	 * Check if first represents a subset of second
+	 * Check if {@code first} represents a subset of {@code second}
 	 * @param first
 	 * @param second
-	 * @return TRUE if first represents a subset of second, otherwise FALSE
+	 * @return TRUE if {@code first} represents a subset of {@code second}, otherwise FALSE
 	 */
 	public abstract boolean isSubsetOf(C first, C second);
 	
 	
 	/**
-	 * Get the maximum value that can be represented by the object o of type C
-	 * @param o An object of type C representing a set
-	 * @return The maximum value that can be represented by an object with same representation as o
+	 * Get the maximum value that can be represented by the object {@code o} of type {@code C}
+	 * @param o An object of type {@code C} representing a {@code Set}
+	 * @return The maximum value that can be represented by an object with same representation as the provided element {@code o}
 	 */
 	public abstract C getMaxValue(C o);
 	
