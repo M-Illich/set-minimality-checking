@@ -1,13 +1,15 @@
 package com.autoreason.setmincheck;
 
+
 /**
- * Hello world!
+ * Main class to execute implementation
  *
  */
-public class App 
+public class Main 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+    	   	
+    	
     }
 }

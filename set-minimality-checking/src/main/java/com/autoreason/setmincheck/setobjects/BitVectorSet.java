@@ -79,7 +79,8 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		}
 		// bitVector elements are equal
 		return 0;
-
 	}
+	
+	// TODO alternative compareTO-method based on number of set elements (+long values for same size)
 		
 }
