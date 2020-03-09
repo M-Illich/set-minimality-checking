@@ -16,10 +16,10 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 		long[] low = getLowestOneBit(xorKeep(arrayPre, arrayTest));
 		// add lowest bit to current candidate
 		long[] sum = add(arrayPre, low);
-		// remove all bits from current candidate that are smaller than lowest bit
+		// remove all bits from current candidate that are smaller than lowest bit and assure that only bits of test occur in new bit vector
 		long[] comp = complement(subtractOne(low));
-		long[] bitVector = andRemove(comp, sum);
-
+		long[] bitVector = and(and(comp, sum),arrayTest);
+		
 		return new BitVectorSet(bitVector);
 	}
 
@@ -159,14 +159,14 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 
 	/**
 	 * Perform bitwise AND operation on the values of each position of the provided
-	 * {@code long[]} a and b. (Mainly used to remove bit entries)
+	 * long arrays {@code a} &  {@code b}. (Mainly used to remove bit entries)
 	 * 
 	 * @param a A {@code long[]} 
 	 * @param b A {@code long[]}
 	 * @return A {@code long[]} of length = max(a.length,b.length) with {@code long} values computed
 	 *         by bitwise AND operations of the arrays' {@code long} values
 	 */
-	long[] andRemove(long[] a, long[] b) {
+	long[] and(long[] a, long[] b) {
 		int lenA = a.length;
 		int lenB = b.length;
 
