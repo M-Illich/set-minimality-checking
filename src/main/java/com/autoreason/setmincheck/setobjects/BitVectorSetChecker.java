@@ -18,9 +18,21 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 		long[] sum = add(arrayPre, low);
 		// remove all bits from current candidate that are smaller than lowest bit and assure that only bits of test occur in new bit vector
 		long[] comp = complement(subtractOne(low));
-		long[] bitVector = and(and(comp, sum),arrayTest);
+		long[] bitVector = and(and(comp, sum),arrayTest);	
 		
-		return new BitVectorSet(bitVector);
+		
+		// TODO method not correct, sometimes adaptation for higher array position necessary ...
+		
+		// create BitVectorSet for next candidate
+		BitVectorSet next = new BitVectorSet(bitVector);
+		// only return next candidate if it is greater than previous
+		if(previous.compareTo(next) < 0) {
+			return next;
+		}
+		else {
+			return null;
+		}
+		
 	}
 
 	/**

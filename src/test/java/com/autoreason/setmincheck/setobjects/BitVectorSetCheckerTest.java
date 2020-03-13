@@ -37,8 +37,7 @@ public class BitVectorSetCheckerTest  {
 	public void testGetNextCandidate() {
 		BitVectorSet previous = new BitVectorSet(new long[]{2,13});
 		BitVectorSet test = new BitVectorSet(new long[]{40,20});
-		
-		assertArrayEquals(new long[]{8,4}, bvsChecker.getNextCandidate(previous, test).bitVector);
+		assertArrayEquals(new long[]{0,16}, bvsChecker.getNextCandidate(previous, test).bitVector);
 		
 	}
 

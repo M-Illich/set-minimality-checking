@@ -10,9 +10,9 @@ import java.util.Set;
 public class BitVectorSet implements Comparable<BitVectorSet> {
 
 	// original set
-	Set<?> set;	
+	public Set<?> set;	
 	// array of long values determined by the elements of the related set
-	long[] bitVector;
+	public long[] bitVector;
 
 	/**
 	 * Create a {@code BitVectorSet} object based on a {@code long} array
