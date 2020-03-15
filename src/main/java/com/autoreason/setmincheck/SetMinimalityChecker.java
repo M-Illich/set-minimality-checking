@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
-public abstract class SetMinimalityChecker<C extends Comparable<C>> implements CandidateIterator<C> {
+public abstract class SetMinimalityChecker<C extends Comparable<C>> implements MatchProvider<C> {
 
 	
 	// TODO alternative: only consider one representation at a time
@@ -40,7 +40,7 @@ public abstract class SetMinimalityChecker<C extends Comparable<C>> implements C
 					return false;
 				}
 				// get next candidate
-				C next = getNextCandidate(current, test);
+				C next = getNextMatch(current, test);
 								
 				if(next == null) {
 					

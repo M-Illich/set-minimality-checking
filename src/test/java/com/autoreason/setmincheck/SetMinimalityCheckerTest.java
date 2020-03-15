@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
 import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
 
-public abstract class SetMinimalityCheckerTest<C extends Comparable<C>> implements CandidateIterator<C> {
+public abstract class SetMinimalityCheckerTest<C extends Comparable<C>> implements MatchProvider<C> {
 
 		
 	@Test

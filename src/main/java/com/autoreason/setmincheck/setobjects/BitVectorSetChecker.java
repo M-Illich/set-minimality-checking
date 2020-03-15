@@ -7,7 +7,7 @@ import com.autoreason.setmincheck.SetMinimalityChecker;
 public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 
 	@Override
-	public BitVectorSet getNextCandidate(BitVectorSet previous, BitVectorSet test) {
+	public BitVectorSet getNextMatch(BitVectorSet previous, BitVectorSet test) {
 		// get long arrays
 		long[] arrayTest = test.bitVector;
 		long[] arrayPre = previous.bitVector;
@@ -208,7 +208,7 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	 * second based on their bitVector {@code long} values
 	 */
 	@Override
-	public boolean isCandidateOf(BitVectorSet first, BitVectorSet second) {
+	public boolean matches(BitVectorSet first, BitVectorSet second) {
 		// get long arrays
 		long[] arrayFirst = first.bitVector;
 		long[] arraySecond = second.bitVector;
