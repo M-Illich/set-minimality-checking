@@ -9,14 +9,14 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
-import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
+import com.autoreason.setmincheck.setobjects.BitVectorSetCheckerOld;
 
 public abstract class SetMinimalityCheckerTest<C extends Comparable<C>> implements MatchProvider<C> {
 
 		
 	@Test
 	public void testIsMinimal() {	
-		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
+		BitVectorSetCheckerOld bvsChecker = new BitVectorSetCheckerOld();    	
     	Set<Integer> testSet = Set.of(1,32,70,104);		
 				
 		NavigableSet<BitVectorSet> collection = new TreeSet<BitVectorSet>();

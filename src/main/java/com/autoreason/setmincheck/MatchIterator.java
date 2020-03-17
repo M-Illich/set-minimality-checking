@@ -9,9 +9,10 @@ import java.util.TreeSet;
 public abstract class MatchIterator<C extends Comparable<C>, T> implements MatchProvider<C, T> {
 
 	/**
-	 * 
-	 * @param col
-	 * @return
+	 * Find all elements from a {@link Collection} that match the given object of type {@code T}
+	 * @param col A {@code Collection<C>} with elements of the {@link Comparable} type {@code C}
+	 * @param test An object of some type {@code T}
+	 * @return An {@link Iterable} that contains, in an sorted order, every element from {@code col} which {@link #matches} the object {@code test}
 	 */
 	Iterable<C> matchesOf(Collection<C> col, T test){
 		return new Iterable<C>(){
@@ -63,11 +64,10 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 							throw new NoSuchElementException();
 						}
 						
-					}
-					
+					}					
 					
 					/**
-					 * Get the next match of {@code test} in {@code naviCol} being greater than {@code cur}
+					 * Get the next match of {@code test} in the {@link NavigableSet} {@code naviCol} being greater than {@code cur}
 					 * @param cur
 					 * @return The smallest element of {@code naviCol} that is a match of {@code test} and greater than {@code cur}
 					 */

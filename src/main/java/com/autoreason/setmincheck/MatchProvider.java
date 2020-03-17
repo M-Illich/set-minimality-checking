@@ -10,10 +10,10 @@ public interface MatchProvider<C extends Comparable<C>, T> {
 	
 	
 	/**
-	 * Get the smallest element of type C that is greater than {@code previous} and a match of {@code test}
+	 * Get the smallest element of type {@code C} that is greater than {@code previous} and a match of {@code test}
 	 * @param previous An object of some type {@code C}
 	 * @param test An object of some type {@code T}
-	 * @return smallest object of type {@code C} which is greater than {@code previous} and satisfies the {@link #matches(Comparable, Comparable)}-relation with {@code test}
+	 * @return smallest object of type {@code C} which is greater than {@code previous} and {@link #matches} the object {@code test}
 	 * or {@code null} if no such element exists
 	 */
 	C getNextMatch(C previous, T test);

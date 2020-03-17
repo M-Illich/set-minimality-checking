@@ -18,7 +18,7 @@ import com.autoreason.setmincheck.setobjects.BitVectorSet;
 public class BitVectorSetCheckerTest  {
 	
 	private static final Random SEED_GENERATOR = new Random();
-	private BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
+	private BitVectorSetCheckerOld bvsChecker = new BitVectorSetCheckerOld();
 	
 // 			schema for random sets	
 //	@Test

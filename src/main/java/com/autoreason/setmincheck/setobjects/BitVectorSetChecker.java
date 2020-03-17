@@ -1,49 +1,54 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Hashtable;
 import java.util.Set;
-import com.autoreason.setmincheck.SetMinimalityChecker;
 
+import com.autoreason.setmincheck.MatchIterator;
 
-public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
+/**
+ * Use the {@link BitVectorSet} representation for {@link Set} objects to check set minimality
+ * 
+ *
+ */
+public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
+	
+	// hash table to store different BitVectorSet representations, i.e. bit vectors of different lengths, of tested sets
+	Hashtable<HashKey,long[]> hashtable =  new Hashtable<HashKey,long[]>();
 
 	@Override
-	public BitVectorSet getNextMatch(BitVectorSet previous, BitVectorSet test) {
+	public BitVectorSet getNextMatch(BitVectorSet previous, Set<?> test) {
 		// get long arrays
-		long[] arrayTest = test.bitVector;
-		long[] arrayPre = previous.bitVector;
-
-		// get lowest bit not occurring in current candidate
-		long[] low = getLowestOneBit(xorKeep(arrayPre, arrayTest));
-		// add lowest bit to current candidate
-		long[] sum = add(arrayPre, low);
-		// remove all bits from current candidate that are smaller than lowest bit and assure that only bits of test occur in new bit vector
-		long[] comp = complement(subtractOne(low));
-		long[] bitVector = and(and(comp, sum),arrayTest);	
+		long[] candArray = previous.bitVector;
+		// convert test to appropriate BitVectorSet representation
+		long[] testArray = convert(test, candArray.length).bitVector;
 		
+		// keep all different bits
+		long[] xorArray = xor(testArray,candArray);
+		// get highest bit from all bits that only occur in candidate
+		long[] high = getHighestBit(and(xorArray,candArray));
+		// define vector where every position after highest bit is zero
+		long[] lowRemover = complementOf(subtractOne(high));
+		// get the lowest bit after removing all the bits by the lowRemover vector
+		long[] low = getLowestBit(and(lowRemover,and(testArray,xorArray)));
+		// // define vector where every position after lowest bit is zero
+		lowRemover = complementOf(subtractOne(low));
+		// define bit vector of next match by adding new lowest bit
+		long[] next = and(add(candArray,low),lowRemover);
 		
-		// TODO method not correct, sometimes adaptation for higher array position necessary ...
-		
-		// create BitVectorSet for next candidate
-		BitVectorSet next = new BitVectorSet(bitVector);
-		// only return next candidate if it is greater than previous
-		if(previous.compareTo(next) < 0) {
-			return next;
-		}
-		else {
-			return null;
-		}
+		// return BitVectorSet representation of test
+		return new BitVectorSet(test,next);
 		
 	}
 
 	/**
-	 * Get a long array which contains the lowest 1-bit of bitVector as rightmost
+	 * Get a {@code long} array which contains the lowest 1-bit of {@code bitVector} as rightmost
 	 * 1-bit entry
 	 * 
 	 * @param bitVector A {@code long[]}
-	 * @return A {@code long[]} which contains the lowest 1-bit of bitVector as rightmost
-	 *         1-bit entry, or {@code long} values with value zero if no bit could be found
+	 * @return A {@code long[]} which contains the lowest 1-bit of {@code bitVector} as only
+	 *         1-bit entry, or {@code long} entries with value zero if no bit could be found
 	 */
-	long[] getLowestOneBit(long[] bitVector) {
+	long[] getLowestBit(long[] bitVector) {
 
 		int len = bitVector.length;
 		long lowBit = 0;
@@ -59,104 +64,65 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 		lowArray[i - 1] = lowBit;
 		return lowArray;
 	}
-
-	/**
-	 * Perform bitwise XOR operation on the values of each position of the provided
-	 * {@code long[]} a and b where only the 1-bits of the larger array are kept
-	 * 
-	 * @param a A {@code long[]}
-	 * @param b A {@code long[]}
-	 * @return A long[] of length = max(a.length,b.length) with {@code long} values computed
-	 *         by bitwise XOR operations of the arrays' {@code long} values where only the
-	 *         1-bits of the larger array are kept
-	 */
-	long[] xorKeep(long[] a, long[] b) {
-		int lenA = a.length;
-		int lenB = b.length;
-
-		// assume that array a has minimum length
-		int min = lenA;
-		long[] y = a.clone();
-		// create new array containing the long values as sum
-		long[] ab = b.clone();
-		// adapt initialization if necessary
-		if (lenA > lenB) {
-			min = lenB;
-			ab = a.clone();
-			y = b.clone();
-		}
-
-		// create XOR for each array position but only keep 1-bit if it occurs in ab and
-		// not in y
-		for (int i = 0; i < min; i++) {
-			long x = ab[i] ^ y[i];
-			ab[i] &= x;
-
-		}
-		return ab;
-	}
 	
 	/**
-	 * Compute the sum of the values of each position of the provided {@code long[]} a and
-	 * b.
+	 * Get a {@code long} array which contains the highest 1-bit of {@code bitVector} as only
+	 * 1-bit entry
+	 * 
+	 * @param bitVector A {@code long[]}
+	 * @return A {@code long[]} which contains the highest 1-bit of {@code bitVector} as only
+	 *         1-bit entry, or {@code long} entries with value zero if no bit could be found
+	 */
+	long[] getHighestBit(long[] bitVector) {
+
+		long highBit = 0;
+		int i = bitVector.length;
+		// go through long values of array until highest 1-bit found
+		do {
+			highBit = Long.highestOneBit(bitVector[i]);
+			i--;
+		} while (highBit == 0 && i >= 0);
+
+		// transfer highBit to long array
+		long[] highArray = new long[i];
+		highArray[i - 1] = highBit;
+		return highArray;
+	}
+
+	/**
+	 * Compute the sum of the values of each position of two provided {@code long[]}
+	 * objects with same length
 	 * 
 	 * @param a A {@code long[]}
 	 * @param b A {@code long[]}
-	 * @return A long[] of length = max(a.length,b.length) with {@code long} values as sum
-	 *         of the arrays a and b.
+	 * @return A {@code long[]} that contains the sum of the values for each
+	 *         position of {@code a} and {@code b}
+	 * 
 	 */
 	long[] add(long[] a, long[] b) {
 
-		int lenA = a.length;
-		int lenB = b.length;
-
-		// assume that array a has minimum length
-		int min = lenA;
-		long[] y = a.clone();
+		int len = a.length;
 		// create new array containing the long values as sum
-		long[] ab = b.clone();
-		// adapt initialization if necessary
-		if (lenA > lenB) {
-			min = lenB;
-			ab = a.clone();
-			y = b.clone();
-		}
+		long[] ab = a.clone();
 
 		// create sum for each array position
-		for (int i = 0; i < min; i++) {
-			ab[i] += y[i];
-		}
-
-		return ab;
-	}
-
-	/**
-	 * Compute complement of long values given in {@code long} array a
-	 * 
-	 * @param a A {@code long[]}
-	 * @return A {@code long[]} containing the complement values of the given array a
-	 */
-	long[] complement(long[] a) {
-		int len = a.length;
-		// create new array containing the complement long values
-		long[] ab = new long[len];
 		for (int i = 0; i < len; i++) {
-			ab[i] = ~a[i];
+			ab[i] += b[i];
 		}
 		return ab;
 	}
 
 	/**
-	 * Subtract 1 from the value defined by the appending of the {@code long} values of
-	 * array
+	 * Subtract 1 from the value defined by the bit vector that results from the
+	 * appending of the {@code long} values of the given array
 	 * 
-	 * @param array A {@code long[]}
-	 * @return A {@code long[]} whose elements define a value being 1 smaller than the value
-	 *         given by the {@code long} values of array
+	 * @param arr A {@code long[]}
+	 * @return A {@code long[]} whose elements define a value being 1 smaller than
+	 *         the value given by the {@code long} values of {@code arr}
 	 */
-	long[] subtractOne(long[] array) {
+	long[] subtractOne(long[] arr) {
 		// define new array
-		long[] sub = array.clone();
+		long[] sub = arr.clone();
 		int i = 0;
 		long val = 0;
 		// subtract 1 from values starting at first array entry until one != 0 is found
@@ -170,109 +136,134 @@ public class BitVectorSetChecker extends SetMinimalityChecker<BitVectorSet> {
 	}
 
 	/**
-	 * Perform bitwise AND operation on the values of each position of the provided
-	 * long arrays {@code a} &  {@code b}. (Mainly used to remove bit entries)
+	 * Compute complement of {@code long} values given in an array
 	 * 
-	 * @param a A {@code long[]} 
-	 * @param b A {@code long[]}
-	 * @return A {@code long[]} of length = max(a.length,b.length) with {@code long} values computed
-	 *         by bitwise AND operations of the arrays' {@code long} values
+	 * @param arr A {@code long[]}
+	 * @return A {@code long[]} containing the complement values of the given array {@code a}
 	 */
-	long[] and(long[] a, long[] b) {
-		int lenA = a.length;
-		int lenB = b.length;
-
-		// assume that array a has minimum length
-		int min = lenA;
-		long[] y = a.clone();
-		// create new array containing the long values as sum
-		long[] ab = b.clone();
-		// adapt initialization if necessary
-		if (lenA > lenB) {
-			min = lenB;
-			ab = a.clone();
-			y = b.clone();
+	long[] complementOf(long[] arr) {
+		int len = arr.length;
+		// create new array containing the complement long values
+		long[] ac = new long[len];
+		for (int i = 0; i < len; i++) {
+			ac[i] = ~arr[i];
 		}
-
-		// create AND for each array position
-		for (int i = 0; i < min; i++) {
-			ab[i] &= y[i];
-		}
-
-		return ab;
+		return ac;
 	}
-	
 
 	/**
-	 * Here, the candidate relation is defined as first being a subset candidate of
-	 * second based on their bitVector {@code long} values
+	 * Perform bitwise AND operation on the values of each position of the provided
+	 * long arrays of same length
+	 * 
+	 * @param a A {@code long[]}
+	 * @param b A {@code long[]}
+	 * @return A {@code long[]} with values computed by bitwise AND operations of
+	 *         the arrays' {@code long} values
+	 */
+	long[] and(long[] a, long[] b) {
+		int len = a.length;
+		// create new array containing the long values as AND
+		long[] ab = a.clone();
+
+		// compute bitwise AND for each array position
+		for (int i = 0; i < len; i++) {
+			ab[i] &= b[i];
+		}
+		return ab;
+	}
+
+	/**
+	 * Perform bitwise XOR operation on the values of each position of the provided
+	 * long arrays of same length
+	 * 
+	 * @param a A {@code long[]}
+	 * @param b A {@code long[]}
+	 * @return A {@code long[]} with values computed by bitwise XOR operations of
+	 *         the arrays' {@code long} values
+	 */
+	long[] xor(long[] a, long[] b) {
+		int len = a.length;
+		// create new array containing the long values as XOR
+		long[] ab = a.clone();
+
+		// compute bitwise XOR for each array position
+		for (int i = 0; i < len; i++) {
+			ab[i] ^= b[i];
+		}
+		return ab;
+	}
+
+	/**
+	 * For set minimality checking, a match refers to a subset relation, which means
+	 * that {@code candidate} must be a subset candidate of {@code test}
 	 */
 	@Override
-	public boolean matches(BitVectorSet first, BitVectorSet second) {
+	public boolean matches(BitVectorSet candidate, Set<?> test) {			
 		// get long arrays
-		long[] arrayFirst = first.bitVector;
-		long[] arraySecond = second.bitVector;
+		long[] candArray = candidate.bitVector;
+		// convert test to appropriate BitVectorSet representation
+		long[] testArray = convert(test,candArray.length).bitVector;
 
 		// compare long values
-		for (int i = 0; i < arrayFirst.length; i++) {
+		for (int i = 0; i < candArray.length; i++) {
 			// subset can only have 1-bits at same positions as the superset bit vector
-			if ((arraySecond[i] | arrayFirst[i]) != arraySecond[i]) {
+			if ((testArray[i] | candArray[i]) != testArray[i]) {
 				// no subset candidate
 				return false;
 			}
 		}
-		// candidate confirmed
+		// subset candidate confirmed
 		return true;
 	}
 
-	@Override
-	public BitVectorSet convert(BitVectorSet example, Set<?> set) {
-		// create bit vector of same length as the one of example
-		int len = example.bitVector.length;
-		long[] bv = new long[len];
+	/**
+	 * Convert a {@link Set} element into a {@link BitVectorSet} with a bit vector of certain length
+	 * @param set A {@link Set}
+	 * @param length An {@code int} that determines the length of the created BitVectorSet's {@code bitVector}
+	 * @return
+	 */
+	private BitVectorSet convert(Set<?> set, int length) {
+		
+		// look for long array representation of given length in hash table
+		HashKey key = new HashKey(set,length);
+		long[] bv = hashtable.get(key);
+		
+		// no element found -> create new one
+		if(bv == null) {
+			// create bit vector of given length
+			bv = new long[length];
 
-		/// use elements of set to define position of 1-bits
-		for (Object e : set) {
-			// determine position
-			int pos = e.hashCode() % (len * 64);
-			// set bit in appropriate long value
-			bv[pos / 64] |= (long) 1 << pos;
+			/// use elements of set to define position of 1-bits
+			for (Object e : set) {
+				// determine position
+				int pos = e.hashCode() % (length * 64);
+				// set bit in appropriate long value
+				bv[pos / 64] |= (long) 1 << pos;
+			}
+			// add representation to hash table
+			hashtable.put(key, bv);
 		}
-		// return BitVectorSet representing set with same length as given example
+		
+		// return BitVectorSet representing the set
 		return new BitVectorSet(set, bv);
 	}
-
-	@Override
-	public boolean isSubsetOf(BitVectorSet first, BitVectorSet second) {
-		// get long arrays
-		long[] arrayFirst = first.bitVector;
-		long[] arraySecond = second.bitVector;
-
-		// compare long values
-		for (int i = 0; i < arrayFirst.length; i++) {
-			// subset can only have 1-bits at same positions as the superset bit vector
-			if ((arraySecond[i] | arrayFirst[i]) != arraySecond[i]) {
-				// no subset candidate
-				return false;
-			}
+	
+	
+	
+	/**
+	 * 
+	 * Define a key for a {@link Hashtable} based on a {@link Set} and an {@link int}
+	 *
+	 */
+	class HashKey {
+		Set<?> set;
+		int length;
+		
+		HashKey(Set<?> set, int length){
+			this.set = set;
+			this.length = length;
 		}
-		// subset candidate confirmed -> perform explicit subset check with original
-		// sets
-		return second.set.containsAll(first.set);
-
 	}
-
-	@Override
-	public BitVectorSet getMaxValue(BitVectorSet o) {
-		// create bit vector of same length as the one of o
-		int len = o.bitVector.length;
-		long[] bv = new long[len];		
-		// set all long values to maximum
-		for (int i = 0; i < bv.length; i++) {
-			// all bits are set to 1
-			bv[i] = -1;
-		}
-		return new BitVectorSet(bv);
-	}
+	
 
 }

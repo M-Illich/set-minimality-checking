@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
-import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
+import com.autoreason.setmincheck.setobjects.BitVectorSetCheckerOld;
 
 /**
  * Main class to execute implementation
@@ -15,7 +15,7 @@ public class Main
 {
     public static void main( String[] args )
     {
-    	BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
+    	BitVectorSetCheckerOld bvsChecker = new BitVectorSetCheckerOld();    	
     	Set<Integer> testSet = Set.of(1,32,70,104);		
     					
 		NavigableSet<BitVectorSet> collection = new TreeSet<BitVectorSet>();

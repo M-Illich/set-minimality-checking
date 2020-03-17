@@ -4,7 +4,7 @@ import java.util.Set;
 
 
 /**
- * Representation of a {@code Set} as array of {@code long} values based on the hash codes of the set's elements
+ * Representation of a {@link Set} as array of {@code long} values based on the {@link #hashCode} of the set's elements
  *
  */
 public class BitVectorSet implements Comparable<BitVectorSet> {
@@ -24,8 +24,8 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a {@code BitVectorSet} object based on a {@code Set}
-	 * @param set A {@code Set} used to define a {@code long[]} based on its elements' hash codes 
+	 * Create a {@code BitVectorSet} object based on a {@link Set}
+	 * @param set A {@link Set} used to define a {@code long[]} based on its elements' {@link #hashCode}
 	 */
 	public BitVectorSet(Set<?> set) {
 		this.set = set;
@@ -43,8 +43,8 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a {@code BitVectorSet} object based on a {@code Set} and its {@code long[]} representation
-	 * @param set A {@code Set}
+	 * Create a {@code BitVectorSet} object based on a {@link Set} and its {@code long[]} representation
+	 * @param set A {@link Set}
 	 * @param bv A {@code long[]} representing the element {@code set}
 	 */
 	public BitVectorSet(Set<?> set, long[] bv) {
