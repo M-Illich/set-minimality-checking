@@ -14,7 +14,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 	 * @param test An object of some type {@code T}
 	 * @return An {@link Iterable} that contains, in an sorted order, every element from {@code col} which {@link #matches} the object {@code test}
 	 */
-	Iterable<C> matchesOf(Collection<C> col, T test){
+	protected Iterable<C> matchesOf(Collection<C> col, T test){
 		return new Iterable<C>(){
 			// transform Collection to NavigableSet
 			NavigableSet<C> naviCol = new TreeSet<C>(col);

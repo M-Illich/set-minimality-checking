@@ -1,6 +1,8 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.autoreason.setmincheck.MatchIterator;
@@ -12,15 +14,36 @@ import com.autoreason.setmincheck.MatchIterator;
  */
 public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	
-	// hash table to store different BitVectorSet representations, i.e. bit vectors of different lengths, of tested sets
+	// hash table to store different BitVectorSet representations, i.e. long[] of different lengths, of tested sets
 	Hashtable<HashKey,long[]> hashtable =  new Hashtable<HashKey,long[]>();
+	
+	
+	/**
+	 * Check if a {@link Set} is minimal w.r.t. a {@link Collection} of {@link BitVectorSet} elements, i.e., the collection does not contain any subset of the tested set
+	 * @param col A {@link Collection} of {@link BitVectorSet} elements
+	 * @param test A {@link Set}
+	 * @return {@code true} if no subset of {@code test} appears in the collection {@code col}, otherwise {@code false}
+	 */
+	public boolean isMinimal(Collection<BitVectorSet> col, Set<?> test) {
+		// get iterator for elements from collection that are subset candidates of test
+		Iterator<BitVectorSet> subsetIter = matchesOf(col, test).iterator();
+		// go through found candidates and perform real subset checking with concrete sets
+		while(subsetIter.hasNext()) {
+			if(test.containsAll(subsetIter.next().set)) {
+				// subset found -> not minimal
+				return false;
+			}
+		}
+		// no subset found -> minimal
+		return true;
+	}
 
 	@Override
 	public BitVectorSet getNextMatch(BitVectorSet previous, Set<?> test) {
 		// get long arrays
 		long[] candArray = previous.bitVector;
-		// convert test to appropriate BitVectorSet representation
-		long[] testArray = convert(test, candArray.length).bitVector;
+		// convert test to appropriate bit vector representation
+		long[] testArray = convert(test, candArray.length);
 		
 		// keep all different bits
 		long[] xorArray = xor(testArray,candArray);
@@ -202,7 +225,7 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 		// get long arrays
 		long[] candArray = candidate.bitVector;
 		// convert test to appropriate BitVectorSet representation
-		long[] testArray = convert(test,candArray.length).bitVector;
+		long[] testArray = convert(test,candArray.length);
 
 		// compare long values
 		for (int i = 0; i < candArray.length; i++) {
@@ -217,12 +240,12 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	}
 
 	/**
-	 * Convert a {@link Set} element into a {@link BitVectorSet} with a bit vector of certain length
+	 * Convert a {@link Set} element into a {@code long[]} of given length
 	 * @param set A {@link Set}
-	 * @param length An {@code int} that determines the length of the created BitVectorSet's {@code bitVector}
-	 * @return
+	 * @param length An {@code int} that determines the length of the {@code long[]}
+	 * @return A {@code long[]} that contains a bit vector representing the elements of {@code set}
 	 */
-	private BitVectorSet convert(Set<?> set, int length) {
+	private long[] convert(Set<?> set, int length) {
 		
 		// look for long array representation of given length in hash table
 		HashKey key = new HashKey(set,length);
@@ -235,7 +258,7 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 
 			/// use elements of set to define position of 1-bits
 			for (Object e : set) {
-				// determine position
+				// determine position based on hash code
 				int pos = e.hashCode() % (length * 64);
 				// set bit in appropriate long value
 				bv[pos / 64] |= (long) 1 << pos;
@@ -244,12 +267,11 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 			hashtable.put(key, bv);
 		}
 		
-		// return BitVectorSet representing the set
-		return new BitVectorSet(set, bv);
+		// return bit vector representing the set
+		return bv;
 	}
 	
-	
-	
+		
 	/**
 	 * 
 	 * Define a key for a {@link Hashtable} based on a {@link Set} and an {@link int}
