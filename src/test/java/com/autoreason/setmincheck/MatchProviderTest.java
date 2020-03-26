@@ -4,8 +4,14 @@ import org.junit.Test;
 
 public class MatchProviderTest {
 	
-	// getNextMatch
+	@Test
+	public void testGetNextMatch() {
+		
+	}
 	
-	// matches
+	@Test
+	public void testMatches() {
+		
+	}
 
 }

@@ -15,7 +15,7 @@ public class Main
 {
     public static void main( String[] args )
     {
-    	BitVectorSetCheckerOld bvsChecker = new BitVectorSetCheckerOld();    	
+    	BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
     	Set<Integer> testSet = Set.of(1,32,70,104);		
     					
 		NavigableSet<BitVectorSet> collection = new TreeSet<BitVectorSet>();

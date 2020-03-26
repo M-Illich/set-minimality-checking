@@ -99,16 +99,16 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	long[] getHighestBit(long[] bitVector) {
 
 		long highBit = 0;
-		int i = bitVector.length;
+		int i = bitVector.length - 1;
 		// go through long values of array until highest 1-bit found
-		do {
+		while (highBit == 0 && i >= 0){
 			highBit = Long.highestOneBit(bitVector[i]);
 			i--;
-		} while (highBit == 0 && i >= 0);
+		} 
 
 		// transfer highBit to long array
-		long[] highArray = new long[i];
-		highArray[i - 1] = highBit;
+		long[] highArray = new long[i+2];
+		highArray[i+1] = highBit;
 		return highArray;
 	}
 
@@ -245,7 +245,7 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	 * @param length An {@code int} that determines the length of the {@code long[]}
 	 * @return A {@code long[]} that contains a bit vector representing the elements of {@code set}
 	 */
-	private long[] convert(Set<?> set, int length) {
+	long[] convert(Set<?> set, int length) {
 		
 		// look for long array representation of given length in hash table
 		HashKey key = new HashKey(set,length);

@@ -1,5 +1,6 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.NavigableSet;
 import java.util.Random;
@@ -19,28 +20,7 @@ import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
 public class BitVectorSetCheckerTest  {
 	
-	// TODO adapt methods etc. 
-	
-//	@Test
-//	public void testIsMinimal() {	
-//		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
-//    	Set<Integer> testSet = Set.of(1,32,70,104);		
-//				
-//		NavigableSet<BitVectorSet> collection = new TreeSet<BitVectorSet>();
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[2]), Set.of(5,13,66,120)));
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[1]), Set.of(2,3,8,34)));
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[1]), Set.of(5,13)));
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[2]), Set.of(10,30,50,80,110)));
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[3]), Set.of(0,1,94,138)));
-//		collection.add(bvsChecker.convert(new BitVectorSet(new long[2]), Set.of(1,5,83,120)));
-//						
-//		assertTrue(bvsChecker.isMinimal(testSet, collection));
-//		
-//	}
-//	
-	
-	
-	
+			
 	private static final Random SEED_GENERATOR = new Random();
 	private BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
 	
@@ -56,96 +36,91 @@ public class BitVectorSetCheckerTest  {
 //			throw new RuntimeException("seed: " + seed, e);
 //		}
 //	}
+	
+	
+//	@Test
+//	public void testIsMinimal() {	
+//		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
+//    	Set<Integer> testSet = Set.of(1,32,70,104);		
+//				
+//		Collection<BitVectorSet> collection = new HashSet<BitVectorSet>();
+//		Set<Integer> set = Set.of(5,13,66,120);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,2)));
+//		set = Set.of(2,3,8,34);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,1)));
+//		set = Set.of(5,13);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,1)));
+//		set = Set.of(10,30,50,80,110);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,2)));
+//		set = Set.of(0,1,94,138);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,3)));
+//		set = Set.of(1,5,83,120);
+//		collection.add(new BitVectorSet(set,bvsChecker.convert(set,2)));
+//						
+//		assertTrue(bvsChecker.isMinimal(collection, testSet));
+//		
+//	}
 
 	@Test
-	public void testGetNextCandidate() {
-		BitVectorSet previous = new BitVectorSet(new long[]{2,13});
-		BitVectorSet test = new BitVectorSet(new long[]{40,20});
-		assertArrayEquals(new long[]{0,16}, bvsChecker.getNextMatch(previous, test).bitVector);
+	public void testGetNextMatch() {
 		
+//		TODO define in interface test
+//		BitVectorSet previous = new BitVectorSet(new long[]{2,13});
+//		BitVectorSet test = new BitVectorSet(new long[]{40,20});
+//		assertArrayEquals(new long[]{0,16}, bvsChecker.getNextMatch(previous, test).bitVector);
+//		
 	}
 
 	@Test
-	public void testGetLowestOneBit() {			
-		assertArrayEquals(new long[]{0,2}, bvsChecker.getLowestOneBit(new long[]{0,42,4}));		
-	}
-
-	@Test
-	public void testXorKeep() {
-		assertArrayEquals(new long[]{2,1,1}, bvsChecker.xorKeep(new long[]{1,2,6}, new long[]{2,3,5}));
+	public void testGetLowestBit() {			
+		assertArrayEquals(new long[]{0,2}, bvsChecker.getLowestBit(new long[]{0,42,4}));		
 	}
 	
+	@Test
+	public void testGetHighestBit() {			
+		assertArrayEquals(new long[]{0,0,8}, bvsChecker.getHighestBit(new long[]{0,42,13}));		
+	}
+
 	@Test
 	public void testAdd() {
 		assertArrayEquals(new long[]{3,5,11}, bvsChecker.add(new long[]{1,2,6}, new long[]{2,3,5}));
 	}
-
-	@Test
-	public void testComplement() {
-		assertArrayEquals(new long[]{1,3,8}, bvsChecker.complement(new long[]{~1,~3,~8}));
-	}
-
+	
 	@Test
 	public void testSubtractOne() {		
 		assertArrayEquals(new long[]{-1,13,104}, bvsChecker.subtractOne(new long[]{0,14,104}));
 	}
 
 	@Test
-	public void testAndRemove() {
+	public void testComplementOf() {
+		assertArrayEquals(new long[]{1,3,8}, bvsChecker.complementOf(new long[]{~1,~3,~8}));
+	}
+	
+	@Test
+	public void testAnd() {
 		assertArrayEquals(new long[]{0,2,1}, bvsChecker.and(new long[]{1,2,9}, new long[]{2,3,5}));
 	}
 	
-
 	@Test
-	public void testIsCandidateOf() {
-		BitVectorSet first = new BitVectorSet(new long[]{5,0,3});
-		BitVectorSet second = new BitVectorSet(new long[]{13,8,7});
-		assertTrue(bvsChecker.matches(first,second));
-		
-		second = new BitVectorSet(new long[]{13,8,4});
-		assertFalse(bvsChecker.matches(first,second));
+	public void testXor() {
+		assertArrayEquals(new long[]{3,1,3}, bvsChecker.xor(new long[]{1,2,6}, new long[]{2,3,5}));
 	}
-
+		
 	@Test
 	public void testConvert() {
 		Set<Integer> set = new HashSet<Integer>();
 		set.add(0);
 		set.add(10);
 		set.add(64);
-		set.add(74);		
+		set.add(74);	
 		BitVectorSet example = new BitVectorSet(new long[]{1025,1025});
 		
-		assertTrue(example.compareTo(bvsChecker.convert(example, set)) == 0);
+		assertTrue(example.compareTo(new BitVectorSet(bvsChecker.convert(set,2))) == 0);
 	}
-
-	@Test
-	public void testIsSubsetOf() {
-		Set<Integer> set1 = new HashSet<Integer>();
-		set1.add(4);		
-		set1.add(25);
-		// define set2 as superset of set1
-		Set<Integer> set2 = new HashSet<Integer>();
-		set2.add(4);
-		set2.add(13);
-		set2.add(25);
-		set2.add(64);
-		// define BitVectorSet elements based on sets
-		BitVectorSet first = new BitVectorSet(set1);
-		BitVectorSet second = new BitVectorSet(set2);
-		
-		assertTrue(bvsChecker.isSubsetOf(first,second));
-		
-		// add element to set1 not contained in set2 -> no subset anymore
-		set1.add(1);
-		assertFalse(bvsChecker.isSubsetOf(first,second));
-
-	}
-
-	@Test
-	public void testGetMaxValue() {
-		BitVectorSet bvs = new BitVectorSet(new long[]{13,42});		
-		assertTrue(new BitVectorSet(new long[]{-1,-1}).compareTo(bvsChecker.getMaxValue(bvs)) == 0);
-	}
-
 	
+	@Test
+	public void testMatches() {
+		// TODO
+	}
+		
 }
