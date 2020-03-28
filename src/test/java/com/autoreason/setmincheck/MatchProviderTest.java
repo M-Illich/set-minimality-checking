@@ -2,7 +2,7 @@ package com.autoreason.setmincheck;
 
 import org.junit.Test;
 
-public class MatchProviderTest {
+public class MatchProviderTest<C extends Comparable<C>, T> {
 	
 	@Test
 	public void testGetNextMatch() {

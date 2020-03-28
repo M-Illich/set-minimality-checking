@@ -6,15 +6,21 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
+/**
+ * 
+ *
+ * @param <C>
+ * @param <T>
+ */
 public abstract class MatchIterator<C extends Comparable<C>, T> implements MatchProvider<C, T> {
 
 	/**
 	 * Find all elements from a {@link Collection} that match the given object of type {@code T}
 	 * @param col A {@code Collection<C>} with elements of the {@link Comparable} type {@code C}
 	 * @param test An object of some type {@code T}
-	 * @return An {@link Iterable} that contains, in an sorted order, every element from {@code col} which {@link #matches} the object {@code test}
+	 * @return An {@link Iterable} that contains, in an sorted order, every element from {@code col} which {@link MatchProvider#matches} the object {@code test}
 	 */
-	protected Iterable<C> matchesOf(Collection<C> col, T test){
+	Iterable<C> matchesOf(Collection<C> col, T test){
 		return new Iterable<C>(){
 			// transform Collection to NavigableSet
 			NavigableSet<C> naviCol = new TreeSet<C>(col);

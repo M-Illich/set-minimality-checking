@@ -1,41 +1,25 @@
 package com.autoreason.setmincheck.setobjects;
 
-import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Set;
 
-import com.autoreason.setmincheck.MatchIterator;
+import com.autoreason.setmincheck.MinimalityChecker;
 
 /**
- * Use the {@link BitVectorSet} representation for {@link Set} objects to check set minimality
+ * Use the {@link BitVectorSet} representation for {@link Set} objects to check
+ * set minimality
  * 
- *
  */
-public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
-	
-	// hash table to store different BitVectorSet representations, i.e. long[] of different lengths, of tested sets
-	Hashtable<HashKey,long[]> hashtable =  new Hashtable<HashKey,long[]>();
-	
-	
-	/**
-	 * Check if a {@link Set} is minimal w.r.t. a {@link Collection} of {@link BitVectorSet} elements, i.e., the collection does not contain any subset of the tested set
-	 * @param col A {@link Collection} of {@link BitVectorSet} elements
-	 * @param test A {@link Set}
-	 * @return {@code true} if no subset of {@code test} appears in the collection {@code col}, otherwise {@code false}
-	 */
-	public boolean isMinimal(Collection<BitVectorSet> col, Set<?> test) {
-		// get iterator for elements from collection that are subset candidates of test
-		Iterator<BitVectorSet> subsetIter = matchesOf(col, test).iterator();
-		// go through found candidates and perform real subset checking with concrete sets
-		while(subsetIter.hasNext()) {
-			if(test.containsAll(subsetIter.next().set)) {
-				// subset found -> not minimal
-				return false;
-			}
-		}
-		// no subset found -> minimal
-		return true;
+public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>> {
+
+	// hash table to store different BitVectorSet representations, i.e. long[] of
+	// different lengths, of tested sets
+	Hashtable<HashKey, long[]> hashtable = new Hashtable<HashKey, long[]>();
+
+	@Override
+	protected boolean subsetOf(BitVectorSet cand, Set<?> test) {
+		// all elements of candidate's original set have to occur in test set
+		return test.containsAll(cand.set);
 	}
 
 	@Override
@@ -44,32 +28,33 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 		long[] candArray = previous.bitVector;
 		// convert test to appropriate bit vector representation
 		long[] testArray = convert(test, candArray.length);
-		
+
 		// keep all different bits
-		long[] xorArray = xor(testArray,candArray);
+		long[] xorArray = xor(testArray, candArray);
 		// get highest bit from all bits that only occur in candidate
-		long[] high = getHighestBit(and(xorArray,candArray));
+		long[] high = getHighestBit(and(xorArray, candArray));
 		// define vector where every position after highest bit is zero
 		long[] lowRemover = complementOf(subtractOne(high));
 		// get the lowest bit after removing all the bits by the lowRemover vector
-		long[] low = getLowestBit(and(lowRemover,and(testArray,xorArray)));
+		long[] low = getLowestBit(and(lowRemover, and(testArray, xorArray)));
 		// // define vector where every position after lowest bit is zero
 		lowRemover = complementOf(subtractOne(low));
 		// define bit vector of next match by adding new lowest bit
-		long[] next = and(add(candArray,low),lowRemover);
-		
+		long[] next = and(add(candArray, low), lowRemover);
+
 		// return BitVectorSet representation of test
-		return new BitVectorSet(test,next);
-		
+		return new BitVectorSet(test, next);
+
 	}
 
 	/**
-	 * Get a {@code long} array which contains the lowest 1-bit of {@code bitVector} as rightmost
-	 * 1-bit entry
+	 * Get a {@code long} array which contains the lowest 1-bit of {@code bitVector}
+	 * as rightmost 1-bit entry
 	 * 
 	 * @param bitVector A {@code long[]}
-	 * @return A {@code long[]} which contains the lowest 1-bit of {@code bitVector} as only
-	 *         1-bit entry, or {@code long} entries with value zero if no bit could be found
+	 * @return A {@code long[]} which contains the lowest 1-bit of {@code bitVector}
+	 *         as only 1-bit entry, or {@code long} entries with value zero if no
+	 *         bit could be found
 	 */
 	long[] getLowestBit(long[] bitVector) {
 
@@ -87,28 +72,29 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 		lowArray[i - 1] = lowBit;
 		return lowArray;
 	}
-	
+
 	/**
-	 * Get a {@code long} array which contains the highest 1-bit of {@code bitVector} as only
-	 * 1-bit entry
+	 * Get a {@code long} array which contains the highest 1-bit of
+	 * {@code bitVector} as only 1-bit entry
 	 * 
 	 * @param bitVector A {@code long[]}
-	 * @return A {@code long[]} which contains the highest 1-bit of {@code bitVector} as only
-	 *         1-bit entry, or {@code long} entries with value zero if no bit could be found
+	 * @return A {@code long[]} which contains the highest 1-bit of
+	 *         {@code bitVector} as only 1-bit entry, or {@code long} entries with
+	 *         value zero if no bit could be found
 	 */
 	long[] getHighestBit(long[] bitVector) {
 
 		long highBit = 0;
 		int i = bitVector.length - 1;
 		// go through long values of array until highest 1-bit found
-		while (highBit == 0 && i >= 0){
+		while (highBit == 0 && i >= 0) {
 			highBit = Long.highestOneBit(bitVector[i]);
 			i--;
-		} 
+		}
 
 		// transfer highBit to long array
-		long[] highArray = new long[i+2];
-		highArray[i+1] = highBit;
+		long[] highArray = new long[i + 2];
+		highArray[i + 1] = highBit;
 		return highArray;
 	}
 
@@ -162,7 +148,8 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	 * Compute complement of {@code long} values given in an array
 	 * 
 	 * @param arr A {@code long[]}
-	 * @return A {@code long[]} containing the complement values of the given array {@code a}
+	 * @return A {@code long[]} containing the complement values of the given array
+	 *         {@code a}
 	 */
 	long[] complementOf(long[] arr) {
 		int len = arr.length;
@@ -221,11 +208,11 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 	 * that {@code candidate} must be a subset candidate of {@code test}
 	 */
 	@Override
-	public boolean matches(BitVectorSet candidate, Set<?> test) {			
+	public boolean matches(BitVectorSet candidate, Set<?> test) {
 		// get long arrays
 		long[] candArray = candidate.bitVector;
 		// convert test to appropriate BitVectorSet representation
-		long[] testArray = convert(test,candArray.length);
+		long[] testArray = convert(test, candArray.length);
 
 		// compare long values
 		for (int i = 0; i < candArray.length; i++) {
@@ -241,18 +228,20 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 
 	/**
 	 * Convert a {@link Set} element into a {@code long[]} of given length
-	 * @param set A {@link Set}
+	 * 
+	 * @param set    A {@link Set}
 	 * @param length An {@code int} that determines the length of the {@code long[]}
-	 * @return A {@code long[]} that contains a bit vector representing the elements of {@code set}
+	 * @return A {@code long[]} that contains a bit vector representing the elements
+	 *         of {@code set}
 	 */
 	long[] convert(Set<?> set, int length) {
-		
+
 		// look for long array representation of given length in hash table
-		HashKey key = new HashKey(set,length);
+		HashKey key = new HashKey(set, length);
 		long[] bv = hashtable.get(key);
-		
+
 		// no element found -> create new one
-		if(bv == null) {
+		if (bv == null) {
 			// create bit vector of given length
 			bv = new long[length];
 
@@ -266,26 +255,25 @@ public class BitVectorSetChecker extends MatchIterator<BitVectorSet, Set<?>> {
 			// add representation to hash table
 			hashtable.put(key, bv);
 		}
-		
+
 		// return bit vector representing the set
 		return bv;
 	}
-	
-		
+
 	/**
 	 * 
-	 * Define a key for a {@link Hashtable} based on a {@link Set} and an {@link int}
+	 * Define a key for a {@link Hashtable} based on a {@link Set} and an
+	 * {@link int}
 	 *
 	 */
 	class HashKey {
 		Set<?> set;
 		int length;
-		
-		HashKey(Set<?> set, int length){
+
+		HashKey(Set<?> set, int length) {
 			this.set = set;
 			this.length = length;
 		}
 	}
-	
 
 }

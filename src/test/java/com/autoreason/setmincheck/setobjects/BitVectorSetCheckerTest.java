@@ -14,15 +14,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
+import com.autoreason.setmincheck.MinimalityCheckerTest;
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
 
-public class BitVectorSetCheckerTest  {
+public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet, BitVectorSetChecker>  {
 	
 			
 	private static final Random SEED_GENERATOR = new Random();
 	private BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
+	
+	
+//	TODO define tests in interface / super class
 	
 // 			schema for random sets	
 //	@Test
@@ -64,7 +67,6 @@ public class BitVectorSetCheckerTest  {
 	@Test
 	public void testGetNextMatch() {
 		
-//		TODO define in interface test
 //		BitVectorSet previous = new BitVectorSet(new long[]{2,13});
 //		BitVectorSet test = new BitVectorSet(new long[]{40,20});
 //		assertArrayEquals(new long[]{0,16}, bvsChecker.getNextMatch(previous, test).bitVector);
