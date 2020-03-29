@@ -27,7 +27,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 		// get long arrays
 		long[] candArray = previous.bitVector;
 		// convert test to appropriate bit vector representation
-		long[] testArray = convert(test, candArray.length);
+		long[] testArray = transform(test, candArray.length);
 
 		// keep all different bits
 		long[] xorArray = xor(testArray, candArray);
@@ -212,7 +212,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 		// get long arrays
 		long[] candArray = candidate.bitVector;
 		// convert test to appropriate BitVectorSet representation
-		long[] testArray = convert(test, candArray.length);
+		long[] testArray = transform(test, candArray.length);
 
 		// compare long values
 		for (int i = 0; i < candArray.length; i++) {
@@ -227,14 +227,14 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	}
 
 	/**
-	 * Convert a {@link Set} element into a {@code long[]} of given length
+	 * Transform a {@link Set} element into a {@code long[]} of given length
 	 * 
 	 * @param set    A {@link Set}
 	 * @param length An {@code int} that determines the length of the {@code long[]}
 	 * @return A {@code long[]} that contains a bit vector representing the elements
 	 *         of {@code set}
 	 */
-	long[] convert(Set<?> set, int length) {
+	long[] transform(Set<?> set, int length) {
 
 		// look for long array representation of given length in hash table
 		HashKey key = new HashKey(set, length);

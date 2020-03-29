@@ -109,7 +109,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	}
 		
 	@Test
-	public void testConvert() {
+	public void testTransform() {
 		Set<Integer> set = new HashSet<Integer>();
 		set.add(0);
 		set.add(10);
@@ -117,12 +117,18 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 		set.add(74);	
 		BitVectorSet example = new BitVectorSet(new long[]{1025,1025});
 		
-		assertTrue(example.compareTo(new BitVectorSet(bvsChecker.convert(set,2))) == 0);
+		assertTrue(example.compareTo(new BitVectorSet(bvsChecker.transform(set,2))) == 0);
 	}
 	
 	@Test
 	public void testMatches() {
 		// TODO
+	}
+
+	
+	@Override
+	public BitVectorSet convert(Set<?> set) {
+		return new BitVectorSet(set);
 	}
 		
 }

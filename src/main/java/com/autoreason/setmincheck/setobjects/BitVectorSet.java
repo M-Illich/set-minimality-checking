@@ -15,7 +15,7 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	public long[] bitVector;
 
 	/**
-	 * Create a {@code BitVectorSet} object based on a {@code long} array
+	 * Create a {@link BitVectorSet} object based on a {@code long} array
 	 * @param bv A {@code long[]} used as {@code bitVector}
 	 */
 	public BitVectorSet(long[] bv) {
@@ -24,7 +24,7 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a {@code BitVectorSet} object based on a {@link Set}
+	 * Create a {@link BitVectorSet} object based on a {@link Set}
 	 * @param set A {@link Set} used to define a {@code long[]} based on its elements' {@link #hashCode}
 	 */
 	public BitVectorSet(Set<?> set) {
@@ -43,7 +43,7 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	}
 	
 	/**
-	 * Create a {@code BitVectorSet} object based on a {@link Set} and its {@code long[]} representation
+	 * Create a {@link BitVectorSet} object based on a {@link Set} and its {@code long[]} representation
 	 * @param set A {@link Set}
 	 * @param bv A {@code long[]} representing the element {@code set}
 	 */

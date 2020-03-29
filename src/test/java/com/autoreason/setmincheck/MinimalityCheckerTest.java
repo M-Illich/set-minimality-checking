@@ -1,11 +1,13 @@
 package com.autoreason.setmincheck;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Set;
 
 import org.junit.Test;
 
-public class MinimalityCheckerTest<C extends Comparable<C>, M extends MinimalityChecker<C, Set<?>> > extends MatchIteratorTest<C, Set<?>, M> {
+public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends MinimalityChecker<C, Set<?>> > extends MatchIteratorTest<C, Set<?>, M> {
 	
 	M minimalityChecker;
 	Collection<C> col;	// TODO create (random) collection of sets or/and load from file (use set-file-converter (dependency in pom))
@@ -18,12 +20,19 @@ public class MinimalityCheckerTest<C extends Comparable<C>, M extends Minimality
 	}
 
 	@Test
-	public void testSubsetOf() {
+	public void testSubsetOf() {	
+		Set<?> set = test;
 		
+		assertTrue(minimalityChecker.subsetOf(convert(set), test));
 	}
 
 	
-	// TODO convert set to type C
+	/**
+	 * Convert a {@link Set} to an object of type {@code C}
+	 * @param set A {@link Set}
+	 * @return An object of type {@code C} that represents the given {@code set}
+	 */
+	public abstract C convert(Set<?> set);
 	
 	
 }

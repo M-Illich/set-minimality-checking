@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.autoreason.setmincheck.MatchIterator;
 
-public class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
+public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
 		extends MatchProviderTest<C, T> {
 
 	M matchIterator;
