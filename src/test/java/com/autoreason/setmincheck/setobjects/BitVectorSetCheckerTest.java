@@ -130,5 +130,42 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	public BitVectorSet convert(Set<?> set) {
 		return new BitVectorSet(set);
 	}
+
+	@Override
+	protected Collection<BitVectorSet> defineCollection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	@Override
+	protected BitVectorSet getNext(BitVectorSet previous) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected BitVectorSet defineMatch(BitVectorSet test) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected BitVectorSet defineNotMatch(BitVectorSet test) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected BitVectorSet defineSmaller(BitVectorSet test) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Set<?> defineTest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }

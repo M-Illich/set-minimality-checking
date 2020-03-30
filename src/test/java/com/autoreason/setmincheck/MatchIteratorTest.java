@@ -12,15 +12,16 @@ import org.junit.Test;
 import com.autoreason.setmincheck.MatchIterator;
 
 public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
-		extends MatchProviderTest<C, T> {
-
-	M matchIterator;
-	Collection<C> col;
-	T test;
+		extends MatchProviderTest<C, T, M> {
 
 	@Test
 	public void testMatchesOf() {
-		// compute expected Iterable of matches by considering every element of the collection
+		// define test objects
+		Collection<C> col = defineCollection();
+		T test = defineTest();
+
+		// compute expected Iterable of matches by considering every element of the
+		// collection
 		Iterable<C> expected = new Iterable<C>() {
 			// transform Collection to NavigableSet
 			NavigableSet<C> naviCol = new TreeSet<C>(col);
@@ -45,7 +46,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 						curElement = naviCol.ceiling(cur);
 						// go to next element in collection if current element does not match the test
 						// object
-						if (!matchIterator.matches(cur, test)) {
+						if (!matchOperator.matches(cur, test)) {
 							return next();
 						}
 						// return (old) current element
@@ -58,11 +59,18 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		};
 
 		// compute Iterable with tested method
-		Iterable<C> iterMatches = matchIterator.matchesOf(col, test);
+		Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
 
 		// TODO maybe every element of Iterable must be compared ???
 		assertEquals(iterMatches, expected);
 
 	}
+
+	/**
+	 * Define a {@link Collection} for testing purposes
+	 * 
+	 * @return A {@link Collection} containing elements of type {@code C}
+	 */
+	protected abstract Collection<C> defineCollection();
 
 }
