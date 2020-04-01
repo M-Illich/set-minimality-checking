@@ -1,4 +1,4 @@
-package com.autoreason.setmincheck;
+package com.autoreason.setmincheck.datagenerator;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,6 +57,31 @@ public class SetGenerator {
 	}
 
 	/**
+	 * Create a random {@link Set} of {@link Integer} values within a certain range
+	 * based on a provided seed
+	 * 
+	 * @param maxSize An {@code int} defining the maximum number of elements
+	 *                contained in the resulting set
+	 * @param range   An {@code int} defining the the highest drawn number
+	 * @param seed    A {@code long} serving as seed for the drawing of random
+	 *                {@link Integer} values
+	 * @return A {@link Set} with at most {@code maxSize} randomly drawn
+	 *         {@link Integer} values
+	 */
+	public static Set<Integer> randomSet(int maxSize, int range, long seed) {
+		Random rdm = new Random(seed);
+		// create random set consisting of at most maxSize int values
+		Set<Integer> set = new HashSet<Integer>();
+		// define size
+		int size = rdm.nextInt(maxSize) + 1;
+		// add random int values to set until size reached
+		while (set.size() != size) {
+			set.add(rdm.nextInt(range));
+		}
+		return set;
+	}
+
+	/**
 	 * Create a {@link Collection} of minimal {@link Set} elements consisting of
 	 * random {@link Integer} values
 	 * 
@@ -69,17 +94,46 @@ public class SetGenerator {
 	 * @return A {@link Collection} of {@link Set} elements from which none is a
 	 *         subset of any other set included in the collection
 	 */
-	public static Collection<Set<Integer>> randomMinSetCollection(int numSets, int maxSize, long seed) {		
+	public static Collection<Set<Integer>> randomMinSetCollection(int numSets, int maxSize, long seed) {
 		// seed generator for sets
 		Random seedGen = new Random(seed);
-		
+
 		// add random sets to collection until wanted size reached
 		Collection<Set<Integer>> col = new HashSet<Set<Integer>>();
-		while (col.size() < numSets) {			
+		while (col.size() < numSets) {
 			// create random set
 			Set<Integer> set = randomSet(maxSize, seedGen.nextLong());
 			// only add minimal set, i.e., no subset of set already in collection
-			col = addMinimal(col, set);			
+			col = addMinimal(col, set);
+		}
+		return col;
+	}
+	
+	/**
+	 * Create a {@link Collection} of minimal {@link Set} elements consisting of
+	 * random {@link Integer} values within a certain range
+	 * 
+	 * @param numSets An {@code int} defining the number of sets contained in the
+	 *                resulting collection
+	 * @param maxSize An {@code int} defining the maximum number of elements
+	 *                contained in the resulting set
+	 * @param range   An {@code int} defining the the highest drawn number
+	 * @param seed    A {@code long} serving as seed for the drawing of random
+	 *                {@link Integer} values
+	 * @return A {@link Collection} of {@link Set} elements from which none is a
+	 *         subset of any other set included in the collection
+	 */
+	public static Collection<Set<Integer>> randomMinSetCollection(int numSets, int maxSize, int range, long seed) {
+		// seed generator for sets
+		Random seedGen = new Random(seed);
+
+		// add random sets to collection until wanted size reached
+		Collection<Set<Integer>> col = new HashSet<Set<Integer>>();
+		while (col.size() < numSets) {
+			// create random set
+			Set<Integer> set = randomSet(maxSize, range, seedGen.nextLong());
+			// only add minimal set, i.e., no subset of set already in collection
+			col = addMinimal(col, set);
 		}
 		return col;
 	}
@@ -98,9 +152,9 @@ public class SetGenerator {
 		// create modifiable copy of collection
 		Collection<Set<Integer>> newCol = new HashSet<Set<Integer>>();
 		newCol.addAll(col);
-		
+
 		// search for subsets in collection
-		Iterator<Set<Integer>> iter = col.iterator();		
+		Iterator<Set<Integer>> iter = col.iterator();
 		boolean checkSubset = true;
 		Set<Integer> cur;
 		while (iter.hasNext()) {
@@ -114,7 +168,7 @@ public class SetGenerator {
 			else if (cur.containsAll(set)) {
 				// replace superset by set
 				newCol.remove(cur);
-				// no need to check for subsets if superset found due to minimality of sets in
+				// no need to check for subsets if superset found, due to minimality of sets in
 				// collection
 				checkSubset = false;
 			}

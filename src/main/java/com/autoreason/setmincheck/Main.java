@@ -1,5 +1,6 @@
 package com.autoreason.setmincheck;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ import com.autoreason.setmincheck.setobjects.BitVectorSet;
 public class Main {
 	public static void main(String[] args) {
 		
-		
+			
 //    	BitVectorSetChecker bvsChecker = new BitVectorSetChecker();    	
 //    	Set<Integer> testSet = Set.of(1,32,70,104);		
 //    					

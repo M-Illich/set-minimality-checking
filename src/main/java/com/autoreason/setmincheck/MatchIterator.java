@@ -25,6 +25,8 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 			// transform Collection to NavigableSet
 			NavigableSet<C> naviCol = new TreeSet<C>(col);
 
+			// TODO handle NullPointerException ???
+			
 			@Override
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {

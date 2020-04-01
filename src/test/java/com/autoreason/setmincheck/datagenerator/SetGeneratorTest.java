@@ -1,4 +1,4 @@
-package com.autoreason.setmincheck;
+package com.autoreason.setmincheck.datagenerator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

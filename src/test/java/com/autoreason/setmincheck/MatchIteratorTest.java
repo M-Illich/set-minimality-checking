@@ -13,12 +13,23 @@ import com.autoreason.setmincheck.MatchIterator;
 
 public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
 		extends MatchProviderTest<C, T, M> {
-
+	
 	@Test
-	public void testMatchesOf() {
+	public void runMatchIteratorTests() {
+		// get random seed
+		long seed = getSeed(); 					
+		// conduct test
+		try {
+			testMatchesOf(seed);
+		} catch (Throwable e) {
+			throw new RuntimeException("seed: " + seed, e);
+		}
+	}
+
+	private void testMatchesOf(long seed) {
 		// define test objects
-		Collection<C> col = defineCollection();
-		T test = defineTest();
+		Collection<C> col = defineCollection(seed);
+		T test = defineTest(seed);
 
 		// compute expected Iterable of matches by considering every element of the
 		// collection
@@ -69,8 +80,9 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 	/**
 	 * Define a {@link Collection} for testing purposes
 	 * 
+	 * @param seed A {@link long} value used as seed to generate a random object
 	 * @return A {@link Collection} containing elements of type {@code C}
 	 */
-	protected abstract Collection<C> defineCollection();
+	protected abstract Collection<C> defineCollection(long seed);
 
 }

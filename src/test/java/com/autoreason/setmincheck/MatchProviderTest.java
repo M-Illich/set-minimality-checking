@@ -4,16 +4,33 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.junit.Test;
 
 public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends MatchProvider<C, T>> {
 
-	protected M matchOperator;
+	protected M matchOperator = initializeOperator();
 
 	@Test
-	public void testGetNextMatch() {
+	public void runMatchProviderTests() {
+		// get random seed
+		long seed = getSeed(); 					
+		// conduct tests
+		try {
+			testGetNextMatch(seed);
+			testMatches(seed);
+
+		} catch (Throwable e) {
+			throw new RuntimeException("seed: " + seed, e);
+		}
+	}
+
+	
+	private void testGetNextMatch(long seed) {
 		// define test objects
-		T test = defineTest();
+		T test = defineTest(seed);
 		C previous = defineSmaller(convert(test));
 		// compute next element
 		C next = matchOperator.getNextMatch(previous, test);
@@ -22,10 +39,9 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 
 	}
 
-	@Test
-	public void testMatches() {
+	private void testMatches(long seed) {
 		// define test object
-		T test = defineTest();
+		T test = defineTest(seed);
 		// convert test to type C
 		C testC = convert(test);
 		// perform test
@@ -108,8 +124,22 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 	/**
 	 * Define an object of type {@code T} that can be used for testing
 	 * 
+	 * @param seed A {@link long} value used as seed to generate a random object
 	 * @return An object of type {@code T}
 	 */
-	protected abstract T defineTest();
+	protected abstract T defineTest(long seed);
+
+	/**
+	 * Return the currently used seed for the generating of random test objects
+	 * @see java.util.Random#Random(long) 
+	 * @return A {@link long} value that serves as random seed
+	 */
+	protected abstract long getSeed();
+	
+	/**
+	 * Initialize the object to call the tested methods
+	 * @return An object of type {@code M}
+	 */
+	protected abstract M initializeOperator();
 
 }
