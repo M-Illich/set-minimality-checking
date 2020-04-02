@@ -30,15 +30,7 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 			int maxSize = 10;
 			int numSets = 10;
 			Set<Integer> test = SetGenerator.randomSet(maxSize, seed);
-			Collection<Set<Integer>> sets = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");
-			
-			// TEST TODO
-			for (Set<Integer> set : sets) {
-				for (Integer i : set) {
-					System.out.print(i + " ");
-				}
-				System.out.println();
-			}
+			Collection<Set<Integer>> sets = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");			
 			
 			// TODO Collection<Set<Integer>> sets = SetGenerator.randomMinSetCollection(numSets, maxSize, seed);
 			// perform tests

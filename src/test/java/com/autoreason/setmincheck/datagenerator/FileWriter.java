@@ -13,7 +13,7 @@ public class FileWriter {
 	final static int NUM_SETS = 25; 
 	final static int MAX_SIZE = 12;
 	final static int RANGE = 50;
-	final static long SEED = 172583;
+	final static long SEED = 1384205;
 
 	public static void main(String[] args) {
 		// generate random collection of minimal sets

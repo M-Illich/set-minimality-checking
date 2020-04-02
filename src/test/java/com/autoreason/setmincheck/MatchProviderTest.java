@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.autoreason.setmincheck.setobjects.BitVectorSet;
+
 public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends MatchProvider<C, T>> {
 
 	protected M matchOperator = initializeOperator();
@@ -33,10 +35,10 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		T test = defineTest(seed);
 		C previous = defineSmaller(convert(test));
 		// compute next element
-		C next = matchOperator.getNextMatch(previous, test);
 		C nextExpect = getNextMatchSimple(previous, test);
-		assertEquals(next, nextExpect);
-
+		C next = matchOperator.getNextMatch(previous, test);
+		
+		assertEquals(nextExpect, next);
 	}
 
 	private void testMatches(long seed) {
@@ -54,7 +56,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		C testC = convert(test);
 
 		// return null if next match cannot be smaller than test
-		if (previous.compareTo(testC) == 1) {
+		if (previous.compareTo(testC) != -1) {
 			return null;
 		}
 

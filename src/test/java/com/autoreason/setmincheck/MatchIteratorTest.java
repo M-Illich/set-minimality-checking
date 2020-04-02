@@ -10,14 +10,15 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.autoreason.setmincheck.MatchIterator;
+import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
 public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
 		extends MatchProviderTest<C, T, M> {
-	
+
 	@Test
 	public void runMatchIteratorTests() {
 		// get random seed
-		long seed = getSeed(); 					
+		long seed = getSeed();
 		// conduct test
 		try {
 			testMatchesOf(seed);
@@ -30,6 +31,20 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		// define test objects
 		Collection<C> col = defineCollection(seed);
 		T test = defineTest(seed);
+		
+		// compute Iterable with tested method
+				Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
+
+				// TEST TODO
+				for (C c : iterMatches) {
+					long[] bv = ((BitVectorSet) c).bitVector;
+					for (int i = 0; i < bv.length; i++) {
+						System.out.print(bv[i] + " ");
+					}
+					System.out.println();
+				}
+				
+				
 
 		// compute expected Iterable of matches by considering every element of the
 		// collection
@@ -69,11 +84,18 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 
 		};
 
-		// compute Iterable with tested method
-		Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
+		
+		// TEST TODO
+		for (C c : expected) {
+			long[] bv = ((BitVectorSet) c).bitVector;
+			for (int i = 0; i < bv.length; i++) {
+				System.out.print(bv[i] + " ");
+			}
+			System.out.println();
+		}
 
 		// TODO maybe every element of Iterable must be compared ???
-		assertEquals(iterMatches, expected);
+		assertEquals(expected, iterMatches);
 
 	}
 

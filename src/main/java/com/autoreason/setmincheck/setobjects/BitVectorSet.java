@@ -1,58 +1,63 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Arrays;
 import java.util.Set;
 
-
 /**
- * Representation of a {@link Set} as array of {@code long} values based on the {@link #hashCode} of the set's elements
+ * Representation of a {@link Set} as array of {@code long} values based on the
+ * {@link #hashCode} of the set's elements
  *
  */
 public class BitVectorSet implements Comparable<BitVectorSet> {
 
 	// original set
-	public Set<?> set;	
+	public Set<?> set;
 	// array of long values determined by the elements of the related set
 	public long[] bitVector;
 
 	/**
 	 * Create a {@link BitVectorSet} object based on a {@code long} array
+	 * 
 	 * @param bv A {@code long[]} used as {@code bitVector}
 	 */
 	public BitVectorSet(long[] bv) {
 		this.bitVector = bv;
 		this.set = null;
 	}
-	
+
 	/**
 	 * Create a {@link BitVectorSet} object based on a {@link Set}
-	 * @param set A {@link Set} used to define a {@code long[]} based on its elements' {@link #hashCode}
+	 * 
+	 * @param set A {@link Set} used to define a {@code long[]} based on its
+	 *            elements' {@link #hashCode}
 	 */
 	public BitVectorSet(Set<?> set) {
 		this.set = set;
 		// determine length of array based on set size
-		int len = set.size() / 64 + 1;		
+		int len = set.size() / 64 + 1;
 		this.bitVector = new long[len];
-		
+
 		// use elements of set to define position of 1-bits
 		for (Object e : set) {
-			// determine position 
+			// determine position
 			int pos = e.hashCode() % (len * 64);
 			// set bit in appropriate long value
-			this.bitVector[pos/64] |= (long) 1<<pos;					
-		}		
+			this.bitVector[pos / 64] |= (long) 1 << pos;
+		}
 	}
-	
+
 	/**
-	 * Create a {@link BitVectorSet} object based on a {@link Set} and its {@code long[]} representation
+	 * Create a {@link BitVectorSet} object based on a {@link Set} and its
+	 * {@code long[]} representation
+	 * 
 	 * @param set A {@link Set}
-	 * @param bv A {@code long[]} representing the element {@code set}
+	 * @param bv  A {@code long[]} representing the element {@code set}
 	 */
 	public BitVectorSet(Set<?> set, long[] bv) {
 		this.set = set;
 		this.bitVector = bv;
 	}
-	
-	
+
 	@Override
 	public int compareTo(BitVectorSet o) {
 		// get bitVector values
@@ -80,7 +85,19 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		// bitVector elements are equal
 		return 0;
 	}
-	
-	// TODO alternative compareTO-method based on number of set elements (+long values for same size)
-		
+
+	/**
+	 * TODO
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public boolean equals(BitVectorSet other) {
+		return Arrays.equals(this.bitVector, other.bitVector);
+
+	}
+
+	// TODO alternative compareTO-method based on number of set elements (+long
+	// values for same size)
+
 }

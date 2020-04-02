@@ -1,5 +1,6 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 
 	// hash table to store different BitVectorSet representations, i.e. long[] of
 	// different lengths, of tested sets
-	Hashtable<HashKey, long[]> hashtable = new Hashtable<HashKey, long[]>();
+	Hashtable<String, long[]> hashtable = new Hashtable<String, long[]>();
 
 	@Override
 	protected boolean subsetOf(BitVectorSet cand, Set<?> test) {
@@ -28,20 +29,38 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 		long[] candArray = previous.bitVector;
 		// convert test to appropriate bit vector representation
 		long[] testArray = transform(test, candArray.length);
+		
+		// check if next match can be found
+		if(previous.compareTo(new BitVectorSet(testArray)) != -1) {
+			// previous is not smaller than test -> no next match possible
+			return null;
+		}
 
 		// keep all different bits
 		long[] xorArray = xor(testArray, candArray);
-		// get highest bit from all bits that only occur in candidate
-		long[] high = getHighestBit(and(xorArray, candArray));
-		// define vector where every position after highest bit is zero
-		long[] lowRemover = complementOf(subtractOne(high));
-		// get the lowest bit after removing all the bits by the lowRemover vector
-		long[] low = getLowestBit(and(lowRemover, and(testArray, xorArray)));
-		// // define vector where every position after lowest bit is zero
-		lowRemover = complementOf(subtractOne(low));
+		// get bits that only occur in candidate array
+		long[] onlyCand = and(xorArray, candArray);
+		// initialize array for remaining test bits
+		long[] remainTest;
+		// check if candidate only contains bits from test, i.e., onlyCand is zero
+		if (Arrays.equals(onlyCand, new long[onlyCand.length])) {
+			// remaining test bits correlate to XOR result
+			remainTest = xorArray;
+		} else {
+			// get highest bit from all bits that only occur in candidate
+			long[] high = getHighestBit(onlyCand);
+			// define vector where every position after highest bit is zero
+			long[] lowRemover = complementOf(subtractOne(high));
+			// remove bits from the vector that only contains bits from test
+			remainTest = and(lowRemover, and(testArray, xorArray));
+		}
+
+		// get the lowest bit from the remaining test bits
+		long[] low = getLowestBit(remainTest);
+		// define vector where every position after lowest bit is zero
+		long[] lowRemover = complementOf(subtractOne(low));
 		// define bit vector of next match by adding new lowest bit
 		long[] next = and(add(candArray, low), lowRemover);
-
 		// return BitVectorSet representation of test
 		return new BitVectorSet(test, next);
 
@@ -209,6 +228,10 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 */
 	@Override
 	public boolean matches(BitVectorSet candidate, Set<?> test) {
+		// handle null
+		if(candidate == null || test == null) {
+			return false;
+		}
 		// get long arrays
 		long[] candArray = candidate.bitVector;
 		// convert test to appropriate BitVectorSet representation
@@ -235,11 +258,13 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 *         of {@code set}
 	 */
 	long[] transform(Set<?> set, int length) {
+		
+		// TODO hash key nor efficient enough?? (computation or hash table )...
 
 		// look for long array representation of given length in hash table
-		HashKey key = new HashKey(set, length);
+		String key = defineHashKey(set,length);
 		long[] bv = hashtable.get(key);
-
+		
 		// no element found -> create new one
 		if (bv == null) {
 			// create bit vector of given length
@@ -261,19 +286,14 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	}
 
 	/**
-	 * 
-	 * Define a key for a {@link Hashtable} based on a {@link Set} and an
-	 * {@link int}
-	 *
+	 * Define a {@link String} that serves as key for a hash table
+	 * @param set A {@link Set}
+	 * @param i An {@link int} value		
+	 * @return A {@link String} based on the hashcode of {@code set} appended by the space-separated value {@code i}  
 	 */
-	class HashKey {
-		Set<?> set;
-		int length;
-
-		HashKey(Set<?> set, int length) {
-			this.set = set;
-			this.length = length;
-		}
+	private String defineHashKey(Set<?> set, int i) {
+		// use hash code of set together with the given int value as key
+		return set.hashCode() + " " + i;
 	}
 
 }
