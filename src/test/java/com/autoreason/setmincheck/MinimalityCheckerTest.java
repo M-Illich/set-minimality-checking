@@ -18,8 +18,6 @@ import com.autoreason.setmincheck.datagenerator.SetGenerator;
 public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends MinimalityChecker<C, Set<?>>>
 		extends MatchIteratorTest<C, Set<?>, M> {
 
-	// TODO maybe load from file (use set-file-converter (dependency in pom))
-
 	@Test
 	public void runMinChkTests() {
 		// get random seed
@@ -30,9 +28,10 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 			int maxSize = 10;
 			int numSets = 10;
 			Set<Integer> test = SetGenerator.randomSet(maxSize, seed);
-			Collection<Set<Integer>> sets = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");			
-			
-			// TODO Collection<Set<Integer>> sets = SetGenerator.randomMinSetCollection(numSets, maxSize, seed);
+			// use stored test file
+			// Collection<Set<Integer>> sets = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");			
+			// create random collection
+			Collection<Set<Integer>> sets = SetGenerator.randomMinSetCollection(numSets, maxSize, seed);
 			// perform tests
 			testSubsetOf(test);
 			testIsMinimal(sets, test);
@@ -53,12 +52,11 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 
 	private void testSubsetOf(Set<?> test) {		
 		// create subset by removing one element
-	// TODO termination problems ???
-//		Set<?> subset = new HashSet<>(test);		
-//		subset.remove(subset.iterator().next());
-//			
-//		assertTrue(matchOperator.subsetOf(convert(subset), test));
-//		assertFalse(matchOperator.subsetOf(convert(test), subset));
+		Set<?> subset = new HashSet<>(test);		
+		subset.remove(subset.iterator().next());
+			
+		assertTrue(matchOperator.subsetOf(convert(subset), test));
+		assertFalse(matchOperator.subsetOf(convert(test), subset));
 	}
 
 	/**

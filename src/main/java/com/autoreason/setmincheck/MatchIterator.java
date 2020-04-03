@@ -6,6 +6,8 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
+import com.autoreason.setmincheck.setobjects.BitVectorSet;
+
 /**
  * 
  *
@@ -25,18 +27,37 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 	 *         from {@code col} which {@link MatchProvider#matches} the object
 	 *         {@code test}
 	 */
-	Iterable<C> matchesOf(Collection<C> col, T test) {
+	protected Iterable<C> matchesOf(Collection<C> col, T test) {
 		return new Iterable<C>() {
 			// transform Collection to NavigableSet
 			NavigableSet<C> naviCol = new TreeSet<C>(col);
-
-			// TODO handle NullPointerException ???
 
 			@Override
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {
 					// initialize next element with first match
 					C next = getFirstCandidate();
+
+					@Override
+					public boolean hasNext() {
+						return next != null;
+					}
+
+					@Override
+					public C next() {
+						if (next != null) {
+							// safe current element
+							C cur = next;	
+							// get next match being greater than current
+							next = getNextCandidate(next);
+							// return current element
+							return cur;
+						}
+						// no next element available
+						else {
+							throw new NoSuchElementException();
+						}
+					}
 
 					/**
 					 * Get first match from sorted collection
@@ -57,28 +78,6 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 						}
 					}
 
-					@Override
-					public boolean hasNext() {
-						return next != null;
-					}
-
-					@Override
-					public C next() {
-						if (next != null) {
-							// safe current element
-							C cur = next;
-							// get next match being greater than current
-							next = getNextCandidate(next);
-							// return current element
-							return cur;
-						}
-						// no next element available
-						else {
-							throw new NoSuchElementException();
-						}
-
-					}
-
 					/**
 					 * Get the next match of {@code test} in the {@link NavigableSet}
 					 * {@code naviCol} being greater than {@code cur}
@@ -89,23 +88,21 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 					 */
 					private C getNextCandidate(C cur) {
 						// look for next match in collection
+						C nextMatch;
 						while (cur != null) {
 							// get next match (used to skip all elements from collection being smaller)
-							C nextMatch = getNextMatch(cur, test);
+							nextMatch = getNextMatch(cur, test);
 							// stop if no next match available
 							if (nextMatch == null) {
 								cur = null;
-								break;
 							} else {
-								// get next candidate from collection that is greater than match
+								// get next candidate from collection that is greater than or equal to match
 								cur = naviCol.ceiling(nextMatch);
-
 								// check if candidate is a match of test
 								if (matches(cur, test)) {
 									break;
 								}
 							}
-
 						}
 						// return next element
 						return cur;

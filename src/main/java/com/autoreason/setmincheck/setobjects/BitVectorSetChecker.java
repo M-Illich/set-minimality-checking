@@ -259,8 +259,6 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 */
 	long[] transform(Set<?> set, int length) {
 		
-		// TODO hash key nor efficient enough?? (computation or hash table )...
-
 		// look for long array representation of given length in hash table
 		String key = defineHashKey(set,length);
 		long[] bv = hashtable.get(key);

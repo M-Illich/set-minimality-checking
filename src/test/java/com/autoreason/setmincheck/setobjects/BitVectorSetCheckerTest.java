@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.MinimalityCheckerTest;
 import com.autoreason.setmincheck.datagenerator.SetGenerator;
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
@@ -109,7 +110,9 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 
 	@Override
 	protected Set<?> defineTest(long seed) {
-		// create random Set based on given seed
+		// Set based on stored minSets.txt file
+//		return new HashSet<Integer>(Set.of(14,15,16,17,18));		
+		// create random Set based on given seed 
 		return SetGenerator.randomSet(MAX_SIZE, seed);
 	}
 
@@ -117,6 +120,8 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	protected Collection<BitVectorSet> defineCollection(long seed) {
 		// create Collection of random Set elements based on given seed
 		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
+		// collection taken from stored minSets.txt file
+//		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");	
 		// return converted sets
 		return convertCollection(col);
 	}

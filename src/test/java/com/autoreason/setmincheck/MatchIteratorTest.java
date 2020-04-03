@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NavigableSet;
+import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import org.junit.Test;
@@ -31,20 +32,9 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		// define test objects
 		Collection<C> col = defineCollection(seed);
 		T test = defineTest(seed);
-		
-		// compute Iterable with tested method
-				Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
 
-				// TEST TODO
-				for (C c : iterMatches) {
-					long[] bv = ((BitVectorSet) c).bitVector;
-					for (int i = 0; i < bv.length; i++) {
-						System.out.print(bv[i] + " ");
-					}
-					System.out.println();
-				}
-				
-				
+		// compute Iterable with tested method
+		Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
 
 		// compute expected Iterable of matches by considering every element of the
 		// collection
@@ -55,27 +45,54 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 			@Override
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {
-					// current position in set
-					int curPos = 0;
-					// current element
-					C curElement = naviCol.first();
+					// initialize next element with first match
+					C next = getFirstCandidate();
 
 					@Override
 					public boolean hasNext() {
-						return curPos < naviCol.size();
+						return next != null;
 					}
 
 					@Override
 					public C next() {
-						C cur = curElement;
-						// update current element by next one
-						curElement = naviCol.ceiling(cur);
-						// go to next element in collection if current element does not match the test
-						// object
-						if (!matchOperator.matches(cur, test)) {
-							return next();
+						if (next != null) {
+							// safe current element
+							C cur = next;
+							// get next match being greater than current
+							next = getNextCandidate(next);
+							// return current element
+							return cur;
 						}
-						// return (old) current element
+						// no next element available
+						else {
+							throw new NoSuchElementException();
+						}
+					}
+
+					private C getFirstCandidate() {
+						// get first element of collection
+						C cur = naviCol.first();
+						// return first element if it is a match of test
+						if (matchOperator.matches(cur, test)) {
+							return cur;
+						}
+						// else, look for next match in collection
+						else {
+							return getNextCandidate(cur);
+						}
+					}
+
+					private C getNextCandidate(C cur) {
+						// look for next match in collection
+						while (cur != null) {
+							// get next element from collection
+							cur = naviCol.higher(cur);
+							// check if candidate is a match of test
+							if (matchOperator.matches(cur, test)) {
+								break;
+							}
+						}
+						// return next element
 						return cur;
 					}
 
@@ -84,18 +101,12 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 
 		};
 
-		
-		// TEST TODO
-		for (C c : expected) {
-			long[] bv = ((BitVectorSet) c).bitVector;
-			for (int i = 0; i < bv.length; i++) {
-				System.out.print(bv[i] + " ");
-			}
-			System.out.println();
+		// compare found matches
+		Iterator<C> expIter = expected.iterator();
+		Iterator<C> matchIter = iterMatches.iterator();
+		while (expIter.hasNext()) {
+			assertEquals(expIter.next(), matchIter.next());
 		}
-
-		// TODO maybe every element of Iterable must be compared ???
-		assertEquals(expected, iterMatches);
 
 	}
 
