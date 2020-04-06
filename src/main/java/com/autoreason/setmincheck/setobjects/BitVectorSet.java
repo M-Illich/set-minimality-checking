@@ -1,6 +1,8 @@
 package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -58,6 +60,24 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		this.bitVector = bv;
 	}
 
+	/**
+	 * Convert the {@link Set} elements contained in a {@link Collection} into
+	 * {@link BitVectorSet} objects
+	 * @param <T>
+	 * 
+	 * @param col A {@link Collection} of {@link Set} elements
+	 * @return A {@link Collection} of {@link BitVectorSetSet} elements that
+	 *         represent the sets given in {@code col}
+	 */
+	public static <T> Collection<BitVectorSet> convertCollection(Collection<Set<T>> col) {
+		Collection<BitVectorSet> bvsCol = new HashSet<BitVectorSet>();
+		// create a BitVectorSet representation for each set
+		for (Set<T> set : col) {
+			bvsCol.add(new BitVectorSet(set));
+		}
+		return bvsCol;
+	}
+
 	@Override
 	public int compareTo(BitVectorSet o) {
 		// get bitVector values
@@ -84,17 +104,6 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		}
 		// bitVector elements are equal
 		return 0;
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param other
-	 * @return
-	 */
-	public boolean equals(BitVectorSet other) {
-		return Arrays.equals(this.bitVector, other.bitVector);
-
 	}
 
 	// TODO alternative compareTO-method based on number of set elements (+long
