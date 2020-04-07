@@ -26,10 +26,11 @@ public class Main {
 		Set<Integer> testSet = Set.of(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
 		ArrayList<Collection<Set<Integer>>> cols = FileSetConverter.readCollectionsFromFile("jsSets-go-big.txt");
+		BitVectorSet b = null; // new BitVectorSet(new long[1]);
 		
-		Collection<BitVectorSet> bvsCol = BitVectorSet.convertCollection(cols.get(0));
+		Collection<BitVectorSet> bvsCol = b.convertCollection(cols.get(0));
 		for (BitVectorSet bvs : bvsCol) {
-			System.out.println(Long.toBinaryString(bvs.bitVector[0]));
+			System.out.println(Long.toBinaryString(bvs.setRepresentation[0]));
 		}
 		
 		System.out.println(bvsChecker.isMinimal(bvsCol, testSet));

@@ -97,7 +97,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 
 	@Override
 	protected BitVectorSet getNext(BitVectorSet previous) {
-		long[] next = previous.bitVector.clone();
+		long[] next = previous.setRepresentation.clone();
 		long sum;
 		int i = 0;
 		// increase value defined by array by 1
@@ -137,7 +137,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	@Override
 	protected BitVectorSet defineNotMatch(BitVectorSet test) {
 		// bit vector must contain at least one 1-bit at a different position compared to test
-		long[] bv = test.bitVector;
+		long[] bv = test.setRepresentation;
 		// use complement as new long value 
 		bv[0] = ~bv[0];
 		

@@ -10,20 +10,28 @@ import java.util.Set;
  * {@link #hashCode} of the set's elements
  *
  */
-public class BitVectorSet implements Comparable<BitVectorSet> {
+public class BitVectorSet extends SetRepresent<BitVectorSet, long[]> { // implements Comparable<BitVectorSet> {
 
 	// original set
 	public Set<?> set;
 	// array of long values determined by the elements of the related set
-	public long[] bitVector;
+//	public long[] setRepresentation;
 
+	/**
+	 * Create an empty {@link BitVectorSet} object
+	 */
+	public BitVectorSet() {
+		this.setRepresentation = null;
+		this.set = null;
+	}
+	
 	/**
 	 * Create a {@link BitVectorSet} object based on a {@code long} array
 	 * 
 	 * @param bv A {@code long[]} used as {@code bitVector}
 	 */
 	public BitVectorSet(long[] bv) {
-		this.bitVector = bv;
+		this.setRepresentation = bv;
 		this.set = null;
 	}
 
@@ -37,14 +45,14 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		this.set = set;
 		// determine length of array based on set size
 		int len = set.size() / 64 + 1;
-		this.bitVector = new long[len];
+		this.setRepresentation = new long[len];
 
 		// use elements of set to define position of 1-bits
 		for (Object e : set) {
 			// determine position
 			int pos = e.hashCode() % (len * 64);
 			// set bit in appropriate long value
-			this.bitVector[pos / 64] |= (long) 1 << pos;
+			this.setRepresentation[pos / 64] |= (long) 1 << pos;
 		}
 	}
 
@@ -57,32 +65,16 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 	 */
 	public BitVectorSet(Set<?> set, long[] bv) {
 		this.set = set;
-		this.bitVector = bv;
+		this.setRepresentation = bv;
 	}
 
-	/**
-	 * Convert the {@link Set} elements contained in a {@link Collection} into
-	 * {@link BitVectorSet} objects
-	 * @param <T>
-	 * 
-	 * @param col A {@link Collection} of {@link Set} elements
-	 * @return A {@link Collection} of {@link BitVectorSetSet} elements that
-	 *         represent the sets given in {@code col}
-	 */
-	public static <T> Collection<BitVectorSet> convertCollection(Collection<Set<T>> col) {
-		Collection<BitVectorSet> bvsCol = new HashSet<BitVectorSet>();
-		// create a BitVectorSet representation for each set
-		for (Set<T> set : col) {
-			bvsCol.add(new BitVectorSet(set));
-		}
-		return bvsCol;
-	}
-
+	// TODO alternative compareTO-method based on number of set elements (+long
+	// values for same size)
 	@Override
 	public int compareTo(BitVectorSet o) {
 		// get bitVector values
-		long[] ar1 = this.bitVector;
-		long[] ar2 = o.bitVector;
+		long[] ar1 = this.setRepresentation;
+		long[] ar2 = o.setRepresentation;
 
 		// compare length of arrays
 		int len1 = ar1.length;
@@ -98,7 +90,7 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		for (int i = ar2.length - 1; i >= 0; i--) {
 			// compare long values (highest bit is not sign but rather position of set
 			// element)
-			int c = Long.compareUnsigned(this.bitVector[i], o.bitVector[i]);
+			int c = Long.compareUnsigned(this.setRepresentation[i], o.setRepresentation[i]);
 			if (c != 0)
 				return c;
 		}
@@ -106,7 +98,15 @@ public class BitVectorSet implements Comparable<BitVectorSet> {
 		return 0;
 	}
 
-	// TODO alternative compareTO-method based on number of set elements (+long
-	// values for same size)
+	@Override
+	public <S> Collection<BitVectorSet> convertCollection(Collection<Set<S>> col) {
+		Collection<BitVectorSet> bvsCol = new HashSet<BitVectorSet>();
+		// create a BitVectorSet representation for each set
+		for (Set<S> set : col) {
+			bvsCol.add(new BitVectorSet(set));
+		}
+		return bvsCol;
+	}
+	
 
 }

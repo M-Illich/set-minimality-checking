@@ -26,7 +26,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	@Override
 	public BitVectorSet getNextMatch(BitVectorSet previous, Set<?> test) {
 		// get long arrays
-		long[] candArray = previous.bitVector;
+		long[] candArray = previous.setRepresentation;
 		// convert test to appropriate bit vector representation
 		long[] testArray = transform(test, candArray.length);
 		
@@ -233,7 +233,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 			return false;
 		}
 		// get long arrays
-		long[] candArray = candidate.bitVector;
+		long[] candArray = candidate.setRepresentation;
 		// convert test to appropriate BitVectorSet representation
 		long[] testArray = transform(test, candArray.length);
 
