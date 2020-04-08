@@ -4,13 +4,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.autoreason.setmincheck.setobjects.SetRepresent;
+
 /**
  * 
  *
  * @param <C>
  * @param <T>
  */
-public abstract class MinimalityChecker<C extends Comparable<C>, T> extends MatchIterator<C, Set<?>> {
+public abstract class MinimalityChecker<C extends SetRepresent<C,?>, T> extends MatchIterator<C, Set<?>> {
 
 	/**
 	 * Check if a {@link Set} is minimal w.r.t. a {@link Collection}, which means

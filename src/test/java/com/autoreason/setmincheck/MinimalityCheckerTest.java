@@ -7,21 +7,24 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Set;
 
 import org.junit.Test;
 
 import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.datagenerator.SetGenerator;
+import com.autoreason.setmincheck.setobjects.SetRepresent;
 
-public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends MinimalityChecker<C, Set<?>>>
+public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?>, M extends MinimalityChecker<C, Set<?>>>
 		extends MatchIteratorTest<C, Set<?>, M> {
+
+	// object representing a set
+	protected C c = initSetRepresent();
 
 	@Test
 	public void runMinChkTests() {
 		// get random seed
-		long seed = getSeed(); 					
+		long seed = getSeed();
 		// conduct tests
 		try {
 			// create random sets
@@ -29,7 +32,8 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 			int numSets = 10;
 			Set<Integer> test = SetGenerator.randomSet(maxSize, seed);
 			// use stored test file
-			// Collection<Set<Integer>> sets = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");			
+			// Collection<Set<Integer>> sets =
+			// FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");
 			// create random collection
 			Collection<Set<Integer>> sets = SetGenerator.randomMinSetCollection(numSets, maxSize, seed);
 			// perform tests
@@ -43,40 +47,40 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 
 	private void testIsMinimal(Collection<Set<Integer>> sets, Set<Integer> test) {
 		// convert collection sets to type C
-		Collection<C> col = convertCollection(sets);
+		Collection<C> col = c.convertCollection(sets);
 
 		// compare with result from iterating over every element of set collection
 		assertEquals(matchOperator.isMinimal(col, test), isMinimalSimple(sets, test));
 
 	}
 
-	private void testSubsetOf(Set<?> test) {		
+	private void testSubsetOf(Set<?> test) {
 		// create subset by removing one element
-		Set<?> subset = new HashSet<>(test);		
+		Set<?> subset = new HashSet<>(test);
 		subset.remove(subset.iterator().next());
-			
+
 		assertTrue(matchOperator.subsetOf(convert(subset), test));
 		assertFalse(matchOperator.subsetOf(convert(test), subset));
 	}
 
-	/**
-	 * Convert all {@link Set} elements from a {@link Collection} into objects of
-	 * type {@code C}
-	 * 
-	 * @param sets A {@link Collection} of {@link Set} elements
-	 * @return A {@link Collection} containing the {@code C}-ype representation of
-	 *         given sets
-	 */
-	protected Collection<C> convertCollection(Collection<Set<Integer>> sets) {
-		Collection<C> col = new HashSet<C>();
-		// go through sets
-		Iterator<Set<Integer>> iter = sets.iterator();
-		while (iter.hasNext()) {
-			// add set conversion to new collection
-			col.add(convert(iter.next()));
-		}
-		return col;
-	}
+//	/**
+//	 * Convert all {@link Set} elements from a {@link Collection} into objects of
+//	 * type {@code C}
+//	 * 
+//	 * @param sets A {@link Collection} of {@link Set} elements
+//	 * @return A {@link Collection} containing the {@code C}-type representation of
+//	 *         given sets
+//	 */
+//	protected Collection<C> convertCollection(Collection<Set<Integer>> sets) {
+//		Collection<C> col = new HashSet<C>();
+//		// go through sets
+//		Iterator<Set<Integer>> iter = sets.iterator();
+//		while (iter.hasNext()) {
+//			// add set conversion to new collection
+//			col.add(convert(iter.next()));
+//		}
+//		return col;
+//	}
 
 	/**
 	 * Check if a {@link Set} is minimal w.r.t. a {@link Collection} by checking the
@@ -100,5 +104,18 @@ public abstract class MinimalityCheckerTest<C extends Comparable<C>, M extends M
 		// no subset found -> minimal
 		return true;
 	}
+
+	@Override
+	public C convert(Set<?> test) {
+		return c.convertSet(test);
+	}
+
+	/**
+	 * Initialize the {@link SetRepresent} object by some arbitrary object of the
+	 * subclass type {@code C}
+	 * 
+	 * @return An object of type {@code C} being a subclass of {@link SetRepresent}
+	 */
+	protected abstract C initSetRepresent();
 
 }

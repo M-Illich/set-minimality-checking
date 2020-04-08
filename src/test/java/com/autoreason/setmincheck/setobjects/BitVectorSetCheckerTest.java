@@ -2,16 +2,12 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.NavigableSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.autoreason.setfileconverter.FileSetConverter;
@@ -28,21 +24,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	private final int MAX_SIZE = 10;
 	// number of sets contained in randomly generated collection
 	private final int NUM_SETS = 10;
-	
-
-// 			schema for random sets	
-//	@Test
-//	public void runTests() {
-//		// generate random seed
-//		long seed = SEED_GENERATOR.nextLong();
-//		// conduct tests
-//		try {
-//			
-//		} catch (Throwable e) {
-//			throw new RuntimeException("seed: " + seed, e);
-//		}
-//	}
-
+		
 	@Test
 	public void testGetLowestBit() {
 		assertArrayEquals(new long[] { 0, 2 }, matchOperator.getLowestBit(new long[] { 0, 42, 4 }));
@@ -91,11 +73,6 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	}
 
 	@Override
-	public BitVectorSet convert(Set<?> set) {
-		return new BitVectorSet(set);
-	}
-
-	@Override
 	protected BitVectorSet getNext(BitVectorSet previous) {
 		long[] next = previous.setRepresentation.clone();
 		long sum;
@@ -123,7 +100,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 		// collection taken from stored minSets.txt file
 //		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");	
 		// return converted sets
-		return convertCollection(col);
+		return c.convertCollection(col);
 	}
 
 	@Override
@@ -167,6 +144,11 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	@Override
 	protected BitVectorSetChecker initializeOperator() {
 		return new BitVectorSetChecker();
+	}
+
+	@Override
+	protected BitVectorSet initSetRepresent() {
+		return new BitVectorSet();
 	}
 
 }

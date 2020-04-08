@@ -1,8 +1,5 @@
 package com.autoreason.setmincheck.setobjects;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,11 +9,11 @@ import java.util.Set;
  */
 public class BitVectorSet extends SetRepresent<BitVectorSet, long[]> { // implements Comparable<BitVectorSet> {
 
-	// original set
+	/**
+	 * Original {@link Set} represented by the {@link BitVectorSet} object
+	 */
 	public Set<?> set;
-	// array of long values determined by the elements of the related set
-//	public long[] setRepresentation;
-
+	
 	/**
 	 * Create an empty {@link BitVectorSet} object
 	 */
@@ -99,14 +96,8 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[]> { // implem
 	}
 
 	@Override
-	public <S> Collection<BitVectorSet> convertCollection(Collection<Set<S>> col) {
-		Collection<BitVectorSet> bvsCol = new HashSet<BitVectorSet>();
-		// create a BitVectorSet representation for each set
-		for (Set<S> set : col) {
-			bvsCol.add(new BitVectorSet(set));
-		}
-		return bvsCol;
+	public <S> BitVectorSet convertSet(Set<S> set) {
+		return new BitVectorSet(set);
 	}
-	
 
 }
