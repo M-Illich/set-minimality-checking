@@ -2,12 +2,14 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Set;
 
+import com.autoreason.setmincheck.MinimalityChecker;
+
 /**
  * Representation of a {@link Set} as array of {@code long} values based on the
  * {@link #hashCode} of the set's elements
  *
  */
-public class BitVectorSet extends SetRepresent<BitVectorSet, long[]> { // implements Comparable<BitVectorSet> {
+public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSetChecker> { // implements Comparable<BitVectorSet> {
 
 	/**
 	 * Original {@link Set} represented by the {@link BitVectorSet} object
@@ -99,5 +101,12 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[]> { // implem
 	public <S> BitVectorSet convertSet(Set<S> set) {
 		return new BitVectorSet(set);
 	}
+
+	@Override
+	public BitVectorSetChecker getMinChecker() {
+		return new BitVectorSetChecker();
+	}
+
+	
 
 }

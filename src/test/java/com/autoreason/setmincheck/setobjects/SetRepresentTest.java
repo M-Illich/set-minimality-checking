@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public abstract class SetRepresentTest<C extends SetRepresent<C, ?>> {
+public abstract class SetRepresentTest<C extends SetRepresent<C, ?, ?>> {
 	// operator to call methods
 	C operator = initializeOperator();
 

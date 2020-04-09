@@ -15,7 +15,7 @@ import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.datagenerator.SetGenerator;
 import com.autoreason.setmincheck.setobjects.SetRepresent;
 
-public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?>, M extends MinimalityChecker<C, Set<?>>>
+public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?, ?>, M extends MinimalityChecker<C, Set<?>>>
 		extends MatchIteratorTest<C, Set<?>, M> {
 
 	// object representing a set

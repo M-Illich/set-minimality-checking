@@ -4,14 +4,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.autoreason.setmincheck.MinimalityChecker;
+
 /**
  * An abstract class used to represent {@link Set} objects with the intention to
  * allow better processing, like faster subset checking
  *
- * @param <T>
- * @param <R>
+ * @param <T> A class that extends SetRepresent
+ * @param <R> A data type for the set representation
+ * @param <M> A {@link MinimalityChecker} subclass for {@code T}
  */
-public abstract class SetRepresent<T, R> implements Comparable<T> {
+public abstract class SetRepresent<T, R, M extends MinimalityChecker<?, Set<?>>> implements Comparable<T> {
 
 	/**
 	 * A specific representation of a {@link Set} for simpler processing
@@ -45,5 +48,12 @@ public abstract class SetRepresent<T, R> implements Comparable<T> {
 	 * @return An object of type {@code T} that represents the given {@code set}
 	 */
 	public abstract <S> T convertSet(Set<S> set);
+
+	/**
+	 * Get a {@link MinimalityChecker} for type {@code T}
+	 * 
+	 * @return An instance of an object that extends {@link MinimalityChecker}
+	 */
+	public abstract M getMinChecker();
 
 }
