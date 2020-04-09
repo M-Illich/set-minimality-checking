@@ -4,13 +4,20 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * An abstract class used to represent {@link Set} objects with the intention to
+ * allow better processing, like faster subset checking
+ *
+ * @param <T>
+ * @param <R>
+ */
 public abstract class SetRepresent<T, R> implements Comparable<T> {
 
 	/**
 	 * A specific representation of a {@link Set} for simpler processing
 	 */
 	public R setRepresentation;
-	
+
 	/**
 	 * Convert the {@link Set} elements contained in a {@link Collection} into an
 	 * objects of type {@code T}
@@ -32,10 +39,11 @@ public abstract class SetRepresent<T, R> implements Comparable<T> {
 
 	/**
 	 * Convert a {@link Set} into a representative object of type {@code T}
+	 * 
 	 * @param <S>
 	 * @param set A {@link Set}
 	 * @return An object of type {@code T} that represents the given {@code set}
 	 */
 	public abstract <S> T convertSet(Set<S> set);
-	
+
 }
