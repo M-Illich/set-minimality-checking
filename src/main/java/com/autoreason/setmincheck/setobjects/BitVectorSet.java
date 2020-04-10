@@ -67,8 +67,6 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		this.setRepresentation = bv;
 	}
 
-	// TODO alternative compareTO-method based on number of set elements (+long
-	// values for same size)
 	@Override
 	public int compareTo(BitVectorSet o) {
 		// get bitVector values
@@ -96,6 +94,7 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		// bitVector elements are equal
 		return 0;
 	}
+	
 
 	@Override
 	public <S> BitVectorSet convertSet(Set<S> set) {

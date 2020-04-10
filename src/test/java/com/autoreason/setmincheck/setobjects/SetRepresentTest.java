@@ -15,8 +15,8 @@ public abstract class SetRepresentTest<C extends SetRepresent<C, ?, ?>> {
 
 	@Test
 	public void testCompareTo() {
-		C a = operator.convertSet(Set.of(1, 2, 3));
-		C b = operator.convertSet(Set.of(1, 2, 3));
+		C a = operator.convertSet(Set.of(1, 2));
+		C b = operator.convertSet(Set.of(1, 2));
 		C c = operator.convertSet(Set.of(2, 4, 6));
 
 		assertTrue(a.compareTo(b) == 0);
