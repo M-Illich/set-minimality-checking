@@ -63,24 +63,6 @@ public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?, ?>, M e
 		assertFalse(matchOperator.subsetOf(convert(test), subset));
 	}
 
-//	/**
-//	 * Convert all {@link Set} elements from a {@link Collection} into objects of
-//	 * type {@code C}
-//	 * 
-//	 * @param sets A {@link Collection} of {@link Set} elements
-//	 * @return A {@link Collection} containing the {@code C}-type representation of
-//	 *         given sets
-//	 */
-//	protected Collection<C> convertCollection(Collection<Set<Integer>> sets) {
-//		Collection<C> col = new HashSet<C>();
-//		// go through sets
-//		Iterator<Set<Integer>> iter = sets.iterator();
-//		while (iter.hasNext()) {
-//			// add set conversion to new collection
-//			col.add(convert(iter.next()));
-//		}
-//		return col;
-//	}
 
 	/**
 	 * Check if a {@link Set} is minimal w.r.t. a {@link Collection} by checking the
@@ -91,7 +73,7 @@ public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?, ?>, M e
 	 * @return {@code true} if the {@code col} does not contain any subset of
 	 *         {@code test}, otherwise {@code false}
 	 */
-	private boolean isMinimalSimple(Collection<Set<Integer>> sets, Set<Integer> test) {
+	public static boolean isMinimalSimple(Collection<Set<Integer>> sets, Set<Integer> test) {
 		// go through each element of the collection
 		Iterator<Set<Integer>> iter = sets.iterator();
 		while (iter.hasNext()) {

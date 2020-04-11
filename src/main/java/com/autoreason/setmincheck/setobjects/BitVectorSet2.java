@@ -1,11 +1,34 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Set;
+
 /**
  * An alternative version of {@link BitVectorSet} where the comparison
  * additionally considers the bit count of the long values
  *
  */
 public class BitVectorSet2 extends BitVectorSet {
+	
+	public BitVectorSet2() {
+		this.set = null;
+		this.setRepresentation = null;
+	}
+	
+	
+	public BitVectorSet2(long[] bv) {
+		this.set = null;
+		this.setRepresentation = bv;
+	}
+	
+	public BitVectorSet2(Set<?> set) {
+		this.set = set;
+		this.setRepresentation = new BitVectorSet(set).setRepresentation;
+	}
+	
+	public BitVectorSet2(Set<?> set, long[] bv) {
+		this.set = set;
+		this.setRepresentation = bv;
+	}
 
 	// alternative compareTo-method based on number of set elements (and long
 	// values for same size)
@@ -44,5 +67,10 @@ public class BitVectorSet2 extends BitVectorSet {
 		}
 		// bitVector elements are equal
 		return 0;
+	}
+	
+	
+	public BitVectorSet2Checker getMinChecker() {
+		return new BitVectorSet2Checker();
 	}
 }

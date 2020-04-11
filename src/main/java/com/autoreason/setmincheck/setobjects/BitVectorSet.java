@@ -9,7 +9,7 @@ import com.autoreason.setmincheck.MinimalityChecker;
  * {@link #hashCode} of the set's elements
  *
  */
-public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSetChecker> { // implements Comparable<BitVectorSet> {
+public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSetChecker> { 
 
 	/**
 	 * Original {@link Set} represented by the {@link BitVectorSet} object

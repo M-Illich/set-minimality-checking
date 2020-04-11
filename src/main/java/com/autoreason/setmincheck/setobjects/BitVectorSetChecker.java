@@ -29,9 +29,9 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 		long[] candArray = previous.setRepresentation;
 		// convert test to appropriate bit vector representation
 		long[] testArray = transform(test, candArray.length);
-		
+
 		// check if next match can be found
-		if(previous.compareTo(new BitVectorSet(testArray)) != -1) {
+		if (previous.compareTo(new BitVectorSet(testArray)) != -1) {
 			// previous is not smaller than test -> no next match possible
 			return null;
 		}
@@ -119,7 +119,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 
 	/**
 	 * Compute the sum of the values of each position of two provided {@code long[]}
-	 * objects with same length
+	 * objects
 	 * 
 	 * @param a A {@code long[]}
 	 * @param b A {@code long[]}
@@ -130,12 +130,22 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	long[] add(long[] a, long[] b) {
 
 		int len = a.length;
+		int lenB = b.length;
+
 		// create new array containing the long values as sum
-		long[] ab = a.clone();
+		long[] ab;
+		if (len > lenB) {
+			len = lenB;
+			ab = a.clone();
+			// smaller one is added to bigger array (see below)
+			a = b.clone();
+		} else {
+			ab = b.clone();
+		}
 
 		// create sum for each array position
 		for (int i = 0; i < len; i++) {
-			ab[i] += b[i];
+			ab[i] += a[i];
 		}
 		return ab;
 	}
@@ -182,7 +192,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 
 	/**
 	 * Perform bitwise AND operation on the values of each position of the provided
-	 * long arrays of same length
+	 * long arrays
 	 * 
 	 * @param a A {@code long[]}
 	 * @param b A {@code long[]}
@@ -190,20 +200,31 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 *         the arrays' {@code long} values
 	 */
 	long[] and(long[] a, long[] b) {
+
 		int len = a.length;
-		// create new array containing the long values as AND
-		long[] ab = a.clone();
+		int lenB = b.length;
+
+		// create new array containing the long values as sum
+		long[] ab;
+		if (len > lenB) {
+			len = lenB;
+			ab = a.clone();
+			// smaller one is added to bigger array (see below)
+			a = b.clone();
+		} else {
+			ab = b.clone();
+		}
 
 		// compute bitwise AND for each array position
 		for (int i = 0; i < len; i++) {
-			ab[i] &= b[i];
+			ab[i] &= a[i];
 		}
 		return ab;
 	}
 
 	/**
 	 * Perform bitwise XOR operation on the values of each position of the provided
-	 * long arrays of same length
+	 * long arrays
 	 * 
 	 * @param a A {@code long[]}
 	 * @param b A {@code long[]}
@@ -211,13 +232,24 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 *         the arrays' {@code long} values
 	 */
 	long[] xor(long[] a, long[] b) {
+
 		int len = a.length;
-		// create new array containing the long values as XOR
-		long[] ab = a.clone();
+		int lenB = b.length;
+
+		// create new array containing the long values as sum
+		long[] ab;
+		if (len > lenB) {
+			len = lenB;
+			ab = a.clone();
+			// smaller one is added to bigger array (see below)
+			a = b.clone();
+		} else {
+			ab = b.clone();
+		}
 
 		// compute bitwise XOR for each array position
 		for (int i = 0; i < len; i++) {
-			ab[i] ^= b[i];
+			ab[i] ^= a[i];
 		}
 		return ab;
 	}
@@ -229,7 +261,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	@Override
 	public boolean matches(BitVectorSet candidate, Set<?> test) {
 		// handle null
-		if(candidate == null || test == null) {
+		if (candidate == null || test == null) {
 			return false;
 		}
 		// get long arrays
@@ -258,11 +290,11 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 	 *         of {@code set}
 	 */
 	long[] transform(Set<?> set, int length) {
-		
+
 		// look for long array representation of given length in hash table
-		String key = defineHashKey(set,length);
+		String key = defineHashKey(set, length);
 		long[] bv = hashtable.get(key);
-		
+
 		// no element found -> create new one
 		if (bv == null) {
 			// create bit vector of given length
@@ -285,9 +317,11 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>>
 
 	/**
 	 * Define a {@link String} that serves as key for a hash table
+	 * 
 	 * @param set A {@link Set}
-	 * @param i An {@link int} value		
-	 * @return A {@link String} based on the hashcode of {@code set} appended by the space-separated value {@code i}  
+	 * @param i   An {@link int} value
+	 * @return A {@link String} based on the hashcode of {@code set} appended by the
+	 *         space-separated value {@code i}
 	 */
 	private String defineHashKey(Set<?> set, int i) {
 		// use hash code of set together with the given int value as key
