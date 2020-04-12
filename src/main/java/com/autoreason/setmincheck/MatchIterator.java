@@ -17,21 +17,19 @@ import com.autoreason.setmincheck.setobjects.BitVectorSet;
 public abstract class MatchIterator<C extends Comparable<C>, T> implements MatchProvider<C, T> {
 
 	/**
-	 * Find all elements from a {@link Collection} that match the given object of
+	 * Find all elements from a {@link NavigableSet} that match the given object of
 	 * type {@code T}
 	 * 
-	 * @param col  A {@code Collection<C>} with elements of the {@link Comparable}
+	 * @param col  A {@code NavigableSet<C>} with elements of the {@link Comparable}
 	 *             type {@code C}
 	 * @param test An object of some type {@code T}
 	 * @return An {@link Iterable} that contains, in an sorted order, every element
 	 *         from {@code col} which {@link MatchProvider#matches} the object
 	 *         {@code test}
 	 */
-	protected Iterable<C> matchesOf(Collection<C> col, T test) {
+	protected Iterable<C> matchesOf(NavigableSet<C> col, T test) {
 		return new Iterable<C>() {
-			// transform Collection to NavigableSet
-			NavigableSet<C> naviCol = new TreeSet<C>(col);
-
+			
 			@Override
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {
@@ -67,7 +65,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 					 */
 					private C getFirstCandidate() {
 						// get first element of collection
-						C cur = naviCol.first();
+						C cur = col.first();
 						// return first element if it is a match of test
 						if (matches(cur, test)) {
 							return cur;
@@ -97,7 +95,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 								cur = null;
 							} else {
 								// get next candidate from collection that is greater than or equal to match
-								cur = naviCol.ceiling(nextMatch);
+								cur = col.ceiling(nextMatch);
 								// check if candidate is a match of test
 								if (matches(cur, test)) {
 									break;

@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NavigableSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -47,7 +49,7 @@ public abstract class MinimalityCheckerTest<C extends SetRepresent<C, ?, ?>, M e
 
 	private void testIsMinimal(Collection<Set<Integer>> sets, Set<Integer> test) {
 		// convert collection sets to type C
-		Collection<C> col = c.convertCollection(sets);
+		NavigableSet<C> col = new TreeSet<C>(c.convertCollection(sets));
 
 		// compare with result from iterating over every element of set collection
 		assertEquals(matchOperator.isMinimal(col, test), isMinimalSimple(sets, test));

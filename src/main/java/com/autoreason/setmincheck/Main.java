@@ -22,20 +22,7 @@ import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
 public class Main {
 	public static void main(String[] args) {
 		
-		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
-		Set<Integer> testSet = Set.of(0, 1, 2, 3, 4, 5, 6, 7, 8);
-
-		ArrayList<Collection<Set<Integer>>> cols = FileSetConverter.readCollectionsFromFile("jsSets-go-big.txt");
-		BitVectorSet b = null; // new BitVectorSet(new long[1]);
-		
-		Collection<BitVectorSet> bvsCol = b.convertCollection(cols.get(0));
-		for (BitVectorSet bvs : bvsCol) {
-			System.out.println(Long.toBinaryString(bvs.setRepresentation[0]));
-		}
-		
-		System.out.println(bvsChecker.isMinimal(bvsCol, testSet));
-		
-		
+	
 		
 //
 //		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();

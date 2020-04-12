@@ -2,8 +2,10 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.NavigableSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -94,13 +96,13 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	}
 
 	@Override
-	protected Collection<BitVectorSet> defineCollection(long seed) {
+	protected NavigableSet<BitVectorSet> defineCollection(long seed) {
 		// create Collection of random Set elements based on given seed
 		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
 		// collection taken from stored minSets.txt file
 //		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");	
 		// return converted sets
-		return c.convertCollection(col);
+		return new TreeSet<BitVectorSet>(c.convertCollection(col));
 	}
 
 	@Override

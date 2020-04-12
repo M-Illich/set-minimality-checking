@@ -30,7 +30,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 
 	private void testMatchesOf(long seed) {
 		// define test objects
-		Collection<C> col = defineCollection(seed);
+		NavigableSet<C> col = defineCollection(seed);
 		T test = defineTest(seed);
 
 		// compute Iterable with tested method
@@ -111,11 +111,11 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 	}
 
 	/**
-	 * Define a {@link Collection} for testing purposes
+	 * Define a {@link NavigableSet} for testing purposes
 	 * 
 	 * @param seed A {@link long} value used as seed to generate a random object
-	 * @return A {@link Collection} containing elements of type {@code C}
+	 * @return A {@link NavigableSet} containing elements of type {@code C}
 	 */
-	protected abstract Collection<C> defineCollection(long seed);
+	protected abstract NavigableSet<C> defineCollection(long seed);
 
 }
