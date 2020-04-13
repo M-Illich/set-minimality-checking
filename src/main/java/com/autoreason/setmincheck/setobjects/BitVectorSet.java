@@ -2,8 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Set;
 
-import com.autoreason.setmincheck.MinimalityChecker;
-
 /**
  * Representation of a {@link Set} as array of {@code long} values based on the
  * {@link #hashCode} of the set's elements

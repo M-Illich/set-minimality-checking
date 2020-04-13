@@ -1,12 +1,8 @@
 package com.autoreason.setmincheck;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
-
-import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
 /**
  * 
