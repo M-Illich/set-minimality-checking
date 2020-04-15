@@ -22,7 +22,19 @@ import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
 public class Main {
 	public static void main(String[] args) {
 		
+	boolean[] a = new boolean[5];
+//	a[0] = true;
+	a[2] = true;
+	a[4] = true;
+	boolean[] b = new boolean[5];
+	b[0] = true;	
+//	b[1] = true;
+	b[2] = true;
+	b[4] = true;
 	
+	System.out.println(Arrays.compare(b, a));
+	
+
 		
 //
 //		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
