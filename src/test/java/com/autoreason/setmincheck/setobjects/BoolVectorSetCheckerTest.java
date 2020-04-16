@@ -22,7 +22,7 @@ public class BoolVectorSetCheckerTest extends MinimalityCheckerTest<BoolVectorSe
 
 	// create random test objects based on seed
 	private static final Random SEED_GENERATOR = new Random();
-	private long currentSeed =  Long.valueOf("-6144163595337546712");  // SEED_GENERATOR.nextLong();
+	private long currentSeed =  SEED_GENERATOR.nextLong(); // Long.valueOf("5028188842633612834");  
 	// maximum size for randomly generated sets
 	private final int MAX_SIZE = 10;
 	// number of sets contained in randomly generated collection
@@ -80,7 +80,9 @@ public class BoolVectorSetCheckerTest extends MinimalityCheckerTest<BoolVectorSe
 	protected BoolVectorSet defineMatch(BoolVectorSet test) {
 		// remove one element from set to get a matching object
 		Set<?> set = test.set;
-		set.remove(set.iterator().next());		
+		if(set.size() > 1) {
+			set.remove(set.iterator().next());		
+		}		
 		return new BoolVectorSet(set);
 	}
 

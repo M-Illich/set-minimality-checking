@@ -48,7 +48,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		T test = defineTest(seed);
 		// convert test to type C
 		C testC = convert(test);
-		
+			
 		// perform test
 		assertTrue(matchOperator.matches(defineMatch(testC), test));
 		assertFalse(matchOperator.matches(defineNotMatch(testC), test));

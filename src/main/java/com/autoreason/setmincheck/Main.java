@@ -28,9 +28,9 @@ public class Main {
 		Set<Integer> testSet = Set.of(0,3,5,8,10); // Set.of(1, 2, 3, 4, 7, 0, 5);
 		BoolVectorSet testBVS = new BoolVectorSet(testSet);
 		boolean[] testBV = testBVS.setRepresentation;
-		System.out.println("test: ");		
-		System.out.println(Arrays.toString(testBV));	
-		System.out.println();
+//		System.out.println("test: ");		
+//		System.out.println(Arrays.toString(testBV));	
+//		System.out.println();
 
 		NavigableSet<BoolVectorSet> collection = new TreeSet<BoolVectorSet>();
 		collection.add(new BoolVectorSet(Set.of(1, 2, 3)));
@@ -40,9 +40,12 @@ public class Main {
 		collection.add(new BoolVectorSet(Set.of(0, 5, 2, 7)));
 		collection.add(new BoolVectorSet(Set.of(10, 11, 9, 3)));
 		
-		BoolVectorSet cand = new BoolVectorSet(new boolean[]{true, true, true});
-		System.out.println(Arrays.toString(bvsChecker.getNextMatch(cand, testSet).setRepresentation));
-		System.out.println();
+		BoolVectorSet cand = new BoolVectorSet(new boolean[]{false, true, true, true, true});
+//		System.out.println(Arrays.toString(bvsChecker.getNextMatch(cand, testSet).setRepresentation));
+//		System.out.println();
+		
+		System.out.println(bvsChecker.matches(cand, testSet));
+		System.out.println(Arrays.compare(new boolean[] {false, true, true, true, true}, new boolean[] {true, false, false, true, false}));
 		
 //		
 //		NavigableSet<BoolVectorSet> col2 = new TreeSet<BoolVectorSet>();

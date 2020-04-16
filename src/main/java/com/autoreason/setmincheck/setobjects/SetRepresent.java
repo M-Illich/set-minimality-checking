@@ -14,7 +14,7 @@ import com.autoreason.setmincheck.MinimalityChecker;
  * @param <R> A data type for the set representation
  * @param <M> A {@link MinimalityChecker} subclass for {@code T}
  */
-public abstract class SetRepresent<T, R, M extends MinimalityChecker<?, Set<?>>> implements Comparable<T> {
+public abstract class SetRepresent<T, R, M extends MinimalityChecker<?>> implements Comparable<T> {
 
 	/**
 	 * A specific representation of a {@link Set} for simpler processing

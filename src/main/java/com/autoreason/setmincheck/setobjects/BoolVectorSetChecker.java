@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.autoreason.setmincheck.MinimalityChecker;
 
-public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?>> {
+public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 
 	// hash table to store different BoolVectorSet representations, i.e. boolean[]
 	// of different lengths, of tested sets
@@ -37,6 +37,9 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 					candArray = new boolean[candLength];
 					// candidate does not contain any true value
 					highCand = 0;
+					// convert test to appropriate boolean vector representation
+					testArray = transform(test, candLength);
+
 				} else {
 					return null;
 				}
@@ -84,15 +87,21 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 		// get boolean arrays
 		boolean[] candArray = candidate.setRepresentation;
 		// candidate cannot be larger than test
-		if (candArray.length > test.size()) {
+		int candLength = candArray.length;
+		if (candLength > test.size()) {
 			return false;
 		} else {
 			// convert test to appropriate BoolVectorSet representation
-			boolean[] testArray = transform(test, candArray.length);
+			boolean[] testArray = transform(test, candLength);
 
 			// subset candidate can only have 'true' entries at the same positions like
 			// testArray
-			return Arrays.compare(candArray, testArray) < 1;
+			int i = candLength - 1;
+			while (i > 0 && (!candArray[i] | testArray[i])) {
+				i--;
+			}
+			// if i == 0, no conflicting position was found
+			return i == 0;
 		}
 
 	}

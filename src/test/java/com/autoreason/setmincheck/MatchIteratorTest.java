@@ -106,9 +106,9 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		Iterator<C> expIter = expected.iterator();
 		Iterator<C> matchIter = iterMatches.iterator();
 		
-		// TEST TODO
-		System.out.println("test: " + Arrays.toString(new BoolVectorSet((Set)test).setRepresentation));
-		System.out.println();
+//		// TEST TODO
+//		System.out.println("test: " + Arrays.toString(new BoolVectorSet((Set)test).setRepresentation));
+//		System.out.println();
 //		
 //		System.out.println("expected: ");
 //		while (expIter.hasNext()) {
@@ -119,7 +119,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 //		while (matchIter.hasNext()) {
 //			System.out.println(Arrays.toString(((BoolVectorSet)matchIter.next()).setRepresentation));
 //		}
-		
+//		
 		while (expIter.hasNext()) {
 			assertEquals(expIter.next(), matchIter.next());
 		}

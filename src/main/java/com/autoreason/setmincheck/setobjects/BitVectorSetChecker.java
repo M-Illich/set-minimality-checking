@@ -11,7 +11,7 @@ import com.autoreason.setmincheck.MinimalityChecker;
  * set minimality
  * 
  */
-public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet, Set<?>> {
+public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 
 	// hash table to store different BitVectorSet representations, i.e. long[] of
 	// different lengths, of tested sets
