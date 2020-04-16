@@ -20,8 +20,8 @@ public abstract class SetRepresentTest<C extends SetRepresent<C, ?, ?>> {
 		C c = operator.convertSet(Set.of(2, 4, 6));
 
 		assertTrue(a.compareTo(b) == 0);
-		assertTrue(a.compareTo(c) == -1);
-		assertTrue(c.compareTo(b) == 1);
+		assertTrue(a.compareTo(c) < 0);
+		assertTrue(c.compareTo(b) > 0);
 	}
 
 	/**

@@ -44,10 +44,15 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		int len = set.size();
 		this.setRepresentation = new boolean[len];
 
-		// use elements of set to define position of 1-bits
-		for (Object e : set) {			
-			// set 1-bit in appropriate position
-			this.setRepresentation[e.hashCode() % len] = true;
+		// use elements of set to define position of true values
+		for (Object e : set) {		
+			int hashcode = e.hashCode();
+			// only allow positive values
+			if(hashcode < 0) {
+				hashcode *= -1;
+			}			
+			// set true value in appropriate position
+			this.setRepresentation[hashcode % len] = true;
 		}
 	}
 
@@ -72,7 +77,7 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		int c = Integer.compare(a.length, b.length);
 		// same length
 		if(c == 0) {
-			int i = a.length;
+			int i = a.length - 1;
 			while (i >= 0 && c == 0) {
 				// comparison based on last entry in array
 				c = Boolean.compare(a[i], b[i]);

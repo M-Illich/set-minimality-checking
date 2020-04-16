@@ -12,8 +12,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.autoreason.setfileconverter.FileSetConverter;
-import com.autoreason.setmincheck.setobjects.BitVectorSet;
-import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
+
 
 /**
  * Main class to execute implementation
@@ -21,61 +22,59 @@ import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
  */
 public class Main {
 	public static void main(String[] args) {
-		
-	boolean[] a = new boolean[5];
-//	a[0] = true;
-	a[2] = true;
-	a[4] = true;
-	boolean[] b = new boolean[5];
-	b[0] = true;	
-//	b[1] = true;
-	b[2] = true;
-	b[4] = true;
+				
 	
-	System.out.println(Arrays.compare(b, a));
-	
+		BoolVectorSetChecker bvsChecker = new BoolVectorSetChecker();
+		Set<Integer> testSet = Set.of(0,3,5,8,10); // Set.of(1, 2, 3, 4, 7, 0, 5);
+		BoolVectorSet testBVS = new BoolVectorSet(testSet);
+		boolean[] testBV = testBVS.setRepresentation;
+		System.out.println("test: ");		
+		System.out.println(Arrays.toString(testBV));	
+		System.out.println();
 
+		NavigableSet<BoolVectorSet> collection = new TreeSet<BoolVectorSet>();
+		collection.add(new BoolVectorSet(Set.of(1, 2, 3)));
+		collection.add(new BoolVectorSet(Set.of(2, 4, 7)));
+		collection.add(new BoolVectorSet(Set.of(5, 13)));
+		collection.add(new BoolVectorSet(Set.of(8, 12, 4, 5)));
+		collection.add(new BoolVectorSet(Set.of(0, 5, 2, 7)));
+		collection.add(new BoolVectorSet(Set.of(10, 11, 9, 3)));
 		
-//
-//		BitVectorSetChecker bvsChecker = new BitVectorSetChecker();
-//		Set<Integer> testSet = Set.of(1, 2, 3, 4, 7, 0, 5);
-//		BitVectorSet testBVS = new BitVectorSet(testSet);
-//		long[] testBV = testBVS.bitVector;
-//		System.out.println("test: ");
-//		for (int i = 0; i < testBV.length; i++) {
-//			System.out.print(Long.toBinaryString(testBV[i]) + " ");
+		BoolVectorSet cand = new BoolVectorSet(new boolean[]{true, true, true});
+		System.out.println(Arrays.toString(bvsChecker.getNextMatch(cand, testSet).setRepresentation));
+		System.out.println();
+		
+//		
+//		NavigableSet<BoolVectorSet> col2 = new TreeSet<BoolVectorSet>();
+//		col2.add(new BoolVectorSet(Set.of(1,2,3,4,6)));
+//		BoolVectorSet nxt = col2.ceiling(new BoolVectorSet(Set.of(1,2,3,4)));
+//		System.out.println(Arrays.toString(nxt.setRepresentation));
+		
+//		
+//		for (BoolVectorSet bvs : collection) {
+//			boolean[] bv = bvs.setRepresentation;
+//			System.out.println(Arrays.toString(bv));		
 //		}
 //		System.out.println();
 //
-//		NavigableSet<BitVectorSet> collection = new TreeSet<BitVectorSet>();
-//		collection.add(new BitVectorSet(Set.of(1, 2, 3)));
-//		collection.add(new BitVectorSet(Set.of(2, 4, 7)));
-//		collection.add(new BitVectorSet(Set.of(5, 13)));
-//		collection.add(new BitVectorSet(Set.of(8, 12, 4, 5)));
-//		collection.add(new BitVectorSet(Set.of(0, 5, 2, 7)));
-//		collection.add(new BitVectorSet(Set.of(10, 11, 9, 3)));
-//
-//		Iterable<BitVectorSet> matchIter = bvsChecker.matchesOf(collection, testSet);
+//		Iterable<BoolVectorSet> matchIter = bvsChecker.matchesOf(collection, testSet);
 //
 //		System.out.println();
 //		System.out.println("assumed: ");
-//		for (BitVectorSet bvs : matchIter) {
-//			long[] bv = bvs.bitVector;
-//			for (int i = 0; i < bv.length; i++) {
-//				System.out.print(Long.toBinaryString(bv[i]) + " ");
-//			}
-//			System.out.println();
+//		for (BoolVectorSet bvs : matchIter) {
+//			boolean[] bv = bvs.setRepresentation;
+//			System.out.println(Arrays.toString(bv));			
 //		}
 //
-//		Iterable<BitVectorSet> expected = new Iterable<BitVectorSet>() {
+//		Iterable<BoolVectorSet> expected = new Iterable<BoolVectorSet>() {
 //			// transform Collection to NavigableSet
-//			NavigableSet<BitVectorSet> naviCol = new TreeSet<BitVectorSet>(collection);
+//			NavigableSet<BoolVectorSet> naviCol = new TreeSet<BoolVectorSet>(collection);
 //
 //			@Override
-//			public Iterator<BitVectorSet> iterator() {
-//				return new Iterator<BitVectorSet>() {
+//			public Iterator<BoolVectorSet> iterator() {
+//				return new Iterator<BoolVectorSet>() {
 //					// initialize next element with first match
-//					BitVectorSet next = getFirstCandidate();
+//					BoolVectorSet next = getFirstCandidate();
 //
 //					@Override
 //					public boolean hasNext() {
@@ -83,10 +82,10 @@ public class Main {
 //					}
 //
 //					@Override
-//					public BitVectorSet next() {
+//					public BoolVectorSet next() {
 //						if (next != null) {
 //							// safe current element
-//							BitVectorSet cur = next;
+//							BoolVectorSet cur = next;
 //							// get next match being greater than current
 //							next = getNextCandidate(next);
 //							// return current element
@@ -98,9 +97,9 @@ public class Main {
 //						}
 //					}
 //
-//					private BitVectorSet getFirstCandidate() {
+//					private BoolVectorSet getFirstCandidate() {
 //						// get first element of collection
-//						BitVectorSet cur = naviCol.first();
+//						BoolVectorSet cur = naviCol.first();
 //						// return first element if it is a match of test
 //						if (bvsChecker.matches(cur, testSet)) {
 //							return cur;
@@ -111,7 +110,7 @@ public class Main {
 //						}
 //					}
 //
-//					private BitVectorSet getNextCandidate(BitVectorSet cur) {
+//					private BoolVectorSet getNextCandidate(BoolVectorSet cur) {
 //						// look for next match in collection
 //						while (cur != null) {
 //							// get next element from collection
@@ -134,12 +133,9 @@ public class Main {
 //
 //		System.out.println();
 //		System.out.println("expected: ");
-//		for (BitVectorSet bvs : expected) {
-//			long[] bv = bvs.bitVector;
-//			for (int i = 0; i < bv.length; i++) {
-//				System.out.print(Long.toBinaryString(bv[i]) + " ");
-//			}
-//			System.out.println();
+//		for (BoolVectorSet bvs : expected) {
+//			boolean[] bv = bvs.setRepresentation;
+//			System.out.println(Arrays.toString(bv));
 //		}
 
 //		

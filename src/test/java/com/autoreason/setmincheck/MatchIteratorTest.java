@@ -2,16 +2,17 @@ package com.autoreason.setmincheck;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Test;
 
 import com.autoreason.setmincheck.MatchIterator;
-import com.autoreason.setmincheck.setobjects.BitVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet;
 
 public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
 		extends MatchProviderTest<C, T, M> {
@@ -104,6 +105,21 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		// compare found matches
 		Iterator<C> expIter = expected.iterator();
 		Iterator<C> matchIter = iterMatches.iterator();
+		
+		// TEST TODO
+		System.out.println("test: " + Arrays.toString(new BoolVectorSet((Set)test).setRepresentation));
+		System.out.println();
+//		
+//		System.out.println("expected: ");
+//		while (expIter.hasNext()) {
+//			System.out.println(Arrays.toString(((BoolVectorSet)expIter.next()).setRepresentation));
+//		}
+//		System.out.println();
+//		System.out.println("assumed: ");
+//		while (matchIter.hasNext()) {
+//			System.out.println(Arrays.toString(((BoolVectorSet)matchIter.next()).setRepresentation));
+//		}
+		
 		while (expIter.hasNext()) {
 			assertEquals(expIter.next(), matchIter.next());
 		}

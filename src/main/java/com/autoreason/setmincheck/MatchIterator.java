@@ -1,8 +1,11 @@
 package com.autoreason.setmincheck;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
+
+import com.autoreason.setmincheck.setobjects.BoolVectorSet;
 
 /**
  * 
@@ -42,8 +45,10 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 						if (next != null) {
 							// safe current element
 							C cur = next;	
+														
 							// get next match being greater than current
-							next = getNextCandidate(next);
+							next = getNextCandidate(next);							
+							
 							// return current element
 							return cur;
 						}
@@ -84,14 +89,30 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 						// look for next match in collection
 						C nextMatch;
 						while (cur != null) {
+							
+							// TEST TODO
+							System.out.println("cur: " + Arrays.toString(((BoolVectorSet) cur).setRepresentation));							
+							
 							// get next match (used to skip all elements from collection being smaller)
 							nextMatch = getNextMatch(cur, test);
+							
 							// stop if no next match available
 							if (nextMatch == null) {
 								cur = null;
 							} else {
+								
+
+								// TEST TODO
+								System.out.println("nextMatch: " + Arrays.toString(((BoolVectorSet) nextMatch).setRepresentation));
+								
+								
 								// get next candidate from collection that is greater than or equal to match
 								cur = col.ceiling(nextMatch);
+								
+								// TEST TODO
+								System.out.println("cur-ceiling: " + Arrays.toString(((BoolVectorSet) cur).setRepresentation));
+								System.out.println();
+								
 								// check if candidate is a match of test
 								if (matches(cur, test)) {
 									break;

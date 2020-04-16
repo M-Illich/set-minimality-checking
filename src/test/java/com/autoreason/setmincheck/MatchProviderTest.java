@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
 import org.junit.Test;
 
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet;
 
 public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends MatchProvider<C, T>> {
 
@@ -46,6 +48,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		T test = defineTest(seed);
 		// convert test to type C
 		C testC = convert(test);
+		
 		// perform test
 		assertTrue(matchOperator.matches(defineMatch(testC), test));
 		assertFalse(matchOperator.matches(defineNotMatch(testC), test));

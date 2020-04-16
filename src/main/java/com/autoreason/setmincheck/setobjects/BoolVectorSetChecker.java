@@ -17,31 +17,62 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 		// get boolean arrays
 		boolean[] candArray = previous.setRepresentation.clone();
 		int candLength = candArray.length;
-		// convert test to appropriate boolean vector representation
-		boolean[] testArray = transform(test, candLength);
+		// array for test set
+		boolean[] testArray;
+		// highest position of true value only occurring in candidate
+		int highCand;
 
-		// check if next match can be found
-		if (previous.compareTo(new BoolVectorSet(testArray)) != -1) {
-			// previous is not smaller than test -> no next match possible
+		// look for next match
+		if (candLength <= test.size()) {
+			// convert test to appropriate boolean vector representation
+			testArray = transform(test, candLength);
+
+			// check if next match can be found
+			if ((previous.compareTo(new BoolVectorSet(testArray)) > -1)) {
+				// previous is not smaller than test -> no next match possible
+				// try next length for representation
+				if (candLength < test.size()) {
+					candLength++;
+					// start with empty candidate of increased size
+					candArray = new boolean[candLength];
+					// candidate does not contain any true value
+					highCand = 0;
+				} else {
+					return null;
+				}
+
+			} else {
+				// determine highest position of true value only occurring in candidate
+				highCand = candLength - 1;
+				while ((highCand > 0) && (testArray[highCand] | !candArray[highCand])) {
+					highCand--;
+				}
+			}
+
+			// get lowest position of true value in test that is higher than highCand
+			int lowTest = highCand + 1;
+			if (highCand == 0) {
+				// start from 0 if candidate only contains true values at same positions like
+				// test
+				lowTest = 0;
+			}
+			while ((lowTest < candLength) && (!testArray[lowTest] | candArray[lowTest])) {
+				lowTest++;
+			}
+
+			// set value in candidate at this position to true
+			candArray[lowTest] = true;
+			// set all the lower positions to false
+			Arrays.fill(candArray, 0, lowTest, false);
+
+			return new BoolVectorSet(candArray);
+
+		}
+		// if candidate is already larger than the set it cannot be a match
+		else {
 			return null;
 		}
-		
-		// determine highest position of true value only occurring in candidate
-		int highCand = candLength;
-		while((highCand > 0) && (testArray[highCand] | !candArray[highCand])) {
-			highCand--;
-		}
-		// get lowest position of true value in test that is higher than highCand
-		int lowTest = highCand + 1;
-		while((lowTest < testArray.length) && (!testArray[lowTest] | candArray[lowTest])) {
-			lowTest++;
-		}
-		// set value in candidate at this position to true
-		candArray[lowTest] = true;
-		// set all the lower positions to false
-		Arrays.fill(candArray, 0, lowTest, false);
-				
-		return new BoolVectorSet(candArray);
+
 	}
 
 	@Override
@@ -52,12 +83,18 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 		}
 		// get boolean arrays
 		boolean[] candArray = candidate.setRepresentation;
-		// convert test to appropriate BoolVectorSet representation
-		boolean[] testArray = transform(test, candArray.length);
+		// candidate cannot be larger than test
+		if (candArray.length > test.size()) {
+			return false;
+		} else {
+			// convert test to appropriate BoolVectorSet representation
+			boolean[] testArray = transform(test, candArray.length);
 
-		// subset candidate can only have 'true' entries at the same positions like
-		// testArray
-		return Arrays.compare(candArray, testArray) < 1;
+			// subset candidate can only have 'true' entries at the same positions like
+			// testArray
+			return Arrays.compare(candArray, testArray) < 1;
+		}
+
 	}
 
 	@Override
@@ -88,8 +125,13 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 
 			// use elements of set to define position of true values
 			for (Object e : set) {
+				int hashcode = e.hashCode();
+				// only allow positive values
+				if (hashcode < 0) {
+					hashcode *= -1;
+				}
 				// set true value in appropriate position
-				bv[e.hashCode() % length] = true;
+				bv[hashcode % length] = true;
 			}
 			// add representation to hash table
 			hashtable.put(key, bv);
@@ -109,7 +151,7 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet, Set<?
 	 */
 	private String defineHashKey(Set<?> set, int i) {
 		// use hash code of set together with the given int value as key
-		// TODO hashcode()
+		// TODO hashCode() not efficient for sets
 		return set.size() + " " + i;
 	}
 
