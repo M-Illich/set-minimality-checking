@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 
 public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends MatchProvider<C, T>> {
 
@@ -49,6 +50,10 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		// convert test to type C
 		C testC = convert(test);
 			
+//		// TEST TODO		
+//		System.out.println(new BoolVectorSet2((Set) test).setRepresentation.toString());
+//		System.out.println(((BoolVectorSet2) defineMatch(testC)).setRepresentation.toString());
+//		
 		// perform test
 		assertTrue(matchOperator.matches(defineMatch(testC), test));
 		assertFalse(matchOperator.matches(defineNotMatch(testC), test));

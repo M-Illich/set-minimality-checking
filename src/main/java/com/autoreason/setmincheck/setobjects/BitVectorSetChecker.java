@@ -325,7 +325,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 	 */
 	private String defineHashKey(Set<?> set, int i) {
 		// use hash code of set together with the given int value as key
-		// TODO hashcode()
+		// TODO hashcode(); key not string better ?
 		return set.size() + " " + i;
 	}
 

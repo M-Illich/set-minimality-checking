@@ -61,7 +61,7 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 	 * {@code boolean[]} representation
 	 * 
 	 * @param set A {@link Set}
-	 * @param bv  A {@code long[]} representing the element {@code set}
+	 * @param bv  A {@code boolean[]} representing the element {@code set}
 	 */
 	public BoolVectorSet(Set<?> set, boolean[] bv) {
 		this.set = set;

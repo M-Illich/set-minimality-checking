@@ -52,8 +52,7 @@ public class BoolVectorSetCheckerTest extends MinimalityCheckerTest<BoolVectorSe
 		}
 		// increase array length if only true values found
 		if(i == len) {			
-			next = Arrays.copyOf(next, len + 1);
-			next[i] = true;
+			next = new boolean[len + 1];			
 		}
 		return new BoolVectorSet(next);
 	}

@@ -2,6 +2,7 @@ package com.autoreason.setmincheck;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -13,6 +14,8 @@ import java.util.TreeSet;
 
 import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet2Checker;
 import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
 
 
@@ -23,30 +26,41 @@ import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
 public class Main {
 	public static void main(String[] args) {
 				
-	
-		BoolVectorSetChecker bvsChecker = new BoolVectorSetChecker();
-		Set<Integer> testSet = Set.of(0,3,5,8,10); // Set.of(1, 2, 3, 4, 7, 0, 5);
-		BoolVectorSet testBVS = new BoolVectorSet(testSet);
-		boolean[] testBV = testBVS.setRepresentation;
+//		BoolVectorSet2 a = new BoolVectorSet2(Set.of(0,1,2,3));
+//		BoolVectorSet2 b = new BoolVectorSet2(Set.of(0,2,3,4));
+//		System.out.println(a.compareTo(b));
+//	
+		BoolVectorSet2Checker bvsChecker = new BoolVectorSet2Checker();
+//		Set<Integer> testSet = Set.of(0,3,5,8,10); // Set.of(1, 2, 3, 4, 7, 0, 5);
+//		BoolVectorSet2 testBVS = new BoolVectorSet2(testSet);
+//		BitSet testBV = testBVS.setRepresentation;
 //		System.out.println("test: ");		
-//		System.out.println(Arrays.toString(testBV));	
+//		System.out.println(testBV.toString());	
 //		System.out.println();
-
-		NavigableSet<BoolVectorSet> collection = new TreeSet<BoolVectorSet>();
-		collection.add(new BoolVectorSet(Set.of(1, 2, 3)));
-		collection.add(new BoolVectorSet(Set.of(2, 4, 7)));
-		collection.add(new BoolVectorSet(Set.of(5, 13)));
-		collection.add(new BoolVectorSet(Set.of(8, 12, 4, 5)));
-		collection.add(new BoolVectorSet(Set.of(0, 5, 2, 7)));
-		collection.add(new BoolVectorSet(Set.of(10, 11, 9, 3)));
+//		
+		NavigableSet<BoolVectorSet2> collection = new TreeSet<BoolVectorSet2>();
+//		collection.add(new BoolVectorSet2(Set.of(1, 2, 3)));
+//		collection.add(new BoolVectorSet2(Set.of(2, 4, 7)));
+//		collection.add(new BoolVectorSet2(Set.of(5, 13)));
+//		collection.add(new BoolVectorSet2(Set.of(8, 12, 4, 5)));
+//		collection.add(new BoolVectorSet2(Set.of(0, 5, 2, 7)));
+//		collection.add(new BoolVectorSet2(Set.of(10, 11, 9, 3)));	
 		
-		BoolVectorSet cand = new BoolVectorSet(new boolean[]{false, true, true, true, true});
-//		System.out.println(Arrays.toString(bvsChecker.getNextMatch(cand, testSet).setRepresentation));
-//		System.out.println();
+		for(Set<Integer> set : FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt")) {
+			collection.add(new BoolVectorSet2(set));
+		}
+//		Iterable<BoolVectorSet2> matchCol = bvsChecker.matchesOf(collection, Set.of(14, 15, 16, 17, 18));	
+//		for (BoolVectorSet2 b : matchCol) {
+//			System.out.println(b.setRepresentation.toString());
+//		}
 		
-		System.out.println(bvsChecker.matches(cand, testSet));
-		System.out.println(Arrays.compare(new boolean[] {false, true, true, true, true}, new boolean[] {true, false, false, true, false}));
-		
+		BoolVectorSet2 cand = new BoolVectorSet2(Set.of(33, 36, 50));
+		System.out.println(bvsChecker.getNextMatch(cand, Set.of(14, 15, 16, 17, 18)).setRepresentation.toString());
+		System.out.println();
+//		
+//		System.out.println(bvsChecker.matches(cand, testSet));
+//		System.out.println(Arrays.compare(new boolean[] {false, true, true, true, true}, new boolean[] {true, false, false, true, false}));
+//		
 //		
 //		NavigableSet<BoolVectorSet> col2 = new TreeSet<BoolVectorSet>();
 //		col2.add(new BoolVectorSet(Set.of(1,2,3,4,6)));
