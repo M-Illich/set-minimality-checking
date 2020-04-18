@@ -18,68 +18,62 @@ public class BoolVectorSet2Checker extends MinimalityChecker<BoolVectorSet2> {
 		BitSet candBitSet = (BitSet) previous.setRepresentation.clone();
 		int candSize = candBitSet.size();
 
-		// candidate must not be larger than test set
-		if (candBitSet.cardinality() <= test.size()) {
-			// convert test to appropriate BitSet representation
-			BitSet testBitSet = transform(test, candSize);
-			// highest position of true entry in candidate
-			int highCand = candBitSet.length() - 1;
+		// convert test to appropriate BitSet representation
+		BitSet testBitSet = transform(test, candSize);
+		// highest position of true entry in candidate
+		int highCand = candBitSet.length() - 1;
 
-			// check if next match can be found
-			boolean changed = false;
-			if ((previous.compareTo(new BoolVectorSet2(testBitSet)) > -1)) {
-				// previous is not smaller than test -> no next match possible
-				// try next length for representation
-				if (candSize < test.size()) {
-					// BitSet size is defined as multiple of 64 -> increase by 64
-					candSize += 64;
-					// create new candidate for new size
-					candBitSet = new BitSet(candSize);
-					changed = true;
-					// candidate is empty -> no true value
-					highCand = -1;
-					// convert test to appropriate BitSet representation
-					testBitSet = transform(test, candSize);
-				} else {
-					return null;
-				}
+		// check if next match can be found
+		boolean changed = false;
+		if ((previous.compareTo(new BoolVectorSet2(testBitSet)) > -1)) {
+			// previous is not smaller than test -> no next match possible
+			// try next length for representation
+			if (candSize < test.size()) {
+				// BitSet size is defined as multiple of 64 -> increase by 64
+				candSize += 64;
+				// create new candidate for new size
+				candBitSet = new BitSet(candSize);
+				changed = true;
+				// candidate is empty -> no true value
+				highCand = -1;
+				// convert test to appropriate BitSet representation
+				testBitSet = transform(test, candSize);
 			} else {
-				// get position of highest true value that only occurs in the candidate
-				while ((highCand > 0) && testBitSet.get(highCand)) {
-					highCand = candBitSet.previousSetBit(highCand - 1);
-				}
+				return null;
 			}
-
-			// get lowest position of true value that only occurs in test starting from
-			// highCand
-			int lowTest = testBitSet.nextSetBit(highCand + 1);
-		// TODO
-			if(lowTest > -1) {
-				while ((lowTest < (testBitSet.length() - 1)) && candBitSet.get(lowTest)) {
-					lowTest = testBitSet.nextSetBit(lowTest + 1);
-				}
-			}
-			else {
-				lowTest = 0;
-			}			
-
-			// set true value at lowTest-position in candidate
-			candBitSet.set(lowTest);
-			if (!changed) {
-				// clear all foregoing positions
-				candBitSet.clear(0, lowTest);
-			}
-			
-			// TEST TODO
-			System.out.println("test: " + testBitSet.toString());
-			System.out.println("pre: " + previous.setRepresentation.toString());
-			System.out.println("next: " + candBitSet.toString());
-
-			return new BoolVectorSet2(candBitSet);
-
 		} else {
-			return null;
+			// get position of highest true value that only occurs in the candidate
+			while ((highCand > 0) && testBitSet.get(highCand)) {
+				highCand = candBitSet.previousSetBit(highCand - 1);
+			}
 		}
+
+		// get lowest position of true value that only occurs in test starting from
+		// highCand
+		int lowTest = testBitSet.nextSetBit(highCand + 1);
+		// TODO
+		if (lowTest > -1) {
+			while ((lowTest < (testBitSet.length() - 1)) && candBitSet.get(lowTest)) {
+				lowTest = testBitSet.nextSetBit(lowTest + 1);
+			}
+		} else {
+			lowTest = 0;
+		}
+
+		// set true value at lowTest-position in candidate
+		candBitSet.set(lowTest);
+		if (!changed) {
+			// clear all foregoing positions
+			candBitSet.clear(0, lowTest);
+		}
+
+//		// TEST TODO
+//		System.out.println("test: " + testBitSet.toString());
+//		System.out.println("pre: " + previous.setRepresentation.toString());
+//		System.out.println("next: " + candBitSet.toString());
+
+		return new BoolVectorSet2(candBitSet);
+
 	}
 
 	@Override

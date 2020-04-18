@@ -92,7 +92,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 						while (cur != null) {	
 							
 							// TEST TODO
-							System.out.println("cur: " + ((BoolVectorSet2) cur).setRepresentation.toString());
+//							System.out.println("cur: " + ((BoolVectorSet2) cur).setRepresentation.toString());
 							
 							// get next match (used to skip all elements from collection being smaller)
 							nextMatch = getNextMatch(cur, test);
@@ -103,7 +103,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 							} else {	
 								
 								// TEST TODO
-								System.out.println("nextMatch: " + ((BoolVectorSet2) nextMatch).setRepresentation.toString());								
+//								System.out.println("nextMatch: " + ((BoolVectorSet2) nextMatch).setRepresentation.toString());								
 								
 								// get next candidate from collection that is greater than or equal to match
 								cur = col.ceiling(nextMatch);
@@ -111,7 +111,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 								if (matches(cur, test)) {
 									
 									// TEST TODO
-									System.out.println("match");
+//									System.out.println("match");
 									
 									break;
 								}
