@@ -1,19 +1,21 @@
 package com.autoreason.setmincheck.setobjects;
 
+import java.util.Arrays;
 import java.util.Set;
 
 /**
- * Representation of a {@link Set} as array of {@code boolean} values based on the
- * {@link #hashCode} of the set's elements (alternative version to {@link BitVectorSet})
+ * Representation of a {@link Set} as array of {@code boolean} values based on
+ * the {@link #hashCode} of the set's elements (alternative version to
+ * {@link BitVectorSet})
  *
  */
 public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVectorSetChecker> {
-	
+
 	/**
 	 * Original {@link Set} represented by the {@link BoolVectorSet} object
 	 */
 	public Set<?> set;
-	
+
 	/**
 	 * Create an empty {@link BoolVectorSet} object
 	 */
@@ -21,7 +23,7 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		this.setRepresentation = null;
 		this.set = null;
 	}
-	
+
 	/**
 	 * Create a {@link BoolVectorSet} object based on a {@code boolean} array
 	 * 
@@ -45,12 +47,12 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		this.setRepresentation = new boolean[len];
 
 		// use elements of set to define position of true values
-		for (Object e : set) {		
+		for (Object e : set) {
 			int hashcode = e.hashCode();
 			// only allow positive values
-			if(hashcode < 0) {
+			if (hashcode < 0) {
 				hashcode *= -1;
-			}			
+			}
 			// set true value in appropriate position
 			this.setRepresentation[hashcode % len] = true;
 		}
@@ -76,13 +78,14 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		// compare length
 		int c = Integer.compare(a.length, b.length);
 		// same length
-		if(c == 0) {
-			int i = a.length - 1;
-			while (i >= 0 && c == 0) {
-				// comparison based on last entry in array
-				c = Boolean.compare(a[i], b[i]);
-				i--;				
-			}
+		if (c == 0) {
+			// compare last occurrence of true
+			int i = a.toString().lastIndexOf("true");		
+			c = Integer.compare(i,b.toString().lastIndexOf("true"));
+			while (c == 0 && i > 0) {
+				i--;
+				c = Boolean.compare(a[i], b[i]);	
+			}					
 		}
 		return c;
 	}

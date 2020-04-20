@@ -7,13 +7,13 @@ import java.util.Set;
  * {@link #hashCode} of the set's elements
  *
  */
-public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSetChecker> { 
+public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSetChecker> {
 
 	/**
 	 * Original {@link Set} represented by the {@link BitVectorSet} object
 	 */
 	public Set<?> set;
-	
+
 	/**
 	 * Create an empty {@link BitVectorSet} object
 	 */
@@ -21,7 +21,7 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		this.setRepresentation = null;
 		this.set = null;
 	}
-	
+
 	/**
 	 * Create a {@link BitVectorSet} object based on a {@code long} array
 	 * 
@@ -48,6 +48,10 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		for (Object e : set) {
 			// determine position
 			int pos = e.hashCode() % (len * 64);
+			// only allow positive values
+			if (pos < 0) {
+				pos *= -1;
+			}
 			// set bit in appropriate long value
 			this.setRepresentation[pos / 64] |= (long) 1 << pos;
 		}
@@ -72,27 +76,20 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		long[] ar2 = o.setRepresentation;
 
 		// compare length of arrays
-		int len1 = ar1.length;
-		int len2 = ar2.length;
-
-		// larger BitVectorSet has longer array
-		if (len1 < len2)
-			return -1;
-		if (len1 > len2)
-			return 1;
-
-		// arrays have same length -> compare elements at each position of arrays
-		for (int i = ar2.length - 1; i >= 0; i--) {
-			// compare long values (highest bit is not sign but rather position of set
-			// element)
-			int c = Long.compareUnsigned(this.setRepresentation[i], o.setRepresentation[i]);
-			if (c != 0)
-				return c;
+		int len1 = ar1.length;		
+		int c = Integer.compare(len1, ar2.length);
+		// compare concrete values if same length
+		if(c == 0) {
+			int i = len1;
+			do {
+				i--;
+				c = Long.compareUnsigned(ar1[i], ar2[i]);
+			} while (c == 0 && i > 0);
 		}
+		
 		// bitVector elements are equal
-		return 0;
+		return c;
 	}
-	
 
 	@Override
 	public <S> BitVectorSet convertSet(Set<S> set) {
@@ -103,7 +100,5 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 	public BitVectorSetChecker getMinChecker() {
 		return new BitVectorSetChecker();
 	}
-
-	
 
 }

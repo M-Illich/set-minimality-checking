@@ -109,19 +109,19 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 		Iterator<C> expIter = expected.iterator();
 		Iterator<C> matchIter = iterMatches.iterator();
 		
-		// TEST TODO
-		System.out.println("test: " + new BoolVectorSet2((Set)test).setRepresentation.toString());
-		System.out.println();
-		
-		System.out.println("expected: ");
-		while (expIter.hasNext()) {
-			System.out.println(((BoolVectorSet2)expIter.next()).setRepresentation.toString());
-		}
-		System.out.println();
-		System.out.println("assumed: ");
-		while (matchIter.hasNext()) {
-			System.out.println(((BoolVectorSet2)matchIter.next()).setRepresentation.toString());
-		}
+//		// TEST TODO
+//		System.out.println("test: " + new BoolVectorSet2((Set)test).setRepresentation.toString());
+//		System.out.println();
+//		
+//		System.out.println("expected: ");
+//		while (expIter.hasNext()) {
+//			System.out.println(((BoolVectorSet2)expIter.next()).setRepresentation.toString());
+//		}
+//		System.out.println();
+//		System.out.println("assumed: ");
+//		while (matchIter.hasNext()) {
+//			System.out.println(((BoolVectorSet2)matchIter.next()).setRepresentation.toString());
+//		}
 		
 		while (expIter.hasNext()) {
 			assertTrue(expIter.next().compareTo(matchIter.next()) == 0);

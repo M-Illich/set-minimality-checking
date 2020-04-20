@@ -41,7 +41,15 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		C nextExpect = getNextMatchSimple(previous, test);
 		C next = matchOperator.getNextMatch(previous, test);
 		
-		assertEquals(nextExpect, next);
+//		// TEST TODO		
+//		System.out.println("test: " + Long.toBinaryString(new BitVectorSet((Set) test).setRepresentation[0]));
+//		System.out.println("prev: " +  Long.toBinaryString(((BitVectorSet) previous).setRepresentation[0]));
+//		System.out.println("nextExpect: " +  Long.toBinaryString(((BitVectorSet) nextExpect).setRepresentation[0]));
+//		System.out.println("next      : " +  Long.toBinaryString(((BitVectorSet) next).setRepresentation[0]));
+//		System.out.println("nextExpect length: " +  ((BitVectorSet) nextExpect).setRepresentation.length);
+//		System.out.println("next length: " +  ((BitVectorSet) next).setRepresentation.length);
+		
+		assertTrue(nextExpect.compareTo(next) == 0);
 	}
 
 	private void testMatches(long seed) {
@@ -50,10 +58,15 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		// convert test to type C
 		C testC = convert(test);
 			
-//		// TEST TODO		
+		// TEST TODO	
+//		System.out.println("test: " + Long.toBinaryString(((BitVectorSet) testC).setRepresentation[0]));
+//		System.out.println("defi: " + Long.toBinaryString(((BitVectorSet) defineMatch(testC)).setRepresentation[0]));
+//		System.out.println("test length: " +  ((BitVectorSet) testC).setRepresentation.length);
+//		System.out.println("defi length: " +  ((BitVectorSet) defineMatch(testC)).setRepresentation.length);
+//		System.out.println("next length: " +  ((BitVectorSet) next).setRepresentation.length);
 //		System.out.println(new BoolVectorSet2((Set) test).setRepresentation.toString());
 //		System.out.println(((BoolVectorSet2) defineMatch(testC)).setRepresentation.toString());
-//		
+		
 		// perform test
 		assertTrue(matchOperator.matches(defineMatch(testC), test));
 		assertFalse(matchOperator.matches(defineNotMatch(testC), test));

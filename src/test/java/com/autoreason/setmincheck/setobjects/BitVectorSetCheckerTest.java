@@ -2,6 +2,7 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Random;
 import java.util.Set;
@@ -21,12 +22,12 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 
 	// create random test objects based on seed
 	private static final Random SEED_GENERATOR = new Random();
-	private long currentSeed = SEED_GENERATOR.nextLong();
+	private long currentSeed =  SEED_GENERATOR.nextLong(); // Long.valueOf("8270419487638343139"); //
 	// maximum size for randomly generated sets
 	private final int MAX_SIZE = 10;
 	// number of sets contained in randomly generated collection
 	private final int NUM_SETS = 10;
-		
+
 	@Test
 	public void testGetLowestBit() {
 		assertArrayEquals(new long[] { 0, 2 }, matchOperator.getLowestBit(new long[] { 0, 42, 4 }));
@@ -61,6 +62,12 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	public void testXor() {
 		assertArrayEquals(new long[] { 3, 1, 3 }, matchOperator.xor(new long[] { 1, 2, 6 }, new long[] { 2, 3, 5 }));
 	}
+	
+	@Test
+	public void testRemoveLowBits() {
+		assertArrayEquals(new long[] { 0, 4, 6 }, matchOperator.removeLowBits(new long[] { 1, 5, 6 }, new long[] { 0, 4 }));
+	}
+	
 
 	@Test
 	public void testTransform() {
@@ -81,8 +88,27 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 		int i = 0;
 		// increase value defined by array by 1
 		do {
-			sum = next[i] + 1;
+			next[i]++;
+			sum = next[i];
+			i++;
 		} while (sum == 0 && i < next.length);
+		// increase array length if new values are all zero
+		if (next[i - 1] == 0) {
+			next = new long[next.length + 1];
+		}
+//		
+//		// TEST TODO
+//		long[] pre = previous.setRepresentation;
+//		System.out.print("pre: ");
+//		for (int j = 0; j < pre.length; j++) {
+//			System.out.print(pre[j] + " ");
+//		}
+//		System.out.println();
+//		System.out.print("nxt: ");
+//		for (int j = 0; j < next.length; j++) {
+//			System.out.print(next[j] + " ");
+//		}
+//		System.out.println();
 
 		return new BitVectorSet(next);
 	}
@@ -91,7 +117,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	protected Set<?> defineTest(long seed) {
 		// Set based on stored minSets.txt file
 //		return new HashSet<Integer>(Set.of(14,15,16,17,18));		
-		// create random Set based on given seed 
+		// create random Set based on given seed
 		return SetGenerator.randomSet(MAX_SIZE, seed);
 	}
 
@@ -109,33 +135,39 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	protected BitVectorSet defineMatch(BitVectorSet test) {
 		// remove one element from set to get a matching object
 		Set<?> set = test.set;
-		set.remove(set.iterator().next());		
+		if(set.size() > 1) {
+			set.remove(set.iterator().next());		
+		}		
 		return new BitVectorSet(set);
 	}
 
 	@Override
 	protected BitVectorSet defineNotMatch(BitVectorSet test) {
-		// bit vector must contain at least one 1-bit at a different position compared to test
+		// bit vector must contain at least one 1-bit at a different position compared
+		// to test
 		long[] bv = test.setRepresentation;
-		// use complement as new long value 
+		// use complement as new long value
 		bv[0] = ~bv[0];
-		
+
 		return new BitVectorSet(bv);
 	}
 
 	@Override
 	protected BitVectorSet defineSmaller(BitVectorSet test) {
-		Set<?> testSet = test.set;
-		BitVectorSet smaller;
-		Set<?> set = testSet;
-		// remove one element from the test set until the related BitVectorSet is
-		// smaller than the given test
-		do {
-			set.remove(testSet.iterator().next());
-			smaller = new BitVectorSet(set);
-		} while (smaller.compareTo(test) != -1 && smaller.set.size() > 0);
-
-		return smaller;
+//		Set<?> testSet = test.set;
+//		BitVectorSet smaller;
+//		Set<?> set = testSet;
+//		// remove one element from the test set until the related BitVectorSet is
+//		// smaller than the given test
+//		Iterator<?> iter = testSet.iterator();
+//		do {
+//			set.remove(iter.next());
+//			smaller = new BitVectorSet(set);
+//		} while (smaller.compareTo(test) > -1 && set.size() > 0);
+//
+//		return smaller;
+		
+		return new BitVectorSet(Set.of());
 	}
 
 	@Override
