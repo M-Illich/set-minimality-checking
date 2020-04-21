@@ -79,13 +79,12 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 		int c = Integer.compare(a.length, b.length);
 		// same length
 		if (c == 0) {
-			// compare last occurrence of true
-			int i = a.toString().lastIndexOf("true");		
-			c = Integer.compare(i,b.toString().lastIndexOf("true"));
-			while (c == 0 && i > 0) {
-				i--;
-				c = Boolean.compare(a[i], b[i]);	
-			}					
+			int i = a.length - 1;
+			while (i >= 0 && c == 0) {
+				// comparison based on last entry in array
+				c = Boolean.compare(a[i], b[i]);
+				i--;				
+			}			
 		}
 		return c;
 	}

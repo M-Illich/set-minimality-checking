@@ -21,79 +21,81 @@ import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet2Checker;
 import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
 
-
 /**
  * Main class to execute implementation
  *
  */
 public class Main {
 	public static void main(String[] args) {
-		
-		boolean[] a = new boolean[10000];
-		boolean[] b = new boolean[10000];
-		a[a.length - 1] = true;
-		b[b.length - 1] = true;
-		a[0] = true;
-		b[0] = true;
-		
-		int c = 0;
-		long start = System.nanoTime();
-		
-		int m;
-		int j = a.length;
-		int i = j / 2;			
-		boolean foundMis = false;
-		while (i > 0 && i < j) {				
-			// get position of next mismatch
-			m = Arrays.mismatch(a, i, j, b, i, j);
-			
-			// TEST TODO
-//			System.out.println("i: " + i + ", j: " + j + ", m: " + m);
-			
-			// no mismatch found
-			if (m < 0) {
-				// if mismatch found previously, stop search
-				if (foundMis) {
-					break;
-				} 
-				// consider foregoing half of indices
-				else {						
-					int end = j;
-					j = i;
-					i -= (end - i) / 2 + (end - i) % 2;
-				}
 
-			} 
-			// mismatch found
-			else {
-				// keep looking for further mismatch at higher position
-				i += m + 1;
-				foundMis = true;
-			}
-		}
-		// compare values at highest found mismatch position
-		if(i < 1) {
-			i = 1;
-		}
-		c = Boolean.compare(a[i-1], b[i-1]);
+		BoolVectorSet2 a = new BoolVectorSet2(Set.of(0));
+		BoolVectorSet b = new BoolVectorSet(new boolean[] {false, true, true, true, true, false});
 		
-//		int i = a.toString().lastIndexOf("true");		
-//		c = Integer.compare(i,b.toString().lastIndexOf("true"));
-//		while (c == 0 && i > 0) {
-//			i--;
-//			c = Boolean.compare(a[i], b[i]);	
+		System.out.println((new BoolVectorSet2Checker()).matches(a,Set.of(1,2,3,4,7,8)));
+		
+		BitSet bs = new BitSet(2*64);
+		System.out.println(bs);
+	
+
+//		boolean[] a = new boolean[1000];
+//		boolean[] b = new boolean[1000];
+//		a[a.length - 1] = true;
+//		b[b.length - 1] = true;
+//		a[0] = true;
+//		b[0] = true;
+//
+//		int c = 0;
+//		long start = System.nanoTime();
+
+//		int m;
+//		int j = a.length;
+//		int i = j / 2;			
+//		boolean foundMis = false;
+//		while (i > 0 && i < j) {				
+//			// get position of next mismatch
+//			m = Arrays.mismatch(a, i, j, b, i, j);
+//			
+//			// TEST TODO
+////			System.out.println("i: " + i + ", j: " + j + ", m: " + m);
+//			
+//			// no mismatch found
+//			if (m < 0) {
+//				// if mismatch found previously, stop search
+//				if (foundMis) {
+//					break;
+//				} 
+//				// consider foregoing half of indices
+//				else {						
+//					int end = j;
+//					j = i;
+//					i -= (end - i) / 2 + (end - i) % 2;
+//				}
+//
+//			} 
+//			// mismatch found
+//			else {
+//				// keep looking for further mismatch at higher position
+//				i += m + 1;
+//				foundMis = true;
+//			}
 //		}
-		
+//		// compare values at highest found mismatch position
+//		if(i < 1) {
+//			i = 1;
+//		}
+//		c = Boolean.compare(a[i-1], b[i-1]);
+//		
+//		
 //		int i = a.length - 1;
 //		while (i >= 0 && c == 0) {
 //			// comparison based on last entry in array
 //			c = Boolean.compare(a[i], b[i]);
 //			i--;				
 //		}
-		
-		
-		System.out.println(System.nanoTime() - start);
-		
+//
+//		System.out.println(c);
+//		System.out.println(System.nanoTime() - start);
+
 //		
 //		Set<Integer> set =  new TreeSet<Integer>();
 //		for (int i = 0; i < 66666666; i++) {
@@ -145,7 +147,7 @@ public class Main {
 //		col2.add(new BoolVectorSet(Set.of(1,2,3,4,6)));
 //		BoolVectorSet nxt = col2.ceiling(new BoolVectorSet(Set.of(1,2,3,4)));
 //		System.out.println(Arrays.toString(nxt.setRepresentation));
-		
+
 //		
 //		for (BoolVectorSet bvs : collection) {
 //			boolean[] bv = bvs.setRepresentation;

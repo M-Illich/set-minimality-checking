@@ -134,6 +134,11 @@ public class SetGenerator {
 			Set<Integer> set = randomSet(maxSize, range, seedGen.nextLong());
 			// only add minimal set, i.e., no subset of set already in collection
 			col = addMinimal(col, set);
+			
+			// print out current collection size to see progress
+			if(col.size() % 10 == 0) {		
+				System.out.println("current collection size: " + col.size());
+			}
 		}
 		return col;
 	}

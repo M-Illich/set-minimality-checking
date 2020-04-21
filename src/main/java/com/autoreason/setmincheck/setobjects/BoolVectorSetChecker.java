@@ -96,12 +96,13 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 
 			// subset candidate can only have 'true' entries at the same positions like
 			// testArray
-			int i = candLength - 1;
-			while (i > 0 && (!candArray[i] | testArray[i])) {
+			int i = candLength;
+			do {
 				i--;
 			}
+			while (i > -1 && (!candArray[i] | testArray[i]));
 			// if i == 0, no conflicting position was found
-			return i == 0;
+			return i == -1;
 		}
 
 	}

@@ -54,6 +54,9 @@ public class BoolVectorSetCheckerTest extends MinimalityCheckerTest<BoolVectorSe
 		if(i == len) {			
 			next = new boolean[len + 1];			
 		}
+		else {
+			next[i] = true;
+		}
 		return new BoolVectorSet(next);
 	}
 
@@ -106,17 +109,23 @@ public class BoolVectorSetCheckerTest extends MinimalityCheckerTest<BoolVectorSe
 
 	@Override
 	protected BoolVectorSet defineSmaller(BoolVectorSet test) {
-		Set<?> testSet = test.set;
-		BoolVectorSet smaller;
-		Set<?> set = testSet;
-		// remove one element from the test set until the related BoolVectorSet is
-		// smaller than the given test
-		do {
-			set.remove(testSet.iterator().next());
-			smaller = new BoolVectorSet(set);
-		} while (smaller.compareTo(test) > -1 && smaller.set.size() > 0);
+//		Set<?> testSet = test.set;
+//		BoolVectorSet smaller;
+//		Set<?> set = testSet;
+//		// remove one element from the test set until the related BoolVectorSet is
+//		// smaller than the given test
+//		do {
+//			set.remove(testSet.iterator().next());
+//			smaller = new BoolVectorSet(set);
+//		} while (smaller.compareTo(test) > -1 && smaller.set.size() > 0);
+//
+//		return smaller;
 
-		return smaller;
+		// define new boolean[] where one true value is changed to false
+		boolean[] smaller = test.setRepresentation;
+		smaller[Arrays.mismatch(smaller, new boolean[smaller.length])] = false;
+		return new BoolVectorSet(smaller);
+		
 	}
 
 	@Override

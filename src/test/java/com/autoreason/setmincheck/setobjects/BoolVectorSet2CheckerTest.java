@@ -22,7 +22,7 @@ public class BoolVectorSet2CheckerTest extends MinimalityCheckerTest<BoolVectorS
 
 	// create random test objects based on seed
 	private static final Random SEED_GENERATOR = new Random();
-	private long currentSeed =  SEED_GENERATOR.nextLong(); //Long.valueOf("7179516445710087373"); // 
+	private long currentSeed = SEED_GENERATOR.nextLong(); //  Long.valueOf("5406812561986921616"); // 
 	// maximum size for randomly generated sets
 	private final int MAX_SIZE = 10;
 	// number of sets contained in randomly generated collection
@@ -45,13 +45,13 @@ public class BoolVectorSet2CheckerTest extends MinimalityCheckerTest<BoolVectorS
 	@Override
 	protected BoolVectorSet2 getNext(BoolVectorSet2 previous) {
 		BitSet next = (BitSet) previous.setRepresentation.clone();
-		int len = next.length();
+		int size = next.size();
 		// get first occurring false entry
 		int i = next.nextClearBit(0);
-		// increase array length if only true values found
-		if (i == len) {
+		// increase BitSet size if only true values found
+		if (i == size) {
 			// new empty vector with increased size
-			next = new BitSet(len + 1);			
+			next = new BitSet(size + 64);			
 		} else {
 			// swap entries up to first false 
 			next.clear(0, i);
@@ -112,17 +112,29 @@ public class BoolVectorSet2CheckerTest extends MinimalityCheckerTest<BoolVectorS
 
 	@Override
 	protected BoolVectorSet2 defineSmaller(BoolVectorSet2 test) {
-		Set<?> testSet = test.set;
-		BoolVectorSet2 smaller;
-		Set<?> set = testSet;
-		// remove one element from the test set until the related BoolVectorSet2 is
-		// smaller than the given test
-		do {
-			set.remove(testSet.iterator().next());
-			smaller = new BoolVectorSet2(set);
-		} while (smaller.compareTo(test) > -1 && smaller.set.size() > 0);
-
-		return smaller;
+//		Set<?> testSet = test.set;
+//		BoolVectorSet2 smaller;
+//		Set<?> set = testSet;
+//		// remove one element from the test set until the related BoolVectorSet2 is
+//		// smaller than the given test
+//		do {
+//			set.remove(testSet.iterator().next());
+//			smaller = new BoolVectorSet2(set);
+//		} while (smaller.compareTo(test) > -1 && smaller.set.size() > 0);
+//
+//		return smaller;
+		
+		// remove one entry from test
+		BitSet smaller = (BitSet) test.setRepresentation.clone();
+		int pos = smaller.nextSetBit(0);
+		smaller.set(pos, false);
+		if(pos > 0) {
+			// set new entry at lower position
+			smaller.set(0,pos-1);
+		}		
+		
+		return new BoolVectorSet2(smaller);
+		
 	}
 
 	@Override

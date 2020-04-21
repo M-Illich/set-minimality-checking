@@ -49,6 +49,20 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 //		System.out.println("nextExpect length: " +  ((BitVectorSet) nextExpect).setRepresentation.length);
 //		System.out.println("next length: " +  ((BitVectorSet) next).setRepresentation.length);
 		
+//		System.out.println("test: " + Arrays.toString(new BoolVectorSet((Set) test).setRepresentation));
+//		System.out.println("prev: " + Arrays.toString(((BoolVectorSet) previous).setRepresentation));
+//		System.out.println("nextExpect: " + Arrays.toString(((BoolVectorSet) nextExpect).setRepresentation));
+//		System.out.println("next      : " + Arrays.toString(((BoolVectorSet) next).setRepresentation));
+//		System.out.println("nextExpect length: " +  ((BoolVectorSet) nextExpect).setRepresentation.length);
+//		System.out.println("next length: " +  ((BoolVectorSet) next).setRepresentation.length);
+		
+//		System.out.println("test: " + (new BoolVectorSet2((Set) test).setRepresentation.toString()));
+//		System.out.println("prev: " + ((BoolVectorSet2) previous).setRepresentation.toString());
+//		System.out.println("nextExpect: " + ((BoolVectorSet2) nextExpect).setRepresentation.toString());
+//		System.out.println("next      : " + ((BoolVectorSet2) next).setRepresentation.toString());
+//		System.out.println("nextExpect length: " +  ((BoolVectorSet2) nextExpect).setRepresentation.size());
+//		System.out.println("next length: " +  ((BoolVectorSet2) next).setRepresentation.size());
+		
 		assertTrue(nextExpect.compareTo(next) == 0);
 	}
 
@@ -75,9 +89,9 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 	private C getNextMatchSimple(C previous, T test) {
 		// convert test to type C
 		C testC = convert(test);
-
+		
 		// return null if next match cannot be smaller than test
-		if (previous.compareTo(testC) != -1) {
+		if (previous.compareTo(testC) > -1) {			
 			return null;
 		}
 

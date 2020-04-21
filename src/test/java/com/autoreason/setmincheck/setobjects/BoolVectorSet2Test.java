@@ -17,7 +17,9 @@ public class BoolVectorSet2Test extends SetRepresentTest<BoolVectorSet2> {
 		Set<Integer> set = Set.of(1, 3, 5);
 		BoolVectorSet2 bvs = new BoolVectorSet2(set);
 		BitSet bs = new BitSet(3);
-		bs.set(0, 3);
+		bs.set(1);
+		bs.set(3);
+		bs.set(5);
 		assertEquals(set, bvs.set);
 		assertEquals(bs, bvs.setRepresentation);		
 	}
