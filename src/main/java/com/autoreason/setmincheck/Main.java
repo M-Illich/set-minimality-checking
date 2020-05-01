@@ -16,6 +16,7 @@ import java.util.function.BooleanSupplier;
 
 import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
+import com.autoreason.setmincheck.setobjects.BitVectorSetChecker;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet2Checker;
@@ -27,15 +28,20 @@ import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
  */
 public class Main {
 	public static void main(String[] args) {
-
-		BoolVectorSet2 a = new BoolVectorSet2(Set.of(0));
-		BoolVectorSet b = new BoolVectorSet(new boolean[] {false, true, true, true, true, false});
-		
-		System.out.println((new BoolVectorSet2Checker()).matches(a,Set.of(1,2,3,4,7,8)));
-		
-		BitSet bs = new BitSet(2*64);
-		System.out.println(bs);
-	
+//		
+//		BitVectorSetChecker checker = new BitVectorSetChecker();
+//		Set<Integer> set = Set.of(1,2,3,4,5,6,7,8,9,11,33,44,65,656,123);
+//		long start = System.nanoTime();
+//		for (int j = 1; j < 20; j++) {
+//			checker.transform(set,j);			
+//		}
+//		System.out.println(System.nanoTime() - start);
+//		start = System.nanoTime();
+//		for (int j = 1; j < 8; j++) {
+//			checker.transform(set,j);
+//		}
+//		System.out.println(System.nanoTime() - start);
+					
 
 //		boolean[] a = new boolean[1000];
 //		boolean[] b = new boolean[1000];

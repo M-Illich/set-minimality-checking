@@ -1,6 +1,7 @@
 package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 
 	// hash table to store different BoolVectorSet representations, i.e. boolean[]
 	// of different lengths, of tested sets
-	Hashtable<String, boolean[]> hashtable = new Hashtable<String, boolean[]>();
+	HashMap<String, boolean[]> hashtable = new HashMap<String, boolean[]>();
 
 	@Override
 	public BoolVectorSet getNextMatch(BoolVectorSet previous, Set<?> test) {

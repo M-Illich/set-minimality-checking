@@ -136,7 +136,7 @@ public class SetGenerator {
 			col = addMinimal(col, set);
 			
 			// print out current collection size to see progress
-			if(col.size() % 10 == 0) {		
+			if(col.size() % 100 == 0) {		
 				System.out.println("current collection size: " + col.size());
 			}
 		}

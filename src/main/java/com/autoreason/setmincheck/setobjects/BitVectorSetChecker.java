@@ -1,6 +1,7 @@
 package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 
 	// hash table to store different BitVectorSet representations, i.e. long[] of
 	// different lengths, of tested sets
-	Hashtable<String, long[]> hashtable = new Hashtable<String, long[]>();
+	HashMap<String, long[]> hashtable = new HashMap<String, long[]>();
 
 	@Override
 	protected boolean subsetOf(BitVectorSet cand, Set<?> test) {
@@ -344,7 +345,7 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 	 * @return A {@code long[]} that contains a bit vector representing the elements
 	 *         of {@code set}
 	 */
-	long[] transform(Set<?> set, int length) {
+	public long[] transform(Set<?> set, int length) {
 
 		// look for long array representation of given length in hash table
 		String key = defineHashKey(set, length);
@@ -354,11 +355,11 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 		if (bv == null) {
 			// create bit vector of given length
 			bv = new long[length];
-
+			int bitNum = length * 64;
 			/// use elements of set to define position of 1-bits
 			for (Object e : set) {
 				// determine position based on hash code
-				int pos = e.hashCode() % (length * 64);
+				int pos = e.hashCode() % bitNum;
 				// only allow positive values
 				if (pos < 0) {
 					pos *= -1;
