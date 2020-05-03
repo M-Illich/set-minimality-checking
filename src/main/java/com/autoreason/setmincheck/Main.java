@@ -11,6 +11,7 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BooleanSupplier;
 
@@ -28,6 +29,14 @@ import com.autoreason.setmincheck.setobjects.BoolVectorSetChecker;
  */
 public class Main {
 	public static void main(String[] args) {
+		
+		SortedSet<Integer> s = new TreeSet<Integer>(Set.of(1,2,3,4,5,6,7,8,9));
+		ArrayList<Integer> a = new ArrayList<>(s);
+		
+		for (int i = 0; i < a.size(); i++) {
+			System.out.print(a.get(i) + " ");
+		}
+				
 //		
 //		BitVectorSetChecker checker = new BitVectorSetChecker();
 //		Set<Integer> set = Set.of(1,2,3,4,5,6,7,8,9,11,33,44,65,656,123);

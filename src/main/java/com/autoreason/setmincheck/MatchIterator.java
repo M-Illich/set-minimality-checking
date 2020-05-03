@@ -1,18 +1,15 @@
 package com.autoreason.setmincheck;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 
-import com.autoreason.setmincheck.setobjects.BoolVectorSet;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
-
 /**
- * 
+ * An abstract class with the functionality to iterate over all the elements of
+ * a sorted set that are considered matches of a given object.
  *
- * @param <C>
- * @param <T>
+ * @param <C> An implementation of {@link Comparable}
+ * @param <T> Some object type for which a match can be defined
  */
 public abstract class MatchIterator<C extends Comparable<C>, T> implements MatchProvider<C, T> {
 
@@ -29,7 +26,7 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 	 */
 	protected Iterable<C> matchesOf(NavigableSet<C> col, T test) {
 		return new Iterable<C>() {
-			
+
 			@Override
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {
@@ -45,11 +42,9 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 					public C next() {
 						if (next != null) {
 							// safe current element
-							C cur = next;	
-														
+							C cur = next;
 							// get next match being greater than current
-							next = getNextCandidate(next);							
-							
+							next = getNextCandidate(next);
 							// return current element
 							return cur;
 						}
@@ -89,30 +84,18 @@ public abstract class MatchIterator<C extends Comparable<C>, T> implements Match
 					private C getNextCandidate(C cur) {
 						// look for next match in collection
 						C nextMatch;
-						while (cur != null) {	
-							
-							// TEST TODO
-//							System.out.println("cur: " + ((BoolVectorSet2) cur).setRepresentation.toString());
-							
+						while (cur != null) {
 							// get next match (used to skip all elements from collection being smaller)
 							nextMatch = getNextMatch(cur, test);
-							
+
 							// stop if no next match available
 							if (nextMatch == null) {
 								cur = null;
-							} else {	
-								
-								// TEST TODO
-//								System.out.println("nextMatch: " + ((BoolVectorSet2) nextMatch).setRepresentation.toString());								
-								
+							} else {
 								// get next candidate from collection that is greater than or equal to match
 								cur = col.ceiling(nextMatch);
 								// check if candidate is a match of test
 								if (matches(cur, test)) {
-									
-									// TEST TODO
-//									System.out.println("match");
-									
 									break;
 								}
 							}

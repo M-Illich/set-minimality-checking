@@ -70,11 +70,6 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 				} else {
 					// get highest bit from all bits that only occur in candidate
 					long[] high = getHighestBit(onlyCand);
-//		TODO			// define vector where every position after highest bit is zero
-//					long[] lowRemover = complementOf(subtractOne(high));
-//					// remove bits from the vector that only contains bits from test
-//					remainTest = and(lowRemover, and(testArray, xorArray));
-
 					// get all bits that only appear in test and are higher than high
 					remainTest = removeLowBits(and(testArray, xorArray), high);
 
@@ -82,11 +77,6 @@ public class BitVectorSetChecker extends MinimalityChecker<BitVectorSet> {
 
 				// get the lowest bit from the remaining test bits
 				long[] low = getLowestBit(remainTest);
-//		TODO		// define vector where every position after lowest bit is zero
-//				long[] lowRemover = complementOf(subtractOne(low));
-//				// define bit vector of next match by adding new lowest bit
-//				next = and(add(candArray, low), lowRemover);	
-
 				// define bit vector of next match by adding the low bit and removing all
 				// foregoing bits
 				next = removeLowBits(add(candArray, low), low);

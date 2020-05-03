@@ -7,7 +7,7 @@ import java.util.Set;
 import com.autoreason.setmincheck.setobjects.SetRepresent;
 
 /**
- * 
+ * An abstract class for checking set minimality.
  *
  * @param <C> An implementation of {@link SetRepresent}
  */
