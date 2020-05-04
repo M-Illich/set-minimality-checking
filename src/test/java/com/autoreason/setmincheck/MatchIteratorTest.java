@@ -34,7 +34,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 	private void testMatchesOf(long seed) {
 		// define test objects
 		NavigableSet<C> col = defineCollection(seed);
-		T test = defineTest(seed);		
+		T test = defineTest(seed);
 
 		// compute Iterable with tested method
 		Iterable<C> iterMatches = matchOperator.matchesOf(col, test);
@@ -107,22 +107,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 
 		// compare found matches
 		Iterator<C> expIter = expected.iterator();
-		Iterator<C> matchIter = iterMatches.iterator();
-		
-//		// TEST TODO
-//		System.out.println("test: " + new BoolVectorSet2((Set)test).setRepresentation.toString());
-//		System.out.println();
-//		
-//		System.out.println("expected: ");
-//		while (expIter.hasNext()) {
-//			System.out.println(((BoolVectorSet2)expIter.next()).setRepresentation.toString());
-//		}
-//		System.out.println();
-//		System.out.println("assumed: ");
-//		while (matchIter.hasNext()) {
-//			System.out.println(((BoolVectorSet2)matchIter.next()).setRepresentation.toString());
-//		}
-		
+		Iterator<C> matchIter = iterMatches.iterator();		
 		while (expIter.hasNext()) {
 			assertTrue(expIter.next().compareTo(matchIter.next()) == 0);
 		}

@@ -74,7 +74,7 @@ public class BoolVectorSet2CheckerTest extends MinimalityCheckerTest<BoolVectorS
 		// create Collection of random Set elements based on given seed
 //		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
 		// collection taken from stored minSets.txt file
-		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");	
+		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("/minSets.txt");	
 		// return converted sets
 		return new TreeSet<BoolVectorSet2>(c.convertCollection(col));
 	}
@@ -112,18 +112,6 @@ public class BoolVectorSet2CheckerTest extends MinimalityCheckerTest<BoolVectorS
 
 	@Override
 	protected BoolVectorSet2 defineSmaller(BoolVectorSet2 test) {
-//		Set<?> testSet = test.set;
-//		BoolVectorSet2 smaller;
-//		Set<?> set = testSet;
-//		// remove one element from the test set until the related BoolVectorSet2 is
-//		// smaller than the given test
-//		do {
-//			set.remove(testSet.iterator().next());
-//			smaller = new BoolVectorSet2(set);
-//		} while (smaller.compareTo(test) > -1 && smaller.set.size() > 0);
-//
-//		return smaller;
-		
 		// remove one entry from test
 		BitSet smaller = (BitSet) test.setRepresentation.clone();
 		int pos = smaller.nextSetBit(0);

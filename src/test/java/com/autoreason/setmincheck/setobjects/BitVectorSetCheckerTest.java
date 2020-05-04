@@ -96,37 +96,23 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 		if (next[i - 1] == 0) {
 			next = new long[next.length + 1];
 		}
-//		
-//		// TEST TODO
-//		long[] pre = previous.setRepresentation;
-//		System.out.print("pre: ");
-//		for (int j = 0; j < pre.length; j++) {
-//			System.out.print(pre[j] + " ");
-//		}
-//		System.out.println();
-//		System.out.print("nxt: ");
-//		for (int j = 0; j < next.length; j++) {
-//			System.out.print(next[j] + " ");
-//		}
-//		System.out.println();
-
 		return new BitVectorSet(next);
 	}
 
 	@Override
 	protected Set<?> defineTest(long seed) {
 		// Set based on stored minSets.txt file
-//		return new HashSet<Integer>(Set.of(14,15,16,17,18));		
+		return new HashSet<Integer>(Set.of(14,15,16,17,18));		
 		// create random Set based on given seed
-		return SetGenerator.randomSet(MAX_SIZE, seed);
+//		return SetGenerator.randomSet(MAX_SIZE, seed);
 	}
 
 	@Override
 	protected NavigableSet<BitVectorSet> defineCollection(long seed) {
 		// create Collection of random Set elements based on given seed
-		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
+//		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
 		// collection taken from stored minSets.txt file
-//		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("src\\test\\resources\\minSets.txt");	
+		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("/minSets.txt");	
 		// return converted sets
 		return new TreeSet<BitVectorSet>(c.convertCollection(col));
 	}
