@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Class to generate random sets for testing
+ * Class to generate random {@code Set<Integer>} objects for testing
  */
 public class SetGenerator {
 
@@ -108,7 +108,7 @@ public class SetGenerator {
 		}
 		return col;
 	}
-	
+
 	/**
 	 * Create a {@link Collection} of minimal {@link Set} elements consisting of
 	 * random {@link Integer} values within a certain range
@@ -134,9 +134,9 @@ public class SetGenerator {
 			Set<Integer> set = randomSet(maxSize, range, seedGen.nextLong());
 			// only add minimal set, i.e., no subset of set already in collection
 			col = addMinimal(col, set);
-			
+
 			// print out current collection size to see progress
-			if(col.size() % 100 == 0) {		
+			if (col.size() % 100 == 0) {
 				System.out.println("current collection size: " + col.size());
 			}
 		}

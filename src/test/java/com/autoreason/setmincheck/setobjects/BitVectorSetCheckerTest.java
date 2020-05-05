@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Random;
 import java.util.Set;
@@ -22,7 +21,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 
 	// create random test objects based on seed
 	private static final Random SEED_GENERATOR = new Random();
-	private long currentSeed =  SEED_GENERATOR.nextLong(); // Long.valueOf("8270419487638343139"); //
+	private long currentSeed = SEED_GENERATOR.nextLong(); // Long.valueOf("8270419487638343139"); //
 	// maximum size for randomly generated sets
 	private final int MAX_SIZE = 10;
 	// number of sets contained in randomly generated collection
@@ -62,12 +61,12 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	public void testXor() {
 		assertArrayEquals(new long[] { 3, 1, 3 }, matchOperator.xor(new long[] { 1, 2, 6 }, new long[] { 2, 3, 5 }));
 	}
-	
+
 	@Test
 	public void testRemoveLowBits() {
-		assertArrayEquals(new long[] { 0, 4, 6 }, matchOperator.removeLowBits(new long[] { 1, 5, 6 }, new long[] { 0, 4 }));
+		assertArrayEquals(new long[] { 0, 4, 6 },
+				matchOperator.removeLowBits(new long[] { 1, 5, 6 }, new long[] { 0, 4 }));
 	}
-	
 
 	@Test
 	public void testTransform() {
@@ -102,7 +101,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	@Override
 	protected Set<?> defineTest(long seed) {
 		// Set based on stored minSets.txt file
-		return new HashSet<Integer>(Set.of(14,15,16,17,18));		
+		return new HashSet<Integer>(Set.of(14, 15, 16, 17, 18));
 		// create random Set based on given seed
 //		return SetGenerator.randomSet(MAX_SIZE, seed);
 	}
@@ -112,7 +111,7 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 		// create Collection of random Set elements based on given seed
 //		Collection<Set<Integer>> col = SetGenerator.randomMinSetCollection(NUM_SETS, MAX_SIZE, seed);
 		// collection taken from stored minSets.txt file
-		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("/minSets.txt");	
+		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("/minSets.txt");
 		// return converted sets
 		return new TreeSet<BitVectorSet>(c.convertCollection(col));
 	}
@@ -121,9 +120,9 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 	protected BitVectorSet defineMatch(BitVectorSet test) {
 		// remove one element from set to get a matching object
 		Set<?> set = test.set;
-		if(set.size() > 1) {
-			set.remove(set.iterator().next());		
-		}		
+		if (set.size() > 1) {
+			set.remove(set.iterator().next());
+		}
 		return new BitVectorSet(set);
 	}
 
@@ -140,19 +139,6 @@ public class BitVectorSetCheckerTest extends MinimalityCheckerTest<BitVectorSet,
 
 	@Override
 	protected BitVectorSet defineSmaller(BitVectorSet test) {
-//		Set<?> testSet = test.set;
-//		BitVectorSet smaller;
-//		Set<?> set = testSet;
-//		// remove one element from the test set until the related BitVectorSet is
-//		// smaller than the given test
-//		Iterator<?> iter = testSet.iterator();
-//		do {
-//			set.remove(iter.next());
-//			smaller = new BitVectorSet(set);
-//		} while (smaller.compareTo(test) > -1 && set.size() > 0);
-//
-//		return smaller;
-		
 		return new BitVectorSet(Set.of());
 	}
 

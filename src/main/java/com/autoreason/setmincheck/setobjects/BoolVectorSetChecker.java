@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Set;
 
 import com.autoreason.setmincheck.MinimalityChecker;
@@ -11,7 +10,7 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 
 	// hash table to store different BoolVectorSet representations, i.e. boolean[]
 	// of different lengths, of tested sets
-	HashMap<String, boolean[]> hashtable = new HashMap<String, boolean[]>();
+	HashMap<Integer, boolean[]> hashtable = new HashMap<Integer, boolean[]>();
 
 	@Override
 	public BoolVectorSet getNextMatch(BoolVectorSet previous, Set<?> test) {
@@ -100,8 +99,7 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 			int i = candLength;
 			do {
 				i--;
-			}
-			while (i > -1 && (!candArray[i] | testArray[i]));
+			} while (i > -1 && (!candArray[i] | testArray[i]));
 			// if i == 0, no conflicting position was found
 			return i == -1;
 		}
@@ -126,7 +124,7 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 	boolean[] transform(Set<?> set, int length) {
 
 		// look for long array representation of given length in hash table
-		String key = defineHashKey(set, length);
+		int key = defineHashKey(set, length);
 		boolean[] bv = hashtable.get(key);
 
 		// no element found -> create new one
@@ -153,17 +151,17 @@ public class BoolVectorSetChecker extends MinimalityChecker<BoolVectorSet> {
 	}
 
 	/**
-	 * Define a {@link String} that serves as key for a hash table
+	 * Define an {@link int} value that serves as key for a hash table
 	 * 
 	 * @param set A {@link Set}
 	 * @param i   An {@link int} value
-	 * @return A {@link String} based on the hashcode of {@code set} appended by the
-	 *         space-separated value {@code i}
+	 * @return An {@link int}
 	 */
-	private String defineHashKey(Set<?> set, int i) {
-		// use hash code of set together with the given int value as key
-		// TODO hashCode() not efficient for sets
-		return set.size() + " " + i;
+	private int defineHashKey(Set<?> set, int i) {
+		// Here, the key is directly defined as i which stands for the length of the set
+		// representation, since the transform method is only called for the static test
+		// set
+		return i;
 	}
 
 }

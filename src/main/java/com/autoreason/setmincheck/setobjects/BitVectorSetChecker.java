@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Set;
 
 import com.autoreason.setmincheck.MinimalityChecker;

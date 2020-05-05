@@ -1,20 +1,15 @@
 package com.autoreason.setmincheck;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Test;
 
 import com.autoreason.setmincheck.MatchIterator;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 
 public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends MatchIterator<C, T>>
 		extends MatchProviderTest<C, T, M> {
@@ -62,7 +57,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 							// safe current element
 							C cur = next;
 							// get next match being greater than current
-							next = getNextCandidate(next);							
+							next = getNextCandidate(next);
 							// return current element
 							return cur;
 						}
@@ -95,7 +90,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 								break;
 							}
 						}
-												
+
 						// return next element
 						return cur;
 					}
@@ -107,7 +102,7 @@ public abstract class MatchIteratorTest<C extends Comparable<C>, T, M extends Ma
 
 		// compare found matches
 		Iterator<C> expIter = expected.iterator();
-		Iterator<C> matchIter = iterMatches.iterator();		
+		Iterator<C> matchIter = iterMatches.iterator();
 		while (expIter.hasNext()) {
 			assertTrue(expIter.next().compareTo(matchIter.next()) == 0);
 		}

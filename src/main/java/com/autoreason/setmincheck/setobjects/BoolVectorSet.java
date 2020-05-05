@@ -1,6 +1,5 @@
 package com.autoreason.setmincheck.setobjects;
 
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -83,8 +82,8 @@ public class BoolVectorSet extends SetRepresent<BoolVectorSet, boolean[], BoolVe
 			while (i >= 0 && c == 0) {
 				// comparison based on last entry in array
 				c = Boolean.compare(a[i], b[i]);
-				i--;				
-			}			
+				i--;
+			}
 		}
 		return c;
 	}

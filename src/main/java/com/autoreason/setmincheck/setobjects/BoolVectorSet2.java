@@ -5,16 +5,17 @@ import java.util.BitSet;
 
 /**
  * Representation of a {@link Set} as {@link BitSet} based on the
- * {@link #hashCode} of the set's elements (alternative version to {@link BoolVectorSet})
+ * {@link #hashCode} of the set's elements (alternative version to
+ * {@link BoolVectorSet})
  *
  */
 public class BoolVectorSet2 extends SetRepresent<BoolVectorSet2, BitSet, BoolVectorSet2Checker> {
-	
+
 	/**
 	 * Original {@link Set} represented by the {@link BoolVectorSet2} object
 	 */
 	public Set<?> set;
-	
+
 	/**
 	 * Create an empty {@link BoolVectorSet2} object
 	 */
@@ -22,7 +23,7 @@ public class BoolVectorSet2 extends SetRepresent<BoolVectorSet2, BitSet, BoolVec
 		this.setRepresentation = null;
 		this.set = null;
 	}
-	
+
 	/**
 	 * Create a {@link BoolVectorSet2} object based on a {@code boolean} array
 	 * 
@@ -41,17 +42,17 @@ public class BoolVectorSet2 extends SetRepresent<BoolVectorSet2, BitSet, BoolVec
 	 */
 	public BoolVectorSet2(Set<?> set) {
 		this.set = set;
-		// determine size of BitSet based on set size		
+		// determine size of BitSet based on set size
 		this.setRepresentation = new BitSet(set.size());
 		int size = this.setRepresentation.size();
 
 		// use elements of set to define position of true values
-		for (Object e : set) {		
+		for (Object e : set) {
 			int hashcode = e.hashCode();
 			// only allow positive values
-			if(hashcode < 0) {
+			if (hashcode < 0) {
 				hashcode *= -1;
-			}			
+			}
 			// set true value in appropriate position
 			this.setRepresentation.set(hashcode % size);
 		}
@@ -73,34 +74,21 @@ public class BoolVectorSet2 extends SetRepresent<BoolVectorSet2, BitSet, BoolVec
 	public int compareTo(BoolVectorSet2 other) {
 		// comparison based on arrays
 		BitSet a = this.setRepresentation;
-		BitSet b = other.setRepresentation;		
-		
-		// TODO size?, cardinality? ...
-		
+		BitSet b = other.setRepresentation;
+
 		// compare size
-		int c = Integer.compare(a.size(), b.size()); 
+		int c = Integer.compare(a.size(), b.size());
 		// same length
-		if(c == 0) {
+		if (c == 0) {
 			int i = a.length();
 			int j = b.length();
-			while(i == j && (i > 0) && (j > 0)) {
-				i = a.previousSetBit(i-1);
-				j = b.previousSetBit(j-1);
+			while (i == j && (i > 0) && (j > 0)) {
+				i = a.previousSetBit(i - 1);
+				j = b.previousSetBit(j - 1);
 			}
 			c = Integer.compare(i, j);
 		}
-//			
-//		if(c == 0) {						
-//			int i = a.length() - 1;
-//			int j = i;
-//			while (i >= 0 && c == 0) {
-//				// comparison based on last entry in vector
-//				j = a.previousSetBit(i);
-//				c = Integer.compare(j, b.previousSetBit(i));				
-//				i = j - 1;				
-//			}
-//		}
-		
+
 		return c;
 	}
 

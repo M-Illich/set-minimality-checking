@@ -1,18 +1,9 @@
 package com.autoreason.setmincheck;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
-
 import org.junit.Test;
-
-import com.autoreason.setmincheck.setobjects.BitVectorSet;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 
 public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends MatchProvider<C, T>> {
 
@@ -21,7 +12,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 	@Test
 	public void runMatchProviderTests() {
 		// get random seed
-		long seed = getSeed(); 					
+		long seed = getSeed();
 		// conduct tests
 		try {
 			testGetNextMatch(seed);
@@ -32,7 +23,6 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		}
 	}
 
-	
 	private void testGetNextMatch(long seed) {
 		// define test objects
 		T test = defineTest(seed);
@@ -40,29 +30,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		// compute next element
 		C nextExpect = getNextMatchSimple(previous, test);
 		C next = matchOperator.getNextMatch(previous, test);
-		
-//		// TEST TODO		
-//		System.out.println("test: " + Long.toBinaryString(new BitVectorSet((Set) test).setRepresentation[0]));
-//		System.out.println("prev: " +  Long.toBinaryString(((BitVectorSet) previous).setRepresentation[0]));
-//		System.out.println("nextExpect: " +  Long.toBinaryString(((BitVectorSet) nextExpect).setRepresentation[0]));
-//		System.out.println("next      : " +  Long.toBinaryString(((BitVectorSet) next).setRepresentation[0]));
-//		System.out.println("nextExpect length: " +  ((BitVectorSet) nextExpect).setRepresentation.length);
-//		System.out.println("next length: " +  ((BitVectorSet) next).setRepresentation.length);
-		
-//		System.out.println("test: " + Arrays.toString(new BoolVectorSet((Set) test).setRepresentation));
-//		System.out.println("prev: " + Arrays.toString(((BoolVectorSet) previous).setRepresentation));
-//		System.out.println("nextExpect: " + Arrays.toString(((BoolVectorSet) nextExpect).setRepresentation));
-//		System.out.println("next      : " + Arrays.toString(((BoolVectorSet) next).setRepresentation));
-//		System.out.println("nextExpect length: " +  ((BoolVectorSet) nextExpect).setRepresentation.length);
-//		System.out.println("next length: " +  ((BoolVectorSet) next).setRepresentation.length);
-		
-//		System.out.println("test: " + (new BoolVectorSet2((Set) test).setRepresentation.toString()));
-//		System.out.println("prev: " + ((BoolVectorSet2) previous).setRepresentation.toString());
-//		System.out.println("nextExpect: " + ((BoolVectorSet2) nextExpect).setRepresentation.toString());
-//		System.out.println("next      : " + ((BoolVectorSet2) next).setRepresentation.toString());
-//		System.out.println("nextExpect length: " +  ((BoolVectorSet2) nextExpect).setRepresentation.size());
-//		System.out.println("next length: " +  ((BoolVectorSet2) next).setRepresentation.size());
-		
+
 		assertTrue(nextExpect.compareTo(next) == 0);
 	}
 
@@ -71,16 +39,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 		T test = defineTest(seed);
 		// convert test to type C
 		C testC = convert(test);
-			
-		// TEST TODO	
-//		System.out.println("test: " + Long.toBinaryString(((BitVectorSet) testC).setRepresentation[0]));
-//		System.out.println("defi: " + Long.toBinaryString(((BitVectorSet) defineMatch(testC)).setRepresentation[0]));
-//		System.out.println("test length: " +  ((BitVectorSet) testC).setRepresentation.length);
-//		System.out.println("defi length: " +  ((BitVectorSet) defineMatch(testC)).setRepresentation.length);
-//		System.out.println("next length: " +  ((BitVectorSet) next).setRepresentation.length);
-//		System.out.println(new BoolVectorSet2((Set) test).setRepresentation.toString());
-//		System.out.println(((BoolVectorSet2) defineMatch(testC)).setRepresentation.toString());
-		
+
 		// perform test
 		assertTrue(matchOperator.matches(defineMatch(testC), test));
 		assertFalse(matchOperator.matches(defineNotMatch(testC), test));
@@ -89,9 +48,9 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 	private C getNextMatchSimple(C previous, T test) {
 		// convert test to type C
 		C testC = convert(test);
-		
+
 		// return null if next match cannot be smaller than test
-		if (previous.compareTo(testC) > -1) {			
+		if (previous.compareTo(testC) > -1) {
 			return null;
 		}
 
@@ -168,13 +127,15 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T, M extends Ma
 
 	/**
 	 * Return the currently used seed for the generating of random test objects
-	 * @see java.util.Random#Random(long) 
+	 * 
+	 * @see java.util.Random#Random(long)
 	 * @return A {@link long} value that serves as random seed
 	 */
 	protected abstract long getSeed();
-	
+
 	/**
 	 * Initialize the object to call the tested methods
+	 * 
 	 * @return An object of type {@code M}
 	 */
 	protected abstract M initializeOperator();

@@ -21,7 +21,7 @@ public class BoolVectorSet2Test extends SetRepresentTest<BoolVectorSet2> {
 		bs.set(3);
 		bs.set(5);
 		assertEquals(set, bvs.set);
-		assertEquals(bs, bvs.setRepresentation);		
+		assertEquals(bs, bvs.setRepresentation);
 	}
 
 }

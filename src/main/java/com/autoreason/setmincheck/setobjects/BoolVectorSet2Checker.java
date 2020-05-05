@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Set;
 
 import com.autoreason.setmincheck.MinimalityChecker;
@@ -11,7 +10,7 @@ public class BoolVectorSet2Checker extends MinimalityChecker<BoolVectorSet2> {
 
 	// hash table to store different BoolVectorSet2 representations, i.e. BitSet
 	// of different lengths, of tested sets
-	HashMap<String, BitSet> hashtable = new HashMap<String, BitSet>();
+	HashMap<Integer, BitSet> hashtable = new HashMap<Integer, BitSet>();
 
 	@Override
 	public BoolVectorSet2 getNextMatch(BoolVectorSet2 previous, Set<?> test) {
@@ -68,11 +67,6 @@ public class BoolVectorSet2Checker extends MinimalityChecker<BoolVectorSet2> {
 			candBitSet.clear(0, lowTest);
 		}
 
-//		// TEST TODO
-//		System.out.println("test: " + testBitSet.toString());
-//		System.out.println("pre: " + previous.setRepresentation.toString());
-//		System.out.println("next: " + candBitSet.toString());
-
 		return new BoolVectorSet2(candBitSet);
 
 	}
@@ -117,7 +111,7 @@ public class BoolVectorSet2Checker extends MinimalityChecker<BoolVectorSet2> {
 	BitSet transform(Set<?> set, int length) {
 
 		// look for long array representation of given length in hash table
-		String key = defineHashKey(set, length);
+		int key = defineHashKey(set, length);
 		BitSet bv = hashtable.get(key);
 
 		// no element found -> create new one
@@ -144,17 +138,17 @@ public class BoolVectorSet2Checker extends MinimalityChecker<BoolVectorSet2> {
 	}
 
 	/**
-	 * Define a {@link String} that serves as key for a hash table
+	 * Define an {@link int} value that serves as key for a hash table
 	 * 
 	 * @param set A {@link Set}
 	 * @param i   An {@link int} value
-	 * @return A {@link String} based on the hashcode of {@code set} appended by the
-	 *         space-separated value {@code i}
+	 * @return An {@link int}
 	 */
-	private String defineHashKey(Set<?> set, int i) {
-		// use hash code of set together with the given int value as key
-		// TODO hashCode() not efficient for sets
-		return set.size() + " " + i;
+	private int defineHashKey(Set<?> set, int i) {
+		// Here, the key is directly defined as i which stands for the length of the set
+		// representation, since the transform method is only called for the static test
+		// set
+		return i;
 	}
 
 }

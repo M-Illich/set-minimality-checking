@@ -76,17 +76,17 @@ public class BitVectorSet extends SetRepresent<BitVectorSet, long[], BitVectorSe
 		long[] ar2 = o.setRepresentation;
 
 		// compare length of arrays
-		int len1 = ar1.length;		
+		int len1 = ar1.length;
 		int c = Integer.compare(len1, ar2.length);
 		// compare concrete values if same length
-		if(c == 0) {
+		if (c == 0) {
 			int i = len1;
 			do {
 				i--;
 				c = Long.compareUnsigned(ar1[i], ar2[i]);
 			} while (c == 0 && i > 0);
 		}
-		
+
 		// bitVector elements are equal
 		return c;
 	}
