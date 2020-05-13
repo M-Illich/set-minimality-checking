@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Class to generate random {@code Set<Integer>} objects for testing
+ * Class to generate random {@code Set<Integer>} objects
  */
 public class SetGenerator {
 
