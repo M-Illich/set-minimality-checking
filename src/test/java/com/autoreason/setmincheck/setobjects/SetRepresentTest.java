@@ -15,7 +15,7 @@ public abstract class SetRepresentTest<R> {
 		Set<?> test = defineTest();
 		R expectConSet = defineConvert();
 
-		assertTrue(equal(expectConSet, setRepresent.convertSet(test,null)));
+		assertTrue(equal(expectConSet, setRepresent.convertSet(test, null)));
 	}
 
 	/**
@@ -30,13 +30,15 @@ public abstract class SetRepresentTest<R> {
 
 	/**
 	 * Define an object of type {@code R} that represents the used test {@link Set}
+	 * provided by {@link #defineTest()}
 	 * 
 	 * @return An instance of type {@code R} that represents {@code set}
 	 */
 	protected abstract R defineConvert();
 
 	/**
-	 * Define an instance of the tested {@link SetRepresent} implementation
+	 * Define an instance of the tested {@link SetRepresent} implementation deployed
+	 * for calling the {@link SetRepresent#convertSet} method
 	 * 
 	 * @return An instance of the tested {@link SetRepresent} implementation
 	 */
