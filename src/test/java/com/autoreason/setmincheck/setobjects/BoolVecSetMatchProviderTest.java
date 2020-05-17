@@ -19,7 +19,11 @@ public class BoolVecSetMatchProviderTest extends MatchProviderTest<BoolVectorSet
 
 	@Override
 	protected BoolVectorSet defineEqualMatch() {
-		return new BoolVectorSet(new boolean[] { true, false, true});
+		boolean[] bv = new boolean[64];
+		bv[0] = true;
+		bv[2] = true;
+		bv[5] = true;
+		return new BoolVectorSet(bv);
 	}
 
 	@Override

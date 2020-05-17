@@ -9,7 +9,7 @@ import java.util.Set;
  *
  */
 public class BoolVectorSet extends AbstractSetRepresent<boolean[]> implements Comparable<BoolVectorSet> {
-		
+
 	/**
 	 * Create a {@link BoolVectorSet} object based on a {@link Set}
 	 * 
@@ -48,8 +48,12 @@ public class BoolVectorSet extends AbstractSetRepresent<boolean[]> implements Co
 		this.setRepresentation = bv;
 	}
 
+	/**
+	 * Note: The length of the resulting {@code boolean[]} is the smallest multiple
+	 * of 64 that holds the size of the set
+	 */
 	@Override
-	public boolean[] convertSet(Set<?> set, Object attr) {		
+	public boolean[] convertSet(Set<?> set, Object attr) {
 		int len;
 		if (attr instanceof Integer) {
 			// length of array provided by attr
@@ -58,8 +62,8 @@ public class BoolVectorSet extends AbstractSetRepresent<boolean[]> implements Co
 				len = 1;
 			}
 		} else {
-			// determine length of array based on set size
-			len = set.size();
+			// determine length of array as multiple of 64 based on set size
+			len = (set.size() / 64 + 1) * 64;
 		}
 		boolean[] convertedSet = new boolean[len];
 
@@ -73,7 +77,7 @@ public class BoolVectorSet extends AbstractSetRepresent<boolean[]> implements Co
 			// set true value in appropriate position
 			convertedSet[hashcode % len] = true;
 		}
-		
+
 		return convertedSet;
 	}
 

@@ -50,8 +50,8 @@ public class BitVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	/**
 	 * For the {@link BitVectorSet} implementation, the parameter {@code attr}
 	 * defines as {@link Integer} the length of the created {@code long[]}. If
-	 * {@code attr} is not defined as {@code Integer}, the length is determined by the
-	 * size of {@code set}
+	 * {@code attr} is not defined as {@code Integer}, the length is determined by
+	 * the size of {@code set}
 	 */
 	@Override
 	public long[] convertSet(Set<?> set, Object attr) {

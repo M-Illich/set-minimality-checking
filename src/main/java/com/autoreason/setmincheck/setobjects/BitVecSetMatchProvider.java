@@ -15,7 +15,7 @@ public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVecto
 	@Override
 	public BitVectorSet getSmallestMatchGreaterOrEqual(BitVectorSet current, Set<?> test) {
 		// return null if no match can be found
-		if(current == null) {
+		if (current == null) {
 			return null;
 		}
 
@@ -64,7 +64,7 @@ public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVecto
 					long[] onlyCand = and(xorArray, candArray);
 					// initialize array for remaining test bits
 					long[] remainTest;
-					
+
 					// check if candidate only contains bits from test, i.e., onlyCand is zero
 					if (Arrays.equals(onlyCand, new long[onlyCand.length])) {
 						// remaining test bits correlate to XOR result

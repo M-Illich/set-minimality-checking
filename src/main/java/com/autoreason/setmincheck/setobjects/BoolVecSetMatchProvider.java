@@ -21,9 +21,11 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 		boolean[] testArray;
 		// highest position of true value only occurring in candidate
 		int highCand;
+		// upper limit of possible array length for test set
+		int maxLenTest = (test.size() / 64 + 1) * 64;
 
 		// look for next match
-		if (candLength <= test.size()) {
+		if (candLength <= maxLenTest) {
 			// convert test to appropriate boolean vector representation
 			testArray = getRepresentation(test, candLength);
 
@@ -35,7 +37,7 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 				if (compareValue == 1) {
 					// current is not smaller than test -> no next match possible
 					// try next length for representation
-					if (candLength < test.size()) {
+					if (candLength < maxLenTest) {
 						candLength++;
 						// start with empty candidate of increased size
 						candArray = new boolean[candLength];

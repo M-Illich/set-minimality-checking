@@ -16,7 +16,11 @@ public class BoolVectorSetTest extends SetRepresentTest<boolean[]> {
 
 	@Override
 	protected boolean[] defineConvert() {
-		return new boolean[] { true, true, true };
+		boolean[] bv = new boolean[64];
+		bv[1] = true;
+		bv[3] = true;
+		bv[5] = true;
+		return bv;
 	}
 
 	@Override
@@ -26,21 +30,21 @@ public class BoolVectorSetTest extends SetRepresentTest<boolean[]> {
 
 	@Override
 	protected Set<?> defineTest() {
-		return Set.of(1,3,5);
+		return Set.of(1, 3, 5);
 	}
-	
+
 	@Test
 	public void testCompareTo() {
-		BoolVectorSet a = new BoolVectorSet(new boolean[] {true,false,true,true});
-		BoolVectorSet b = new BoolVectorSet(new boolean[] {true,false,true,true});
+		BoolVectorSet a = new BoolVectorSet(new boolean[] { true, false, true, true });
+		BoolVectorSet b = new BoolVectorSet(new boolean[] { true, false, true, true });
 		assertTrue(a.compareTo(b) == 0);
-		
-		a = new BoolVectorSet(Set.of(74,93,26));
-		b = new BoolVectorSet(Set.of(74,93,26));
+
+		a = new BoolVectorSet(Set.of(74, 93, 26));
+		b = new BoolVectorSet(Set.of(74, 93, 26));
 		assertTrue(a.compareTo(b) == 0);
-		
-		a = new BoolVectorSet(Set.of(13,0,5));
-		b = new BoolVectorSet(Set.of(3,7,11,15));
+
+		a = new BoolVectorSet(Set.of(13, 0, 5, 11));
+		b = new BoolVectorSet(Set.of(3, 7, 15));
 		assertTrue(a.compareTo(b) == -1);
 		assertTrue(b.compareTo(a) == 1);
 	}
