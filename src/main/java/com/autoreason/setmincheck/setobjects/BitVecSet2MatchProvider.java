@@ -10,11 +10,11 @@ import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
  * {@link BitVectorSet2}
  *
  */
-public class BitVecSet2MatchProvider extends BitVecSetMatchProvider {
-	
+public class BitVecSet2MatchProvider extends AbstractSetRepMatchProvider<BitVectorSet2, long[]> {
+
 	public BitVectorSet2 getSmallestMatchGreaterOrEqual(BitVectorSet2 current, Set<?> test) {
 		// return null if no match can be found
-		if(current == null) {
+		if (current == null) {
 			return null;
 		}
 
@@ -49,7 +49,7 @@ public class BitVecSet2MatchProvider extends BitVecSetMatchProvider {
 						// convert test to new bit vector representation
 						testArray = getRepresentation(test, candLength);
 						// define bit vector of next match by adding new lowest bit taken from test
-						next = add(candArray, getLowestBit(testArray));
+						next = BitVecSetMatchProvider.add(candArray, BitVecSetMatchProvider.getLowestBit(testArray));
 					} else {
 						return null;
 					}
@@ -58,28 +58,29 @@ public class BitVecSet2MatchProvider extends BitVecSetMatchProvider {
 				// current candidate is smaller than test -> compute next match
 				else {
 					// keep all different bits
-					long[] xorArray = xor(testArray, candArray);
+					long[] xorArray = BitVecSetMatchProvider.xor(testArray, candArray);
 					// get bits that only occur in candidate array
-					long[] onlyCand = and(xorArray, candArray);
+					long[] onlyCand = BitVecSetMatchProvider.and(xorArray, candArray);
 					// initialize array for remaining test bits
 					long[] remainTest;
-					
+
 					// check if candidate only contains bits from test, i.e., onlyCand is zero
 					if (Arrays.equals(onlyCand, new long[onlyCand.length])) {
 						// remaining test bits correlate to XOR result
 						remainTest = xorArray;
 					} else {
 						// get highest bit from all bits that only occur in candidate
-						long[] high = getHighestBit(onlyCand);
+						long[] high = BitVecSetMatchProvider.getHighestBit(onlyCand);
 						// get all bits that only appear in test and are higher than high
-						remainTest = removeLowBits(and(testArray, xorArray), high);
+						remainTest = BitVecSetMatchProvider
+								.removeLowBits(BitVecSetMatchProvider.and(testArray, xorArray), high);
 					}
 
 					// get the lowest bit from the remaining test bits
-					long[] low = getLowestBit(remainTest);
+					long[] low = BitVecSetMatchProvider.getLowestBit(remainTest);
 					// define bit vector of next match by adding the low bit and removing all
 					// foregoing bits
-					next = removeLowBits(add(candArray, low), low);
+					next = BitVecSetMatchProvider.removeLowBits(BitVecSetMatchProvider.add(candArray, low), low);
 
 				}
 			}
@@ -92,6 +93,11 @@ public class BitVecSet2MatchProvider extends BitVecSetMatchProvider {
 			return null;
 		}
 
+	}
+
+	@Override
+	protected long[] convertSet(Set<?> set, Object attr) {
+		return new BitVectorSet2(new long[1]).convertSet(set, attr);
 	}
 
 }
