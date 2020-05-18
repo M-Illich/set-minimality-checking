@@ -42,7 +42,10 @@ public class MatchIterable<C extends Comparable<C>, T> implements Iterable<C> {
 					// safe current element
 					C cur = next;
 					// determine next match being greater than current
-					next = getNextCandidate(col.higher(next));
+					next = col.higher(next);
+					if (next != null) {
+						next = getNextCandidate(next);
+					}
 					// return current element
 					return cur;
 				}
@@ -67,17 +70,22 @@ public class MatchIterable<C extends Comparable<C>, T> implements Iterable<C> {
 				do {
 					// get the next match of test being greater than or equal to the current element
 					nextMatch = matchProvider.getSmallestMatchGreaterOrEqual(nextElement, test);
-					if(nextMatch == null) {
+					if (nextMatch == null) {
+						nextElement = null;
 						break;
 					}
 					// get next element from collection that is greater than or equal to the next
 					// match
 					nextElement = col.ceiling(nextMatch);
+					// return null if no element found
+					if (nextElement == null) {
+						break;
+					}
 				}
 				// repeat until element is a match of test (or element is null)
-				while (!nextElement.equals(nextMatch));
+				while (nextElement.compareTo(nextMatch) != 0);
 
-				return nextMatch;
+				return nextElement;
 			}
 
 		};

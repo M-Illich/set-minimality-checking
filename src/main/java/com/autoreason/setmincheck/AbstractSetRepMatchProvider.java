@@ -18,7 +18,7 @@ public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent
 		implements MatchProvider<S, Set<?>> {
 
 	// hash table to store different set representations
-	HashMap<String, R> hashtable = new HashMap<String, R>();
+	HashMap<Integer, R> hashtable = new HashMap<Integer, R>();
 
 	/**
 	 * Get the {@code R}-type representation with a certain attribute of a
@@ -33,7 +33,7 @@ public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent
 	public R getRepresentation(Set<?> set, Object attr) {
 
 		// look for representation with given attribute in hash table
-		String key = defineHashKey(set, attr);
+		Integer key = defineHashKey(set, attr);
 		R setRep = hashtable.get(key);
 
 		// no element found -> create new one
@@ -60,16 +60,18 @@ public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent
 	protected abstract R convertSet(Set<?> set, Object attr);
 
 	/**
-	 * Define a {@link String} that serves as key for a hash table
+	 * Define a {@link Integer} that serves as key for a hash table
 	 * 
 	 * @param set  A {@link Set}
 	 * @param attr An {@code Object} serving as additional attribute to define the
 	 *             hash key
-	 * @return A {@link String} based on {@code set} and {@code attr}
+	 * @return A {@link Integer} based on {@code set} and {@code attr}
 	 */
-	private String defineHashKey(Set<?> set, Object attr) {
-		// create String TODO
-		return set.size() + " " + attr;
+	private Integer defineHashKey(Set<?> set, Object attr) {
+		// in the associated setmincheck-experiment, the keys are only defined for one
+		// test set, which is why we can directly use attr as key being an Integer for
+		// every tested SetRepresent implementation
+		return (Integer) attr;
 	}
 
 }
