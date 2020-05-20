@@ -15,7 +15,9 @@ public class SumVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	/**
 	 * Number of elements used to compute the sum
 	 * <p>
-	 * Note: Tests showed that smaller values are often faster than large ones
+	 * Note: Tests showed that smaller values are often faster than large ones. If
+	 * the value is changed, the test cases in {@code SumVectorSetTest} and
+	 * {@code SumVecSetMatchProviderTest} have to be adapted accordingly.
 	 * </p>
 	 */
 	private final int SUM_SIZE = 10;
@@ -85,7 +87,7 @@ public class SumVectorSet extends AbstractSetRepresent<long[]> implements Compar
 		// counter for computed sums
 		int num_sums = 0;
 
-		//  sort hash codes of set
+		// sort hash codes of set
 		TreeSet<Integer> sortedSet = new TreeSet<>();
 		for (Object e : set) {
 			sortedSet.add(e.hashCode());

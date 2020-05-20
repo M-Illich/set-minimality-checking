@@ -12,7 +12,7 @@ public class SumVectorSetTest extends SetRepresentTest<long[]> {
 
 	@Override
 	protected long[] defineConvert() {
-		return new long[] { 5050, 15050, 11275 };
+		return new long[] { 55, 155, 115 };
 	}
 
 	@Override
@@ -23,10 +23,10 @@ public class SumVectorSetTest extends SetRepresentTest<long[]> {
 	@Override
 	protected Set<?> defineTest() {
 		HashSet<Integer> set = new HashSet<>();
-		for (int i = 1; i <= 250; i++) {
+		for (int i = 1; i <= 25; i++) {
 			set.add(i);
 		}
-		// { 5050, 15050, 11275 }
+		// { 55, 155, 115 }
 		return set;
 	}
 

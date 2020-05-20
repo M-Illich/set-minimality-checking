@@ -15,7 +15,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T> {
 	@Test
 	public void testGetNextGreaterOrEqualMatch() {
 		T test = defineTest();
-		C current = defineEqualMatch();
+		C current = defineMatch();
 		assertTrue(current.compareTo(matchProvider.getSmallestMatchGreaterOrEqual(current, test)) == 0);
 		
 		current = defineNotMatch();
@@ -45,7 +45,7 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T> {
 	 * @return An object of type {@code C} that matches the object defined by
 	 *         {@link #defineTest()}
 	 */
-	protected abstract C defineEqualMatch();
+	protected abstract C defineMatch();
 
 	/**
 	 * Define an object of type {@code C} that is not a match of the tested instance

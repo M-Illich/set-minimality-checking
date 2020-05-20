@@ -18,7 +18,7 @@ public class BoolVecSetMatchProviderTest extends MatchProviderTest<BoolVectorSet
 	}
 
 	@Override
-	protected BoolVectorSet defineEqualMatch() {
+	protected BoolVectorSet defineMatch() {
 		boolean[] bv = new boolean[64];
 		bv[0] = true;
 		bv[2] = true;

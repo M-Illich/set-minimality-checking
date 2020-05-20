@@ -19,7 +19,7 @@ public class BoolVecSet2MatchProviderTest extends MatchProviderTest<BoolVectorSe
 	}
 
 	@Override
-	protected BoolVectorSet2 defineEqualMatch() {
+	protected BoolVectorSet2 defineMatch() {
 		BitSet bs = new BitSet(3);
 		bs.set(5);
 		bs.set(8);
