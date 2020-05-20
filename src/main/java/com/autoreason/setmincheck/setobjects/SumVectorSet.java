@@ -2,6 +2,7 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Representation of a {@link Set} as array of {@code long} values, each
@@ -12,9 +13,12 @@ import java.util.Set;
 public class SumVectorSet extends AbstractSetRepresent<long[]> implements Comparable<SumVectorSet> {
 
 	/**
-	 * number of elements used to compute the sum
+	 * Number of elements used to compute the sum
+	 * <p>
+	 * Note: Tests showed that smaller values are often faster than large ones
+	 * </p>
 	 */
-	private final int SUM_SIZE = 100;
+	private final int SUM_SIZE = 10;
 
 	/**
 	 * Create a {@link SumVectorSet} object based on a {@link Set}
@@ -80,17 +84,35 @@ public class SumVectorSet extends AbstractSetRepresent<long[]> implements Compar
 		int summands = 0;
 		// counter for computed sums
 		int num_sums = 0;
-		// compute sums for set elements
+
+		//  sort hash codes of set
+		TreeSet<Integer> sortedSet = new TreeSet<>();
 		for (Object e : set) {
+			sortedSet.add(e.hashCode());
+		}
+		for (Integer e : sortedSet) {
 			// check if sum completed
 			if (summands == sum_size) {
 				num_sums++;
 				summands = 0;
 			}
 			// add hash code value to current sum
-			convertedSet[num_sums] += e.hashCode();
+			convertedSet[num_sums] += e;
 			summands++;
 		}
+
+		// unsorted approach; seems to be better for very large sets
+//		// compute sums for set elements
+//		for (Object e : set) {
+//			// check if sum completed
+//			if (summands == sum_size) {
+//				num_sums++;
+//				summands = 0;
+//			}
+//			// add hash code value to current sum
+//			convertedSet[num_sums] += e.hashCode();
+//			summands++;
+//		}
 
 		return convertedSet;
 	}
