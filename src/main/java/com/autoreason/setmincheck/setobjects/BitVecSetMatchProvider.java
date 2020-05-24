@@ -33,8 +33,18 @@ public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVecto
 		if (candLength <= maxLenTest) {
 			// convert test to appropriate bit vector representation
 			testArray = getRepresentation(test, candLength);
-			// get comparison value
-			int compareValue = current.compareTo(new BitVectorSet(testArray));
+
+			// compare vectors
+			int compareValue = 0;
+			for (int i = candArray.length - 1; i >= 0; i--) {
+				// subset can only have 1-bits at same positions as the superset bit vector
+				if ((testArray[i] | candArray[i]) != testArray[i]) {
+					// no subset candidate -> check if smaller or greater
+					compareValue = Long.compare(candArray[i], testArray[i]);
+					break;
+				}
+			}
+
 			// check if current is already a match
 			if (compareValue == 0) {
 				next = candArray;

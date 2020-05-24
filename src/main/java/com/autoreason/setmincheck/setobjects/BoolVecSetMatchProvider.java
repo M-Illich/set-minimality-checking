@@ -29,8 +29,26 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 			// convert test to appropriate boolean vector representation
 			testArray = getRepresentation(test, candLength);
 
-			// get comparison value
-			int compareValue = current.compareTo(new BoolVectorSet(testArray));
+			// compare vectors
+			int compareValue = 0;
+			int i = candLength;
+			boolean testGreater = false;
+			do {
+				i--;
+				// check if test has true value at higher position
+				if (!testGreater) {
+					testGreater = testArray[i];
+				}
+			} while (i > -1 && (!candArray[i] | testArray[i]));
+			if (i > -1) {
+				// non-matching entry found -> check if candidate is smaller or greater
+				if (testGreater) {
+					compareValue = -1;
+				} else {
+					compareValue = 1;
+				}
+			}
+
 			// check if current is already a match
 			if (compareValue != 0) {
 				// check if next match can be found

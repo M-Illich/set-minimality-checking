@@ -25,8 +25,19 @@ public class BoolVecSet2MatchProvider extends AbstractSetRepMatchProvider<BoolVe
 
 		// check if next match can be found
 		boolean changed = false;
-		// get comparison value
-		int compareValue = current.compareTo(new BoolVectorSet2(testBitSet));
+		// compare vectors
+		int compareValue = 0;
+		BitSet candBitSetCopy = (BitSet) candBitSet.clone();
+		// remove all bits from candidate that appear in test
+		candBitSetCopy.andNot(testBitSet);
+		// candidate must not possess any entry beside the ones from test
+		if (!candBitSetCopy.isEmpty()) {
+			// compare highest bit from candidate not occurring in test with the highest one
+			// from test
+			compareValue = Integer.compare(candBitSetCopy.previousSetBit(candSize - 1),
+					testBitSet.previousSetBit(candSize - 1));
+		}
+
 		// check if current is already a match
 		if (compareValue != 0) {
 			// check if next match can be found

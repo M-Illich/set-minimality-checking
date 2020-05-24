@@ -15,7 +15,7 @@ public class BoolVecSet2MatchProviderTest extends MatchProviderTest<BoolVectorSe
 
 	@Override
 	protected Set<?> defineTest() {
-		return Set.of(5,8,13);
+		return Set.of(5, 8, 13);
 	}
 
 	@Override
@@ -23,7 +23,6 @@ public class BoolVecSet2MatchProviderTest extends MatchProviderTest<BoolVectorSe
 		BitSet bs = new BitSet(3);
 		bs.set(5);
 		bs.set(8);
-		bs.set(13);
 		return new BoolVectorSet2(bs);
 	}
 

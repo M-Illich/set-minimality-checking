@@ -64,7 +64,7 @@ public class BitVecSetMatchProviderTest extends MatchProviderTest<BitVectorSet, 
 
 	@Override
 	protected BitVectorSet defineMatch() {
-		return new BitVectorSet(new long[] {42});
+		return new BitVectorSet(new long[] {10});
 	}
 
 	@Override

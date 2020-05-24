@@ -22,18 +22,22 @@ public class BoolVecSetMatchProviderTest extends MatchProviderTest<BoolVectorSet
 		boolean[] bv = new boolean[64];
 		bv[0] = true;
 		bv[2] = true;
-		bv[5] = true;
 		return new BoolVectorSet(bv);
 	}
 
 	@Override
 	protected BoolVectorSet defineNotMatch() {
-		return new BoolVectorSet(new boolean[] { true, true, false });
+		boolean[] bv = new boolean[64];
+		bv[0] = true;
+		bv[1] = true;
+		return new BoolVectorSet(bv);
 	}
 
 	@Override
 	protected BoolVectorSet defineNextMatch() {
-		return new BoolVectorSet(new boolean[] { false, false, true });
+		boolean[] bv = new boolean[64];
+		bv[2] = true;
+		return new BoolVectorSet(bv);
 	}
 
 }
