@@ -83,11 +83,14 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 					// test
 					lowTest = 0;
 				}
-				while ((lowTest < candLength) && (!testArray[lowTest] | candArray[lowTest])) {
+				while ((lowTest < (candLength - 1)) && (!testArray[lowTest] | candArray[lowTest])) {
 					lowTest++;
 				}
 
 				// set value in candidate at this position to true
+				if (lowTest >= candLength) {
+					lowTest = candLength - 1;
+				}
 				candArray[lowTest] = true;
 				// set all the lower positions to false
 				Arrays.fill(candArray, 0, lowTest, false);

@@ -2,6 +2,7 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.BitSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
 
@@ -27,15 +28,17 @@ public class BoolVecSet2MatchProvider extends AbstractSetRepMatchProvider<BoolVe
 		boolean changed = false;
 		// compare vectors
 		int compareValue = 0;
-		BitSet candBitSetCopy = (BitSet) candBitSet.clone();
 		// remove all bits from candidate that appear in test
+		BitSet candBitSetCopy = (BitSet) candBitSet.clone();
 		candBitSetCopy.andNot(testBitSet);
+
 		// candidate must not possess any entry beside the ones from test
 		if (!candBitSetCopy.isEmpty()) {
 			// compare highest bit from candidate not occurring in test with the highest one
-			// from test
-			compareValue = Integer.compare(candBitSetCopy.previousSetBit(candSize - 1),
-					testBitSet.previousSetBit(candSize - 1));
+			// from test not occurring in candidate
+			BitSet testBitSetCopy = (BitSet) testBitSet.clone();
+			testBitSetCopy.andNot(candBitSet);
+			compareValue = Integer.compare(candBitSetCopy.length(), testBitSetCopy.length());
 		}
 
 		// check if current is already a match
@@ -82,6 +85,7 @@ public class BoolVecSet2MatchProvider extends AbstractSetRepMatchProvider<BoolVe
 				candBitSet.clear(0, lowTest);
 			}
 		}
+
 		return new BoolVectorSet2(candBitSet);
 	}
 

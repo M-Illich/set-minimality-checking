@@ -2,12 +2,18 @@ package com.autoreason.setmincheck;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.Test;
+
+import com.autoreason.setmincheck.setobjects.AbstractSetRepresent;
+import com.autoreason.setmincheck.setobjects.BitVectorSet;
+import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 
 /**
  * Test for {@link MatchIterable}
@@ -35,7 +41,7 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 			public Iterator<C> iterator() {
 				return new Iterator<C>() {
 					// initialize next element with first match found in the collection
-					C next = getNextCandidate(naviCol.first());
+					C next = getFirstCandidate();
 
 					@Override
 					public boolean hasNext() {
@@ -48,7 +54,7 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 							// safe current element
 							C cur = next;
 							// determine next match being greater than current
-							next = getNextCandidate(naviCol.higher(next));
+							next = getNextCandidate(next);
 							// return current element
 							return cur;
 						}
@@ -58,12 +64,32 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 						}
 					}
 
+					private C getFirstCandidate() {
+						C cur = naviCol.first();
+						C nextMatch = matchProvider.getSmallestMatchGreaterOrEqual(cur, test);
+						if (nextMatch != null && cur.compareTo(nextMatch) != 0) {
+							// get next element in sorted collection
+							nextMatch = getNextCandidate(cur);
+						}
+
+						return nextMatch;
+					}
+
 					private C getNextCandidate(C cur) {
+						C nextMatch;
 						do {
 							// get next element in sorted collection
 							cur = naviCol.higher(cur);
+							if (cur == null) {
+								return null;
+							}
+							// get the next match of test being greater than or equal to the current element
+							nextMatch = matchProvider.getSmallestMatchGreaterOrEqual(cur, test);
+							if (nextMatch == null) {
+								return null;
+							}
 						} // starting from cur, consider every element in the collection until match found
-						while ( cur != null && !cur.equals(matchProvider.getSmallestMatchGreaterOrEqual(cur, test)));
+						while (cur != null && cur.compareTo(nextMatch) != 0);
 
 						return cur;
 					}

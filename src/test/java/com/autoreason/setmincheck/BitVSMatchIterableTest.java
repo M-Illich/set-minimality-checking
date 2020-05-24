@@ -10,7 +10,7 @@ import com.autoreason.setfileconverter.FileSetConverter;
 import com.autoreason.setmincheck.setobjects.BitVecSetMatchProvider;
 import com.autoreason.setmincheck.setobjects.BitVectorSet;
 
-public class BVSMatchIterableTest extends MatchIterableTest<BitVectorSet, Set<?>> {
+public class BitVSMatchIterableTest extends MatchIterableTest<BitVectorSet, Set<?>> {
 
 	@Override
 	protected MatchProvider<BitVectorSet, Set<?>> defineMatchProvider() {
