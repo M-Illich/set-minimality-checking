@@ -31,15 +31,15 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 
 			// compare vectors
 			int compareValue = 0;
-			int i = candLength;
+			int i = candLength - 1;
 			boolean testGreater = false;
-			do {
-				i--;
+			while (i >= 0 && (!candArray[i] | testArray[i])) {
 				// check if test has true value at higher position
 				if (!testGreater) {
-					testGreater = testArray[i];
+					testGreater = testArray[i] & !candArray[i];
 				}
-			} while (i > -1 && (!candArray[i] | testArray[i]));
+				i--;
+			}
 			if (i > -1) {
 				// non-matching entry found -> check if candidate is smaller or greater
 				if (testGreater) {
