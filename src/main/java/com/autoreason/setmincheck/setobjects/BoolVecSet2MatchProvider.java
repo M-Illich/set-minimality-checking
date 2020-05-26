@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.BitSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
 
@@ -15,6 +14,11 @@ public class BoolVecSet2MatchProvider extends AbstractSetRepMatchProvider<BoolVe
 
 	@Override
 	public BoolVectorSet2 getSmallestMatchGreaterOrEqual(BoolVectorSet2 current, Set<?> test) {
+		// return null if no match can be found
+		if (current == null) {
+			return null;
+		}
+
 		// get candidate BitSet
 		BitSet candBitSet = (BitSet) current.setRepresentation.clone();
 		int candSize = candBitSet.size();

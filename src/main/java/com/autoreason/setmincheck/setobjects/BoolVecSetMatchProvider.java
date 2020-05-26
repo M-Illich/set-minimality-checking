@@ -1,6 +1,5 @@
 package com.autoreason.setmincheck.setobjects;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
@@ -14,6 +13,11 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 
 	@Override
 	public BoolVectorSet getSmallestMatchGreaterOrEqual(BoolVectorSet current, Set<?> test) {
+		// return null if no match can be found
+		if (current == null) {
+			return null;
+		}
+
 		// get boolean arrays
 		boolean[] candArray = current.setRepresentation.clone();
 		int candLength = candArray.length;
@@ -93,7 +97,9 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 				}
 				candArray[lowTest] = true;
 				// set all the lower positions to false
-				Arrays.fill(candArray, 0, lowTest, false);
+				for (int j = 0; j < lowTest; j++) {
+					candArray[j] = false;
+				}
 			}
 
 			return new BoolVectorSet(candArray);
