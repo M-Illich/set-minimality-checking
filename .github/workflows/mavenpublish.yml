@@ -23,5 +23,7 @@ jobs:
         PASSWORD : ${{ secrets.ACCESS }}
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn --settings settings.xml deploy 
+      run: mvn --settings settings.xml deploy
+      env:
+            PASSWORD : ${{ secrets.ACCESS }} 
      
