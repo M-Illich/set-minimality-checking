@@ -18,7 +18,7 @@ jobs:
         java-version: 13
     
     - name: Build with Maven
-      run: mvn -B package --file pom.xml -U
+      run: mvn -B package --file pom.xml --settings settings.xml -U
       env:
         PASSWORD : ${{ secrets.ACCESS }}
 
