@@ -3,18 +3,19 @@ package com.autoreason.setmincheck;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.autoreason.setmincheck.setobjects.AbstractSetRepresent;
+import com.autoreason.setmincheck.setobjects.SetRepresent;
 
 /**
  * An abstract class for {@link MatchProvider} when applied on
- * {@link AbstractSetRepresent}
+ * {@link SetRepresent}
  *
- * @param <S> An implementation of {@link AbstractSetRepresent} and
- *            {@link Comparable}
+ * @param <S> An implementation of {@link SetRepresent} and {@link Comparable}
  * @param <R> The data type for the set representation used by the
- *            implementation of {@link AbstractSetRepresent}
+ *            implementation of {@link Represent}
+ * @param <T> The data type of the parameter that determines the form of the set
+ *            representation of type {@code R}
  */
-public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent<R> & Comparable<S>, R>
+public abstract class AbstractSetRepMatchProvider<S extends SetRepresent<R> & Comparable<S>, R, T>
 		implements MatchProvider<S, Set<?>> {
 
 	// hash table to store different set representations
@@ -30,7 +31,7 @@ public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent
 	 *             representation (e.g. the length of an array)
 	 * @return An object of type {@code R} that represents {@code set}
 	 */
-	public R getRepresentation(Set<?> set, Object attr) {
+	public R getRepresentation(Set<?> set, T attr) {
 
 		// look for representation with given attribute in hash table
 		Integer key = defineHashKey(set, attr);
@@ -49,25 +50,25 @@ public abstract class AbstractSetRepMatchProvider<S extends AbstractSetRepresent
 
 	/**
 	 * Convert a {@link Set} into the defined representation form of type {@code R}
-	 * w.r.t. to a given attribute
+	 * based on a given attribute (e.g. length)
 	 * 
 	 * @param set  The {@link Set} that is transformed into the representation of
 	 *             type {@code R}
-	 * @param attr An {@code Object} serving as attribute to define the form of the
-	 *             intended representation (e.g. the length of a generated array)
+	 * @param attr An object of type {@code T} that determines the form of the
+	 *             intended set representation
 	 * @return An object of type {@code R} that represents the given {@code set}
 	 */
-	protected abstract R convertSet(Set<?> set, Object attr);
+	protected abstract R convertSet(Set<?> set, T attr);
 
 	/**
 	 * Define a {@link Integer} that serves as key for a hash table
 	 * 
 	 * @param set  A {@link Set}
-	 * @param attr An {@code Object} serving as additional attribute to define the
-	 *             hash key
+	 * @param attr An object of type {@code T} serving as additional attribute to
+	 *             define the hash key
 	 * @return A {@link Integer} based on {@code set} and {@code attr}
 	 */
-	private Integer defineHashKey(Set<?> set, Object attr) {
+	private Integer defineHashKey(Set<?> set, T attr) {
 		// in the associated setmincheck-experiment, the keys are only defined for one
 		// test set, which is why we can directly use attr as key being an Integer for
 		// every tested SetRepresent implementation

@@ -2,7 +2,6 @@ package com.autoreason.setmincheck.setobjects;
 
 import java.util.Arrays;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Representation of a {@link Set} as array of {@code long} values, each
@@ -10,17 +9,7 @@ import java.util.TreeSet;
  * elements
  *
  */
-public class SumVectorSet extends AbstractSetRepresent<long[]> implements Comparable<SumVectorSet> {
-
-	/**
-	 * Number of elements used to compute the sum
-	 * <p>
-	 * Note: Tests showed that smaller values are often faster than large ones. If
-	 * the value is changed, the test cases in {@code SumVectorSetTest} and
-	 * {@code SumVecSetMatchProviderTest} have to be adapted accordingly.
-	 * </p>
-	 */
-	private final int SUM_SIZE = 10;
+public class SumVectorSet extends SetRepresent<long[]> implements Comparable<SumVectorSet> {
 
 	/**
 	 * Create a {@link SumVectorSet} object based on a {@link Set}
@@ -29,7 +18,7 @@ public class SumVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	 */
 	public SumVectorSet(Set<?> set) {
 		this.originalSet = set;
-		this.setRepresentation = convertSet(set, null);
+		this.setRepresentation = new SumVectorSetConverter().convertSet(set);
 	}
 
 	/**
@@ -58,65 +47,6 @@ public class SumVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	 */
 	public SumVectorSet(long[] bv) {
 		this.setRepresentation = bv;
-	}
-
-	/**
-	 * For the {@link SumVectorSet} implementation, the parameter {@code attr}
-	 * defines as {@link Integer} the number of elements used to compute the sum. If
-	 * {@code attr} is not defined as {@code Integer}, the sum is determined by the
-	 * global parameter {@link #SUM_SIZE}
-	 */
-	@Override
-	public long[] convertSet(Set<?> set, Object attr) {
-		int sum_size;
-		if (attr instanceof Integer) {
-			// size of sum provided by attr
-			sum_size = (int) attr;
-			if (sum_size < 1) {
-				sum_size = -1 * sum_size;
-			}
-		} else {
-			// determine length of array based on set size
-			sum_size = SUM_SIZE;
-		}
-		int len = set.size() / sum_size + 1;
-		long[] convertedSet = new long[len];
-
-		// counter for used summands
-		int summands = 0;
-		// counter for computed sums
-		int num_sums = 0;
-
-		// sort hash codes of set
-		TreeSet<Integer> sortedSet = new TreeSet<>();
-		for (Object e : set) {
-			sortedSet.add(e.hashCode());
-		}
-		for (Integer e : sortedSet) {
-			// check if sum completed
-			if (summands == sum_size) {
-				num_sums++;
-				summands = 0;
-			}
-			// add hash code value to current sum
-			convertedSet[num_sums] += e;
-			summands++;
-		}
-
-		// unsorted approach; seems to be better for very large sets
-//		// compute sums for set elements
-//		for (Object e : set) {
-//			// check if sum completed
-//			if (summands == sum_size) {
-//				num_sums++;
-//				summands = 0;
-//			}
-//			// add hash code value to current sum
-//			convertedSet[num_sums] += e.hashCode();
-//			summands++;
-//		}
-
-		return convertedSet;
 	}
 
 	@Override

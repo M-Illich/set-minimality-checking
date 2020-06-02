@@ -9,7 +9,7 @@ import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
  * {@link BitVectorSet}
  *
  */
-public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVectorSet, long[]> {
+public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVectorSet, long[], Integer> {
 
 	@Override
 	public BitVectorSet getSmallestMatchGreaterOrEqual(BitVectorSet current, Set<?> test) {
@@ -99,8 +99,9 @@ public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVecto
 	}
 
 	@Override
-	protected long[] convertSet(Set<?> set, Object attr) {
-		return new BitVectorSet(new long[1]).convertSet(set, attr);
+	protected long[] convertSet(Set<?> set, Integer attr) {
+		// convert set to long[] with length attr
+		return new BitVectorSetConverter(attr).convertSet(set);
 	}
 
 }

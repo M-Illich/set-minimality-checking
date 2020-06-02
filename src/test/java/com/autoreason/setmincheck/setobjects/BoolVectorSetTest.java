@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class BoolVectorSetTest extends SetRepresentTest<boolean[]> {
+public class BoolVectorSetTest extends SetConverterTest<boolean[]> {
 
 	@Override
 	protected boolean equal(boolean[] a, boolean[] b) {
@@ -24,8 +24,8 @@ public class BoolVectorSetTest extends SetRepresentTest<boolean[]> {
 	}
 
 	@Override
-	protected SetRepresent<boolean[]> defineSetRepresent() {
-		return new BoolVectorSet(new boolean[1]);
+	protected SetConverter<boolean[]> defineSetConverter() {
+		return new BoolVectorSetConverter();
 	}
 
 	@Override

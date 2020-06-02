@@ -9,7 +9,7 @@ import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
  * {@link BoolVectorSet}
  *
  */
-public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVectorSet, boolean[]> {
+public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVectorSet, boolean[], Integer> {
 
 	@Override
 	public BoolVectorSet getSmallestMatchGreaterOrEqual(BoolVectorSet current, Set<?> test) {
@@ -111,9 +111,11 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 		}
 	}
 
+	
 	@Override
-	protected boolean[] convertSet(Set<?> set, Object attr) {
-		return new BoolVectorSet(new boolean[1]).convertSet(set, attr);
+	protected boolean[] convertSet(Set<?> set, Integer attr) {
+		// convert set to boolean[] with length attr
+		return new BoolVectorSetConverter(attr).convertSet(set);
 	}
 
 }

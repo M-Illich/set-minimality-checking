@@ -6,16 +6,16 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public abstract class SetRepresentTest<R> {
+public abstract class SetConverterTest<R> {
 
-	SetRepresent<R> setRepresent = defineSetRepresent();
+	SetConverter<R> SetConverter = defineSetConverter();
 
 	@Test
 	public void testConvertSet() {
 		Set<?> test = defineTest();
 		R expectConSet = defineConvert();
-
-		assertTrue(equal(expectConSet, setRepresent.convertSet(test, null)));
+		
+		assertTrue(equal(expectConSet, SetConverter.convertSet(test)));
 	}
 
 	/**
@@ -37,12 +37,12 @@ public abstract class SetRepresentTest<R> {
 	protected abstract R defineConvert();
 
 	/**
-	 * Define an instance of the tested {@link SetRepresent} implementation deployed
-	 * for calling the {@link SetRepresent#convertSet} method
+	 * Define an instance of the tested {@link SetConverter} implementation deployed
+	 * for calling the {@link SetConverter#convertSet} method
 	 * 
-	 * @return An instance of the tested {@link SetRepresent} implementation
+	 * @return An instance of the tested {@link SetConverter} implementation
 	 */
-	protected abstract SetRepresent<R> defineSetRepresent();
+	protected abstract SetConverter<R> defineSetConverter();
 
 	/**
 	 * Define an {@link Set} that can be used for testing

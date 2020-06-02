@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class BitVectorSetTest extends SetRepresentTest<long[]> {
+public class BitVectorSetTest extends SetConverterTest<long[]> {
 
 	@Override
 	protected long[] defineConvert() {
@@ -15,8 +15,8 @@ public class BitVectorSetTest extends SetRepresentTest<long[]> {
 	}
 
 	@Override
-	protected SetRepresent<long[]> defineSetRepresent() {
-		return new BitVectorSet(new long[1]);
+	protected SetConverter<long[]> defineSetConverter() {
+		return new BitVectorSetConverter();
 	}
 
 	@Override
@@ -44,5 +44,5 @@ public class BitVectorSetTest extends SetRepresentTest<long[]> {
 		assertTrue(a.compareTo(b) == 1);
 		assertTrue(b.compareTo(a) == -1);
 	}
-
+	
 }

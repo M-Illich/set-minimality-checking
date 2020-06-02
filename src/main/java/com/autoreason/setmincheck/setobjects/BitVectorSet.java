@@ -7,7 +7,7 @@ import java.util.Set;
  * {@link #hashCode} of the set's elements
  *
  */
-public class BitVectorSet extends AbstractSetRepresent<long[]> implements Comparable<BitVectorSet> {
+public class BitVectorSet extends SetRepresent<long[]> implements Comparable<BitVectorSet> {
 
 	/**
 	 * Create a {@link BitVectorSet} object based on a {@link Set}
@@ -16,7 +16,8 @@ public class BitVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	 */
 	public BitVectorSet(Set<?> set) {
 		this.originalSet = set;
-		this.setRepresentation = convertSet(set, null);
+		// convert set to long[] with length based on set size
+		this.setRepresentation = new BitVectorSetConverter().convertSet(set);
 	}
 
 	/**
@@ -45,42 +46,6 @@ public class BitVectorSet extends AbstractSetRepresent<long[]> implements Compar
 	 */
 	public BitVectorSet(long[] bv) {
 		this.setRepresentation = bv;
-	}
-
-	/**
-	 * For the {@link BitVectorSet} implementation, the parameter {@code attr}
-	 * defines as {@link Integer} the length of the created {@code long[]}. If
-	 * {@code attr} is not defined as {@code Integer}, the length is determined by
-	 * the size of {@code set}
-	 */
-	@Override
-	public long[] convertSet(Set<?> set, Object attr) {
-		int len;
-		if (attr instanceof Integer) {
-			// length of array provided by attr
-			len = (int) attr;
-			if (len < 1) {
-				len = 1;
-			}
-		} else {
-			// determine length of array based on set size
-			len = set.size() / 64 + 1;
-		}
-		long[] convertedSet = new long[len];
-
-		// use elements of set to define position of 1-bits
-		for (Object e : set) {
-			// determine position
-			int pos = e.hashCode() % (len * 64);
-			// only allow positive values
-			if (pos < 0) {
-				pos *= -1;
-			}
-			// set bit in appropriate long value
-			convertedSet[pos / 64] |= (long) 1 << pos;
-		}
-
-		return convertedSet;
 	}
 
 	@Override

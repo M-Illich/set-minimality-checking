@@ -9,7 +9,7 @@ import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
  * {@link SumVectorSet}
  *
  */
-public class SumVecSetMatchProvider extends AbstractSetRepMatchProvider<SumVectorSet, long[]> {
+public class SumVecSetMatchProvider extends AbstractSetRepMatchProvider<SumVectorSet, long[], Integer> {
 
 	public SumVectorSet getSmallestMatchGreaterOrEqual(SumVectorSet current, Set<?> test) {
 		// return null if no match can be found
@@ -21,7 +21,7 @@ public class SumVecSetMatchProvider extends AbstractSetRepMatchProvider<SumVecto
 		long[] candArray = current.setRepresentation.clone();
 		int candLength = candArray.length;
 		// sum vector representation of test
-		long[] testArray = getRepresentation(test, null);
+		long[] testArray = getRepresentation(test, 0);
 
 		// look for match
 		if (candLength <= testArray.length) {
@@ -63,8 +63,9 @@ public class SumVecSetMatchProvider extends AbstractSetRepMatchProvider<SumVecto
 	}
 
 	@Override
-	protected long[] convertSet(Set<?> set, Object attr) {
-		return new SumVectorSet(new long[1]).convertSet(set, attr);
+	protected long[] convertSet(Set<?> set, Integer attr) {
+		// convert set to long[] with sums
+		return new SumVectorSetConverter().convertSet(set);
 	}
 
 }

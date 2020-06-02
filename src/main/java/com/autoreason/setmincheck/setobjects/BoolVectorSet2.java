@@ -9,7 +9,7 @@ import java.util.Set;
  * {@link BoolVectorSet})
  *
  */
-public class BoolVectorSet2 extends AbstractSetRepresent<BitSet> implements Comparable<BoolVectorSet2> {
+public class BoolVectorSet2 extends SetRepresent<BitSet> implements Comparable<BoolVectorSet2> {
 
 	/**
 	 * Create a {@link BoolVectorSet2} object based on a {@link Set}
@@ -18,7 +18,7 @@ public class BoolVectorSet2 extends AbstractSetRepresent<BitSet> implements Comp
 	 */
 	public BoolVectorSet2(Set<?> set) {
 		this.originalSet = set;
-		this.setRepresentation = convertSet(set, null);
+		this.setRepresentation = new BoolVectorSet2Converter().convertSet(set);
 	}
 
 	/**
@@ -47,38 +47,6 @@ public class BoolVectorSet2 extends AbstractSetRepresent<BitSet> implements Comp
 	 */
 	public BoolVectorSet2(BitSet bs) {
 		this.setRepresentation = bs;
-	}
-
-	@Override
-	public BitSet convertSet(Set<?> set, Object attr) {
-		int initSize;
-		if (attr instanceof Integer) {
-			// size of BitSet initialized by attr
-			initSize = (int) attr;
-			if (initSize < 1) {
-				initSize = 1;
-			}
-		} else {
-			// initialize BitSet size with on set size
-			initSize = set.size();
-		}
-		// initialize BitSet
-		BitSet convertedSet = new BitSet(initSize);
-		// get actually used size
-		int size = convertedSet.size();
-
-		// use elements of set to define position of true values
-		for (Object e : set) {
-			int hashcode = e.hashCode();
-			// only allow positive values
-			if (hashcode < 0) {
-				hashcode *= -1;
-			}
-			// set true value in appropriate position
-			convertedSet.set(hashcode % size);
-		}
-
-		return convertedSet;
 	}
 
 	@Override

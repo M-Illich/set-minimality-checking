@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class SumVectorSetTest extends SetRepresentTest<long[]> {
+public class SumVectorSetTest extends SetConverterTest<long[]> {
 
 	@Override
 	protected long[] defineConvert() {
@@ -16,8 +16,8 @@ public class SumVectorSetTest extends SetRepresentTest<long[]> {
 	}
 
 	@Override
-	protected SetRepresent<long[]> defineSetRepresent() {
-		return new SumVectorSet(new long[1]);
+	protected SetConverter<long[]> defineSetConverter() {
+		return new SumVectorSetConverter();
 	}
 
 	@Override

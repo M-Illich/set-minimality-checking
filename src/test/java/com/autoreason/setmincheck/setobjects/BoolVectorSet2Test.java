@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class BoolVectorSet2Test extends SetRepresentTest<BitSet> {
+public class BoolVectorSet2Test extends SetConverterTest<BitSet> {
 
 	@Override
 	protected boolean equal(BitSet a, BitSet b) {
@@ -24,15 +24,15 @@ public class BoolVectorSet2Test extends SetRepresentTest<BitSet> {
 	}
 
 	@Override
-	protected SetRepresent<BitSet> defineSetRepresent() {
-		return new BoolVectorSet2(new BitSet());
+	protected SetConverter<BitSet> defineSetConverter() {
+		return new BoolVectorSet2Converter();
 	}
 
 	@Override
 	protected Set<?> defineTest() {
-		return Set.of(1,3,5);
+		return Set.of(1, 3, 5);
 	}
-	
+
 	@Test
 	public void testCompareTo() {
 		BitSet bs = new BitSet(3);
@@ -42,13 +42,13 @@ public class BoolVectorSet2Test extends SetRepresentTest<BitSet> {
 		BoolVectorSet2 a = new BoolVectorSet2(bs);
 		BoolVectorSet2 b = new BoolVectorSet2(bs);
 		assertTrue(a.compareTo(b) == 0);
-		
-		a = new BoolVectorSet2(Set.of(74,93,26));
-		b = new BoolVectorSet2(Set.of(74,93,26));
+
+		a = new BoolVectorSet2(Set.of(74, 93, 26));
+		b = new BoolVectorSet2(Set.of(74, 93, 26));
 		assertTrue(a.compareTo(b) == 0);
-		
-		a = new BoolVectorSet2(Set.of(13,0,5));
-		b = new BoolVectorSet2(Set.of(3,7,11,15));
+
+		a = new BoolVectorSet2(Set.of(13, 0, 5));
+		b = new BoolVectorSet2(Set.of(3, 7, 11, 15));
 		assertTrue(a.compareTo(b) == -1);
 		assertTrue(b.compareTo(a) == 1);
 	}
