@@ -89,8 +89,10 @@ public class BoolVecSet2MatchProvider extends AbstractSetRepMatchProvider<BoolVe
 				candBitSet.clear(0, lowTest);
 			}
 		}
+		// return BoolVectorSet2 representation of next match (with set of previous one
+		// to distinguish between instances with equal set representations)
+		return new BoolVectorSet2(current.originalSet, candBitSet);
 
-		return new BoolVectorSet2(candBitSet);
 	}
 
 	@Override

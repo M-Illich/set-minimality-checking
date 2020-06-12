@@ -7,26 +7,24 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.autoreason.setfileconverter.FileSetConverter;
-import com.autoreason.setmincheck.setobjects.BoolVecSet2MatchProvider;
 import com.autoreason.setmincheck.setobjects.BoolVecSetMatchProvider;
 import com.autoreason.setmincheck.setobjects.BoolVectorSet;
-import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 
-public class BoolVSMatchIterableTest extends MatchIterableTest<BoolVectorSet2, Set<?>> {
+public class BoolVSMatchIterableTest extends MatchIterableTest<BoolVectorSet, Set<?>> {
 
 	@Override
-	protected MatchProvider<BoolVectorSet2, Set<?>> defineMatchProvider() {
-		return new BoolVecSet2MatchProvider();
+	protected MatchProvider<BoolVectorSet, Set<?>> defineMatchProvider() {
+		return new BoolVecSetMatchProvider();
 	}
 
 	@Override
-	protected NavigableSet<BoolVectorSet2> defineCollections() {
+	protected NavigableSet<BoolVectorSet> defineCollections() {
 		// collection taken from stored minSets.txt file
 		Collection<Set<Integer>> col = FileSetConverter.readSetsFromFile("/minSets.txt");
 		// convert sets to BoolVectorSet elements
-		TreeSet<BoolVectorSet2> naviCol = new TreeSet<BoolVectorSet2>();
+		TreeSet<BoolVectorSet> naviCol = new TreeSet<BoolVectorSet>(new KeepSameSetRepComparator<BoolVectorSet>());
 		for (Set<Integer> set : col) {
-			naviCol.add(new BoolVectorSet2(set));
+			naviCol.add(new BoolVectorSet(set));
 		}
 		// return converted sets
 		return naviCol;

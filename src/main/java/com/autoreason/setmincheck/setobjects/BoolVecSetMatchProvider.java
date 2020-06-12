@@ -101,8 +101,9 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 					candArray[j] = false;
 				}
 			}
-
-			return new BoolVectorSet(candArray);
+			// return BoolVectorSet representation of next match (with set of previous one
+			// to distinguish between instances with equal set representations)
+			return new BoolVectorSet(current.originalSet, candArray);
 
 		}
 		// if candidate is already larger than the set it cannot be a match
@@ -111,7 +112,6 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 		}
 	}
 
-	
 	@Override
 	protected boolean[] convertSet(Set<?> set, Integer attr) {
 		// convert set to boolean[] with length attr

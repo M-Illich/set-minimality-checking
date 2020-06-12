@@ -5,10 +5,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 
 import org.junit.Test;
-
 
 /**
  * Test for {@link MatchIterable}
@@ -30,7 +28,7 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 		// collection
 		Iterable<C> expected = new Iterable<C>() {
 			// transform Collection to NavigableSet
-			NavigableSet<C> naviCol = new TreeSet<C>(col);
+			NavigableSet<C> naviCol = col;
 
 			@Override
 			public Iterator<C> iterator() {
@@ -97,6 +95,7 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 		// compare found matches
 		Iterator<C> expIter = expected.iterator();
 		Iterator<C> matchIter = matchIterable.iterator();
+
 		while (expIter.hasNext()) {
 			assertTrue(expIter.next().compareTo(matchIter.next()) == 0);
 		}
@@ -112,7 +111,9 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 	protected abstract MatchProvider<C, T> defineMatchProvider();
 
 	/**
-	 * Define a {@link NavigableSet} containing elements of type {@code C}
+	 * Define a {@link NavigableSet} containing elements of type {@code C} that uses
+	 * the {@link KeepSameSetRepComparator} to prevent the removal of duplicates
+	 * during sorting
 	 * 
 	 * @return A {@link NavigableSet} containing elements of type {@code C}
 	 */
