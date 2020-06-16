@@ -13,8 +13,8 @@ import com.autoreason.setmincheck.setobjects.BoolVectorSet2;
 public class BoolVS2MatchIterableTest extends MatchIterableTest<BoolVectorSet2, Set<?>> {
 
 	@Override
-	protected MatchProvider<BoolVectorSet2, Set<?>> defineMatchProvider() {
-		return new BoolVecSet2MatchProvider();
+	protected MatchProvider<BoolVectorSet2, Set<?>> defineMatchProvider(Set<?> test) {
+		return new BoolVecSet2MatchProvider(test);
 	}
 
 	@Override

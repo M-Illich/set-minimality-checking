@@ -10,14 +10,13 @@ import org.junit.Test;
  */
 public abstract class MatchProviderTest<C extends Comparable<C>, T> {
 
-	protected MatchProvider<C, T> matchProvider = defineMatchProvider();
-
 	@Test
 	public void testGetNextGreaterOrEqualMatch() {
 		T test = defineTest();
+		MatchProvider<C, T> matchProvider = defineMatchProvider(test);
 		C current = defineMatch();
 		assertTrue(current.compareTo(matchProvider.getSmallestMatchGreaterOrEqual(current, test)) == 0);
-		
+
 		current = defineNotMatch();
 		C next = defineNextMatch();
 		assertTrue(next.compareTo(matchProvider.getSmallestMatchGreaterOrEqual(current, test)) == 0);
@@ -25,11 +24,15 @@ public abstract class MatchProviderTest<C extends Comparable<C>, T> {
 	}
 
 	/**
-	 * Define an instance of the tested {@link MatchProvider} implementation
+	 * Define an object of a {@link MatchProvider} implementation that realizes the
+	 * matching between elements of type {@code C} and type {@code T}
 	 * 
-	 * @return An object of the tested {@link MatchProvider} implementation
+	 * @param test An object of type {@code T} for which the matching relation is
+	 *             defined
+	 * 
+	 * @return An object of a {@link MatchProvider} implementation
 	 */
-	protected abstract MatchProvider<C, T> defineMatchProvider();
+	protected abstract MatchProvider<C, T> defineMatchProvider(T test);
 
 	/**
 	 * Define an object of type {@code T} that can be used for testing

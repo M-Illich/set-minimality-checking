@@ -8,8 +8,8 @@ import com.autoreason.setmincheck.MatchProviderTest;
 public class BoolVecSetMatchProviderTest extends MatchProviderTest<BoolVectorSet, Set<?>> {
 
 	@Override
-	protected MatchProvider<BoolVectorSet, Set<?>> defineMatchProvider() {
-		return new BoolVecSetMatchProvider();
+	protected MatchProvider<BoolVectorSet, Set<?>> defineMatchProvider(Set<?> test) {
+		return new BoolVecSetMatchProvider(test);
 	}
 
 	@Override

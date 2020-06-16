@@ -13,8 +13,8 @@ import com.autoreason.setmincheck.setobjects.BitVectorSet;
 public class BitVSMatchIterableTest extends MatchIterableTest<BitVectorSet, Set<?>> {
 
 	@Override
-	protected MatchProvider<BitVectorSet, Set<?>> defineMatchProvider() {
-		return new BitVecSetMatchProvider();
+	protected MatchProvider<BitVectorSet, Set<?>> defineMatchProvider(Set<?> test) {
+		return new BitVecSetMatchProvider(test);
 	}
 
 	@Override

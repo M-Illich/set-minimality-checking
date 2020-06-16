@@ -18,9 +18,9 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 
 	@Test
 	public void testIterator() {
-		MatchProvider<C, T> matchProvider = defineMatchProvider();
 		NavigableSet<C> col = defineCollections();
 		T test = defineTest();
+		MatchProvider<C, T> matchProvider = defineMatchProvider(test);
 		// get matches using MatchIterable
 		MatchIterable<C, T> matchIterable = new MatchIterable<C, T>(matchProvider, col, test);
 
@@ -106,9 +106,12 @@ public abstract class MatchIterableTest<C extends Comparable<C>, T> {
 	 * Define an object of a {@link MatchProvider} implementation that realizes the
 	 * matching between elements of type {@code C} and type {@code T}
 	 * 
+	 * @param test An object of type {@code T} for which the matching relation is
+	 *             defined
+	 * 
 	 * @return An object of a {@link MatchProvider} implementation
 	 */
-	protected abstract MatchProvider<C, T> defineMatchProvider();
+	protected abstract MatchProvider<C, T> defineMatchProvider(T test);
 
 	/**
 	 * Define a {@link NavigableSet} containing elements of type {@code C} that uses

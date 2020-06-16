@@ -8,28 +8,28 @@ import com.autoreason.setmincheck.MatchProviderTest;
 public class BitVecSetMatchProviderTest extends MatchProviderTest<BitVectorSet, Set<?>> {
 
 	@Override
-	protected MatchProvider<BitVectorSet, Set<?>> defineMatchProvider() {
-		return new BitVecSetMatchProvider();
+	protected MatchProvider<BitVectorSet, Set<?>> defineMatchProvider(Set<?> test) {
+		return new BitVecSetMatchProvider(test);
 	}
 
 	@Override
 	protected Set<?> defineTest() {
-		return Set.of(1,3,5);
+		return Set.of(1, 3, 5);
 	}
 
 	@Override
 	protected BitVectorSet defineMatch() {
-		return new BitVectorSet(new long[] {10});
+		return new BitVectorSet(new long[] { 10 });
 	}
 
 	@Override
 	protected BitVectorSet defineNotMatch() {
-		return new BitVectorSet(new long[] {3});
+		return new BitVectorSet(new long[] { 3 });
 	}
 
 	@Override
 	protected BitVectorSet defineNextMatch() {
-		return new BitVectorSet(new long[] {8});
+		return new BitVectorSet(new long[] { 8 });
 	}
 
 }

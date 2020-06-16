@@ -16,7 +16,7 @@ public class BoolVectorSetTest extends SetConverterTest<boolean[]> {
 
 	@Override
 	protected boolean[] defineConvert() {
-		boolean[] bv = new boolean[64];
+		boolean[] bv = new boolean[BoolVectorSetConverter.setRepresentLength];
 		bv[1] = true;
 		bv[3] = true;
 		bv[5] = true;

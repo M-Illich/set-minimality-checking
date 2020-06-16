@@ -9,7 +9,11 @@ import com.autoreason.setmincheck.AbstractSetRepMatchProvider;
  * {@link BoolVectorSet}
  *
  */
-public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVectorSet, boolean[], Integer> {
+public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVectorSet, boolean[]> {
+
+	public BoolVecSetMatchProvider(Set<?> test) {
+		testRepresent = new BoolVectorSetConverter().convertSet(test);
+	}
 
 	@Override
 	public BoolVectorSet getSmallestMatchGreaterOrEqual(BoolVectorSet current, Set<?> test) {
@@ -22,100 +26,70 @@ public class BoolVecSetMatchProvider extends AbstractSetRepMatchProvider<BoolVec
 		boolean[] candArray = current.setRepresentation.clone();
 		int candLength = candArray.length;
 		// array for test set
-		boolean[] testArray;
+		boolean[] testArray = testRepresent.clone();
 		// highest position of true value only occurring in candidate
 		int highCand;
-		// upper limit of possible array length for test set
-		int maxLenTest = (test.size() / 64 + 1) * 64;
 
-		// look for next match
-		if (candLength <= maxLenTest) {
-			// convert test to appropriate boolean vector representation
-			testArray = getRepresentation(test, candLength);
-
-			// compare vectors
-			int compareValue = 0;
-			int i = candLength - 1;
-			boolean testGreater = false;
-			while (i >= 0 && (!candArray[i] | testArray[i])) {
-				// check if test has true value at higher position
-				if (!testGreater) {
-					testGreater = testArray[i] & !candArray[i];
-				}
-				i--;
+		// compare vectors
+		int compareValue = 0;
+		int i = candLength - 1;
+		boolean testGreater = false;
+		while (i >= 0 && (!candArray[i] | testArray[i])) {
+			// check if test has true value at higher position
+			if (!testGreater) {
+				testGreater = testArray[i] & !candArray[i];
 			}
-			if (i > -1) {
-				// non-matching entry found -> check if candidate is smaller or greater
-				if (testGreater) {
-					compareValue = -1;
-				} else {
-					compareValue = 1;
-				}
-			}
-
-			// check if current is already a match
-			if (compareValue != 0) {
-				// check if next match can be found
-				if (compareValue == 1) {
-					// current is not smaller than test -> no next match possible
-					// try next length for representation
-					if (candLength < maxLenTest) {
-						candLength++;
-						// start with empty candidate of increased size
-						candArray = new boolean[candLength];
-						// candidate does not contain any true value
-						highCand = 0;
-						// convert test to appropriate boolean vector representation
-						testArray = getRepresentation(test, candLength);
-
-					} else {
-						return null;
-					}
-
-				} else {
-					// determine highest position of true value only occurring in candidate
-					highCand = candLength - 1;
-					while ((highCand > 0) && (testArray[highCand] | !candArray[highCand])) {
-						highCand--;
-					}
-				}
-
-				// get lowest position of true value in test that is higher than highCand
-				int lowTest = highCand + 1;
-				if (highCand == 0) {
-					// start from 0 if candidate only contains true values at same positions like
-					// test
-					lowTest = 0;
-				}
-				while ((lowTest < (candLength - 1)) && (!testArray[lowTest] | candArray[lowTest])) {
-					lowTest++;
-				}
-
-				// set value in candidate at this position to true
-				if (lowTest >= candLength) {
-					lowTest = candLength - 1;
-				}
-				candArray[lowTest] = true;
-				// set all the lower positions to false
-				for (int j = 0; j < lowTest; j++) {
-					candArray[j] = false;
-				}
-			}
-			// return BoolVectorSet representation of next match (with set of previous one
-			// to distinguish between instances with equal set representations)
-			return new BoolVectorSet(current.originalSet, candArray);
-
+			i--;
 		}
-		// if candidate is already larger than the set it cannot be a match
-		else {
-			return null;
+		if (i > -1) {
+			// non-matching entry found -> check if candidate is smaller or greater
+			if (testGreater) {
+				compareValue = -1;
+			} else {
+				compareValue = 1;
+			}
 		}
-	}
 
-	@Override
-	protected boolean[] convertSet(Set<?> set, Integer attr) {
-		// convert set to boolean[] with length attr
-		return new BoolVectorSetConverter(attr).convertSet(set);
+		// check if current is already a match
+		if (compareValue != 0) {
+			// candidate is larger
+			if (compareValue == 1) {
+				// next matching not available
+				return null;
+
+			} else {
+				// determine highest position of true value only occurring in candidate
+				highCand = candLength - 1;
+				while ((highCand > 0) && (testArray[highCand] | !candArray[highCand])) {
+					highCand--;
+				}
+			}
+
+			// get lowest position of true value in test that is higher than highCand
+			int lowTest = highCand + 1;
+			if (highCand == 0) {
+				// start from 0 if candidate only contains true values at same positions like
+				// test
+				lowTest = 0;
+			}
+			while ((lowTest < (candLength - 1)) && (!testArray[lowTest] | candArray[lowTest])) {
+				lowTest++;
+			}
+
+			// set value in candidate at this position to true
+			if (lowTest >= candLength) {
+				lowTest = candLength - 1;
+			}
+			candArray[lowTest] = true;
+			// set all the lower positions to false
+			for (int j = 0; j < lowTest; j++) {
+				candArray[j] = false;
+			}
+		}
+		// return BoolVectorSet representation of next match (with set of previous one
+		// to distinguish between instances with equal set representations)
+		return new BoolVectorSet(current.originalSet, candArray);
+
 	}
 
 }
