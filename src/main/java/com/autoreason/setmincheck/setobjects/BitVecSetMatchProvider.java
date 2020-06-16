@@ -24,7 +24,7 @@ public class BitVecSetMatchProvider extends AbstractSetRepMatchProvider<BitVecto
 		// bit vector representation of test
 		long[] testArray;
 		// upper limit of possible array length for test set
-		int maxLenTest = test.size() / BitVectorSetConverter.DIVISOR + 1;
+		int maxLenTest = BitVectorSetConverter.defineLength(test.size());
 
 		// look for match
 		if (candLength <= maxLenTest) {

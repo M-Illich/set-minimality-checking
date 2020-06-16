@@ -36,7 +36,7 @@ public class BoolVectorSet2Converter extends AbstractSetConverter<BitSet, Intege
 		int initSize = convertAttribute;
 		if (initSize < 1) {
 			// initialize BitSet size with set size
-			initSize = set.size();
+			initSize = defineLength(set.size());
 		}
 		// initialize BitSet
 		BitSet convertedSet = new BitSet(initSize);
@@ -57,4 +57,15 @@ public class BoolVectorSet2Converter extends AbstractSetConverter<BitSet, Intege
 		return convertedSet;
 	}
 
+	/**
+	 * Define length for an array as the smallest multiple of the static value
+	 * {@link #DIVISOR} that comprises the given {@code size} value
+	 * 
+	 * @param size A positive {@code int} value related to the size of some set
+	 * @return An {@code int} for the smallest multiple of the static value
+	 *         {@link #DIVISOR} that comprises the given {@code size} value
+	 */
+	public static int defineLength(int size) {
+		return (size / DIVISOR + ((size % DIVISOR == 0) ? 0 : 1)) * 64; // TODO ?
+	}
 }

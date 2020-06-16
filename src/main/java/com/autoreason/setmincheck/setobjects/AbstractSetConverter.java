@@ -16,4 +16,10 @@ public abstract class AbstractSetConverter<R, T> implements SetConverter<R> {
 	 */
 	T convertAttribute;
 
+	/**
+	 * positive {@code int} by which the set size is divided to determine the length
+	 * of the bit vector
+	 */
+	public static int DIVISOR = 64;
+
 }

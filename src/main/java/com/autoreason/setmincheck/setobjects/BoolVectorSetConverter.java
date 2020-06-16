@@ -40,7 +40,7 @@ public class BoolVectorSetConverter extends AbstractSetConverter<boolean[], Inte
 		int len = convertAttribute;
 		if (len < 1) {
 			// determine length of array as multiple of 64 based on set size
-			len = (set.size() / 64 + 1) * 64;
+			len = defineLength(set.size());
 		}
 		boolean[] convertedSet = new boolean[len];
 
@@ -56,6 +56,18 @@ public class BoolVectorSetConverter extends AbstractSetConverter<boolean[], Inte
 		}
 
 		return convertedSet;
+	}
+
+	/**
+	 * Define length for an array as the smallest multiple of the static value
+	 * {@link #DIVISOR} that comprises the given {@code size} value
+	 * 
+	 * @param size A positive {@code int} value related to the size of some set
+	 * @return An {@code int} for the smallest multiple of the static value
+	 *         {@link #DIVISOR} that comprises the given {@code size} value
+	 */
+	public static int defineLength(int size) {
+		return (size / DIVISOR + ((size % DIVISOR == 0) ? 0 : 1)) * 64;	// TODO ?
 	}
 
 }
