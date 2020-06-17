@@ -10,8 +10,8 @@ public class BitVectorSetConverter extends AbstractSetConverter<long[]> {
 
 	@Override
 	public long[] convertSet(Set<?> set) {
-		// define array length as smallest value that is able of comprising the bit
-		// vector length given by setRepresentLength
+		// define array length as smallest value for which the 64-bit long values are
+		// able to comprise the bit vector length given by setRepresentLength
 		int len = setRepresentLength / 64 + ((setRepresentLength % 64 == 0) ? 0 : 1);
 		long[] convertedSet = new long[len];
 

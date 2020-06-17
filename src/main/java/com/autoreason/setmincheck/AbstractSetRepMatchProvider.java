@@ -10,7 +10,7 @@ import com.autoreason.setmincheck.setobjects.SetRepresent;
  *
  * @param <S> An implementation of {@link SetRepresent} and {@link Comparable}
  * @param <R> The data type for the set representation used by the
- *            implementation of {@link Represent}
+ *            implementation of {@link SetRepresent}
  */
 public abstract class AbstractSetRepMatchProvider<S extends SetRepresent<R> & Comparable<S>, R>
 		implements MatchProvider<S, Set<?>> {

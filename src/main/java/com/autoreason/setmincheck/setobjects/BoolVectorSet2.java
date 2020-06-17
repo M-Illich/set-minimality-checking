@@ -55,19 +55,16 @@ public class BoolVectorSet2 extends SetRepresent<BitSet> implements Comparable<B
 		BitSet a = this.setRepresentation;
 		BitSet b = o.setRepresentation;
 
-		// compare size
-		int c = Integer.compare(a.size(), b.size());
-		// same size
-		if (c == 0) {
-			// compare bits starting at highest one
-			int i = a.length();
-			int j = b.length();
-			while (i == j && (i > 0) && (j > 0)) {
-				i = a.previousSetBit(i - 1);
-				j = b.previousSetBit(j - 1);
-			}
-			c = Integer.compare(i, j);
+		// compare values
+		int c = 0;
+		// compare bits starting at highest one
+		int i = a.length();
+		int j = b.length();
+		while (i == j && (i > 0) && (j > 0)) {
+			i = a.previousSetBit(i - 1);
+			j = b.previousSetBit(j - 1);
 		}
+		c = Integer.compare(i, j);
 
 		return c;
 	}

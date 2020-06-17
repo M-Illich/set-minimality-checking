@@ -53,17 +53,15 @@ public class BoolVectorSet extends SetRepresent<boolean[]> implements Comparable
 		// comparison based on arrays
 		boolean[] a = this.setRepresentation;
 		boolean[] b = other.setRepresentation;
-		// compare length
-		int c = Integer.compare(a.length, b.length);
-		// same length
-		if (c == 0) {
-			int i = a.length - 1;
-			while (i >= 0 && c == 0) {
-				// comparison based on last entry in array
-				c = Boolean.compare(a[i], b[i]);
-				i--;
-			}
+		// compare values
+		int c = 0;
+		int i = a.length - 1;
+		while (i >= 0 && c == 0) {
+			// comparison based on last entry in array
+			c = Boolean.compare(a[i], b[i]);
+			i--;
 		}
+
 		return c;
 	}
 

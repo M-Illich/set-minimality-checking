@@ -54,17 +54,13 @@ public class BitVectorSet extends SetRepresent<long[]> implements Comparable<Bit
 		long[] ar1 = this.setRepresentation;
 		long[] ar2 = o.setRepresentation;
 
-		// compare length of arrays
-		int len1 = ar1.length;
-		int c = Integer.compare(len1, ar2.length);
-		// compare concrete values if same length
-		if (c == 0) {
-			int i = len1;
-			do {
-				i--;
-				c = Long.compareUnsigned(ar1[i], ar2[i]);
-			} while (c == 0 && i > 0);
-		}
+		// compare values
+		int c = 0;
+		int i = ar1.length;
+		do {
+			i--;
+			c = Long.compareUnsigned(ar1[i], ar2[i]);
+		} while (c == 0 && i > 0);
 
 		// bitVector elements are equal
 		return c;
