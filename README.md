@@ -4,6 +4,7 @@ In the related implementation, this is realized by some abstract structures for 
 
 A performance comparison of the project is given by [setmincheck-experiment](https://github.com/M-Illich/setmincheck-experiment.git).
 
+
 Copyright 2020 Moritz Illich
 
 Licensed under the Apache License, Version 2.0 (the "License");
